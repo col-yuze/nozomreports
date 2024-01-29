@@ -1,47 +1,37 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+const items = ["نسبة الاشغال", "رمد", "1", "2", "3", "4", "5", "6"];
 
-function FormRow() {
+export default function nozomreports() {
   return (
-    <React.Fragment>
-      <Grid item xs={4}>
-        <Item>Item1</Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>Item2</Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>Item3</Item>
-      </Grid>
-    </React.Fragment>
-  );
-}
-
-export default function NestedGrid() {
-  return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={1}>
-        <Grid container item spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item spacing={3}>
-          <FormRow />
-        </Grid>
-      </Grid>
+    <Box
+      display="flex"
+      flexDirection="row"
+      flexWrap="wrap"
+      justifyContent="flex-end"
+    >
+      {items.map((el) => (
+        <Box key={el} style={{}}>
+          <Button
+            style={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
+              backgroundColor: "#454545",
+              height: 300,
+              width: 500,
+              margin: 10,
+              borderRadius: 10,
+              color: "white",
+            }}
+            variant="outlined"
+          >
+            {el}
+          </Button>
+        </Box>
+      ))}
     </Box>
   );
 }
