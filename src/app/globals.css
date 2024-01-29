@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url(https://fonts.googleapis.com/earlyaccess/amiri.css);
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -15,7 +15,13 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+@font-face {
+  font-family: "Jomhuria";
+  src: local("Jomhuria"), url("../styles/Jomhuria-Regular.ttf") format("ttf"),
+    url("../styles/Jomhuria-Regular.ttf") format("ttf");
+  font-weight: 300; /* Adjust as needed */
+  font-style: normal; /* Adjust as needed */
+}
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -24,6 +30,15 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+h1 {
+  color: #ffffff;
+  font-family: "Jomhuria";
+  font-size: 500%;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
+  direction: rtl;
 }
 
 @layer utilities {

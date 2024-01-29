@@ -1,37 +1,35 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Link from "next/link";
+import CustomBox from "./CustomBox.js";
 
-const items = ["نسبة الاشغال", "رمد", "1", "2", "3", "4", "5", "6"];
+const items = [
+  { title: "نسبة الاشغال", route: "nesbetashghal" },
+  { title: "رمد", route: "ramad" },
+  { title: "1", route: "1" },
+  { title: "2", route: "2" },
+  { title: "3", route: "3" },
+  { title: "4", route: "4" },
+  { title: "5", route: "5" },
+  { title: "6", route: "6" },
+];
 
+const elements = ["Page1", "Page2"];
 export default function nozomreports() {
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      flexWrap="wrap"
-      justifyContent="flex-end"
-    >
-      {items.map((el) => (
-        <Box key={el} style={{}}>
-          <Button
-            style={{
-              display: "flex",
-              alignContent: "center",
-              justifyContent: "center",
-              backgroundColor: "#454545",
-              height: 300,
-              width: 500,
-              margin: 10,
-              borderRadius: 10,
-              color: "white",
-            }}
-            variant="outlined"
-          >
-            {el}
-          </Button>
-        </Box>
-      ))}
-    </Box>
+    <>
+      <h1>تقارير فرع النظم</h1>
+      <Box
+        display="flex"
+        flexDirection="row"
+        flexWrap="wrap"
+        justifyContent="center"
+      >
+        {items.map((el) => (
+          <CustomBox key={el.title} el={el} />
+        ))}
+      </Box>
+    </>
   );
 }
