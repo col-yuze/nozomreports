@@ -18,7 +18,14 @@ const items = [
 const elements = ["Page1", "Page2"];
 export default function nozomreports() {
   return (
-    <>
+    <div
+      style={{
+        backgroundImage: "url('/background.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <h1>تقارير فرع النظم</h1>
       <Box
         display="flex"
@@ -30,6 +37,6 @@ export default function nozomreports() {
           <CustomBox key={el.title} el={el} />
         ))}
       </Box>
-    </>
+    </div>
   );
 }
