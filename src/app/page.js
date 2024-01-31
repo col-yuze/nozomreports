@@ -5,7 +5,7 @@ export default function Home() {
     <main
       className="flex min-h-screen flex-col items-center justify-between p-24"
       style={{
-        backgroundImage: "url('/background.jpg')",
+        backgroundImage: "url('/bg4.gif')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -20,10 +20,19 @@ export default function Home() {
           color: "#F0ECE5", // Set text color to contrast with the background
         }}
       >
-        <h1 style={{ fontSize: 92 }}>
+        <h1 style={{ fontSize: 92, style: "bold" }}>
           فرع النظم <br />
           كوبري القبة
         </h1>
+        {/* <Image
+          src="/bpm.gif" // Assuming the image is in the "public" directory
+          alt="bpm"
+          width={480}
+          height={270}
+          unoptimized={false} // You can omit this line if you don't need to specifically set it to true
+          layout="responsive"
+        /> */}
+
         <Button
           style={{
             backgroundColor: "#31304D",

@@ -17,8 +17,8 @@
 }
 @font-face {
   font-family: "Jomhuria";
-  src: local("Jomhuria"), url("../styles/Jomhuria-Regular.ttf") format("ttf"),
-    url("../styles/Jomhuria-Regular.ttf") format("ttf");
+  src: local("Jomhuria"), url("../styles/Muslimah-Thin.otf") format("opentype"),
+    url("../styles/Muslimah-Thin.otf") format("opentype");
   font-weight: 300; /* Adjust as needed */
   font-style: normal; /* Adjust as needed */
 }
@@ -32,13 +32,14 @@ body {
     rgb(var(--background-start-rgb));
 }
 h1 {
-  color: #ffffff;
+  color: #31304d;
   font-family: "Jomhuria";
   font-size: 500%;
   letter-spacing: -1px;
   line-height: 1;
   text-align: center;
   direction: rtl;
+  font-weight: 600;
 }
 
 @layer utilities {
