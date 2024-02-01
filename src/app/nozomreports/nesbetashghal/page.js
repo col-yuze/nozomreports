@@ -41,6 +41,16 @@ const headers = [
   "h9",
   "h10",
 ];
+const fetchData = async () => {
+  try {
+    const response = await fetch("/api/nesba"); // Adjust the endpoint URL as needed
+    const data = await response.json();
+
+    console.log("called from front-end", data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
 const handleSaveAsPDF = async () => {
   // Dynamically import html2pdf only on the client-side
   const html2pdf = (await import("html2pdf.js")).default;
@@ -59,7 +69,7 @@ const handleSaveAsPDF = async () => {
     html2canvas: { scale: 2 },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };
-
+  fetchData();
   html2pdf().from(content).set(pdfOptions).save();
 };
 export default function Nesbestashghal() {
