@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     // Your database queries or operations go here
 
     res.status(200).json({ success: true });
-    return "Hurray";
+    const query = "SELECT * FROM PATIENT where id = 15232";
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

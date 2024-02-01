@@ -43,7 +43,7 @@ const headers = [
 ];
 const fetchData = async () => {
   try {
-    const response = await fetch("/api/nesba"); // Adjust the endpoint URL as needed
+    const response = await fetch("/api/users"); // Adjust the endpoint URL as needed
     const data = await response.json();
 
     console.log("called from front-end", data);
