@@ -12,6 +12,13 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        lavender: "#31304d",
+        lavendertint: "#9897a6",
+      },
+    },
+    fontFamily: {
+      display: "Muslimah-thin.obf", // Adds a new `font-display` class
     },
   },
   plugins: [],
