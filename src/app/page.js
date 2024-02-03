@@ -25,12 +25,12 @@ export default function Home() {
             </span>
           </a>
           <div class="flex items-center space-x-6 rtl:space-x-reverse">
-            <button
+            {/* <button
               class="bg-white hover:bg-lavender text-lavender  hover:text-white font-bold py-2 px-4 border-b-4 bg-lavender hover:border-lavendertint rounded"
               // onClick={toggle}
             >
               Login
-            </button>
+            </button> */}
           </div>
         </div>
       </nav>
