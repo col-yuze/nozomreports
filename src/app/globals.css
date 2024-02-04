@@ -19,8 +19,8 @@
   font-family: "Jomhuria";
   src: local("Jomhuria"), url("../styles/Muslimah-Thin.otf") format("opentype"),
     url("../styles/Muslimah-Thin.otf") format("opentype");
-  font-weight: 300; /* Adjust as needed */
-  font-style: normal; /* Adjust as needed */
+  /* font-weight: 300; /* Adjust as needed */
+  /* font-style: normal; Adjust as needed */
 }
 body {
   color: rgb(var(--foreground-rgb));
@@ -42,6 +42,27 @@ h1 {
   font-weight: 600;
 }
 
+h2 {
+  color: #31304d;
+  font-size: 500%;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
+  direction: rtl;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Lemon";
+  font-size: 5%;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
+  direction: rtl;
+  font-weight: 600;
+  src: url("../styles/Lemonada-VariableFont_wght.ttf") format("truetype"),
+    url("../styles/Lemonada-VariableFont_wght.ttf") format("truetype");
+  /* Add additional font formats if necessary */
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;

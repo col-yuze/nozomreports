@@ -18,7 +18,7 @@ module.exports = {
       },
     },
     fontFamily: {
-      display: "Muslimah-thin.obf", // Adds a new `font-display` class
+      display: "Muslimah-thin.otf", // Adds a new `font-display` class
     },
   },
   plugins: [],

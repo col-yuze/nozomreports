@@ -20,7 +20,7 @@ export default function Home() {
               alt="Kobry El Kobba Military Medical Complex Logo"
               style={{ width: 80, height: "auto" }}
             />
-            <span class="self-center text-2xl font-display whitespace-nowrap  text-white dark:text-white text">
+            <span class="self-center text-2xl font-Lemon font-semibold  whitespace-nowrap  text-white dark:text-white text">
               المجمع الطبي ق.م. بك القبة
             </span>
           </a>
@@ -60,7 +60,7 @@ export default function Home() {
                   href="#"
                   class="text-lavender dark:text-white hover:underline"
                 >
-                  Team
+                  الصيدليات الخارجي
                 </a>
               </li>
               <li>

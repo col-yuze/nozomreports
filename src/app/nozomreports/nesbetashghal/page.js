@@ -26,6 +26,8 @@ const rows = [
   { name: "row6", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
   { name: "row7", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
   { name: "row8", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+  { name: "row8", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+  { name: "row8", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
 ];
 
 const headers = [
@@ -38,6 +40,8 @@ const headers = [
   "h6",
   "h7",
   "h8",
+  "h9",
+  "h10",
   "h9",
   "h10",
 ];
@@ -53,21 +57,29 @@ const handleSaveAsPDF = async () => {
   }
 
   const pdfOptions = {
-    margin: 10,
+    margin: 0,
     filename: "table.pdf",
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
   };
 
   html2pdf().from(content).set(pdfOptions).save();
 };
 export default function Nesbestashghal() {
   return (
-    <div style={{ padding: 50 }}>
+    <div
+      style={{
+        padding: 65,
+        backgroundImage: "url('/background.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "repeat-x",
+      }}
+    >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
+          <h2 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h2>
           <TableContainer
             component={Paper}
             style={{ backgroundColor: "#F0ECE5" }}

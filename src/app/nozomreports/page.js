@@ -24,9 +24,10 @@ export default function nozomreports() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        paddingInline: "5%",
       }}
     >
-      <h1>تقارير فرع النظم</h1>
+      <h1 marginTop="1000">تقارير فرع النظم</h1>
       <Box
         display="flex"
         flexDirection="row"
