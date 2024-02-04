@@ -8,26 +8,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-const rows = [
-  {
-    name: "row1",
-    data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  },
-  {
-    name: "row2",
-    data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  },
-  {
-    name: "row3",
-    data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  },
-  { name: "row4", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
-  { name: "row5", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
-  { name: "row6", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
-  { name: "row7", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
-  { name: "row8", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
-];
+import fetchData from "./nesbtAsh8al"
+import { DotLoader } from 'react-spinner-overlay'
 
+export default function Nesbestashghal() {
+const [rows,setRows] = React.useState([])
 const headers = [
   "",
   "h1",
@@ -41,27 +26,18 @@ const headers = [
   "h9",
   "h10",
 ];
-const fetchData = async () => {
-  try {
-    const response = await fetch("/api/users"); // Adjust the endpoint URL as needed
-    const data = await response.json();
 
-    console.log("called from front-end", data);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-};
 const handleSaveAsPDF = async () => {
   // Dynamically import html2pdf only on the client-side
   const html2pdf = (await import("html2pdf.js")).default;
-
+  
   const content = document.getElementById("pdf-container");
-
+  
   if (!content) {
     console.error("Could not find PDF container");
     return;
   }
-
+  
   const pdfOptions = {
     margin: 10,
     filename: "table.pdf",
@@ -69,16 +45,41 @@ const handleSaveAsPDF = async () => {
     html2canvas: { scale: 2 },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };
-  fetchData();
   html2pdf().from(content).set(pdfOptions).save();
-};
-export default function Nesbestashghal() {
+  };
+
+
+React.useEffect(() => {
+  let isMounted = true; // Variable to check if the component is still mounted
+
+  const fetchDataAndSetRows = async () => {
+    try {
+      const responseData = await fetchData();
+      if (isMounted) {
+        setRows(responseData.data.map((el, index) => ({ name: `row${index + 1}`, data: el })));
+        console.log("Data fetched and rows updated");
+      }
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
+
+  if (typeof window !== 'undefined') {
+    fetchDataAndSetRows();
+  }
+
+  return () => {
+    // Cleanup function to set isMounted to false when the component is unmounted
+    isMounted = false;
+  };
+}, []);
+  
   return (
     <div style={{ padding: 50 }}>
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
-          <TableContainer
+          {rows.length <= 0 ? <div style={{display:'flex',justifyContent:"center",alignItems:"center",minHeight:500}}> <DotLoader size={10} between={5} /> </div> : <TableContainer
             component={Paper}
             style={{ backgroundColor: "#F0ECE5" }}
           >
@@ -108,7 +109,7 @@ export default function Nesbestashghal() {
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
+          </TableContainer>}
         </div>
         <div style={{ alignSelf: "center" }}>
           <Button
