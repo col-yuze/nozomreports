@@ -1,4 +1,8 @@
-const { connectToDatabase, closeDatabaseConnection, runQuery } = require("../../lib/db");
+const {
+  connectToDatabase,
+  closeDatabaseConnection,
+  runQuery,
+} = require("../../lib/db");
 
 export default async function handler(req, res) {
   let connection;
@@ -9,7 +13,7 @@ export default async function handler(req, res) {
     // Your database queries or operations go here
 
     const query = `
-    SELECT BUILDING.BUILDING_NUM,COUNT(*) BEDS_CNT,SUM(CASE WHEN PATIENT.RANK IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22) AND ROOM.ROOM_TYPE = 1 THEN 1 ELSE 0 END) DOBAT_1, 
+    SELECT BUILDING.BUILDING_NUM,SUM(CASE WHEN PATIENT.RANK IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22) AND ROOM.ROOM_TYPE = 1 THEN 1 ELSE 0 END) DOBAT_1, 
             SUM(CASE WHEN PATIENT.RANK IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22) AND ROOM.ROOM_TYPE = 2 THEN 1 ELSE 0 END) DOBAT_2, 
             SUM(CASE WHEN PATIENT.RANK IN (12, 13, 14, 15, 16, 17, 18, 19, 23) AND ROOM.ROOM_TYPE = 1 THEN 1 ELSE 0 END) SAF1,
             SUM(CASE WHEN PATIENT.RANK IN (12, 13, 14, 15, 16, 17, 18, 19, 23) AND ROOM.ROOM_TYPE = 2 THEN 1 ELSE 0 END) SAF2,
@@ -20,8 +24,9 @@ export default async function handler(req, res) {
             SUM(CASE WHEN PATIENT.RANK = 20 AND ROOM.ROOM_TYPE = 1 AND PATIENT.KINSHIP_PATIENT_NUM IS NULL THEN 1 ELSE 0 END) MADNY1,
             SUM(CASE WHEN PATIENT.RANK = 20 AND ROOM.ROOM_TYPE = 2 AND PATIENT.KINSHIP_PATIENT_NUM IS NULL THEN 1 ELSE 0 END) MADNY2,
             SUM(CASE WHEN EXISTS (SELECT 1 FROM ASSOCIATION_IN_ROOM WHERE PATIENT_GOING_IN_ROOM.PATIENT_NUM = ASSOCIATION_IN_ROOM.PATIENT_NUM) AND ROOM.ROOM_TYPE = 1 THEN 1 ELSE 0 END) MORAFK1,
-            SUM(CASE WHEN EXISTS (SELECT 1 FROM ASSOCIATION_IN_ROOM WHERE PATIENT_GOING_IN_ROOM.PATIENT_NUM = ASSOCIATION_IN_ROOM.PATIENT_NUM) AND ROOM.ROOM_TYPE = 2 THEN 1 ELSE 0 END) MORAFK2
-FROM   PATIENT,PATIENT_IN,PATIENT_GOING_IN_ROOM,ROOM,WARD,BUILDING,ARRIVAL,PATIENT P2
+            SUM(CASE WHEN EXISTS (SELECT 1 FROM ASSOCIATION_IN_ROOM WHERE PATIENT_GOING_IN_ROOM.PATIENT_NUM = ASSOCIATION_IN_ROOM.PATIENT_NUM) AND ROOM.ROOM_TYPE = 2 THEN 1 ELSE 0 END) MORAFK2,
+            COUNT(*) BEDS_CNT
+            FROM   PATIENT,PATIENT_IN,PATIENT_GOING_IN_ROOM,ROOM,WARD,BUILDING,ARRIVAL,PATIENT P2
 WHERE PATIENT.PATIENT_NUM = PATIENT_IN.PATIENT_NUM
 AND     PATIENT.PATIENT_NUM = PATIENT_GOING_IN_ROOM.PATIENT_NUM
 AND     PATIENT.PATIENT_NUM = ARRIVAL.PATIENT_NUM
@@ -54,9 +59,8 @@ WHERE NOT EXISTS (SELECT 1
 ORDER BY 1
 --ORDER BY BUILDING.BUILDING_NUM
     `;
-    const result = await runQuery(query)
-    res.status(200).json({ success: true,data:result });
-    
+    const result = await runQuery(query);
+    res.status(200).json({ success: true, str: "toto", data: result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

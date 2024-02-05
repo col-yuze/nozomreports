@@ -8,7 +8,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import fetchData from "./nesbtAsh8al";
 
 export default function Nesbestashghal() {
   const [rows, setRows] = React.useState([]);
@@ -25,7 +24,19 @@ export default function Nesbestashghal() {
     "h9",
     "h10",
   ];
-
+  // api fetching
+  const fetchDataTable = async () => {
+    fetch("/api/nesba")
+      .then((response) => {
+        response.json().then((res) => {
+          setRows(res.data);
+          console.log(res.data);
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   const handleSaveAsPDF = async () => {
     // Dynamically import html2pdf only on the client-side
     const html2pdf = (await import("html2pdf.js")).default;
@@ -49,26 +60,8 @@ export default function Nesbestashghal() {
 
   React.useEffect(() => {
     let isMounted = true; // Variable to check if the component is still mounted
-
-    const fetchDataAndSetRows = async () => {
-      try {
-        const responseData = await fetchData();
-        if (isMounted) {
-          setRows(
-            responseData.data.map((el, index) => ({
-              name: `row${index + 1}`,
-              data: el,
-            }))
-          );
-          console.log("Data fetched and rows updated");
-        }
-      } catch (error) {
-        console.log("Error fetching data:", error);
-      }
-    };
-
-    if (typeof window !== "undefined") {
-      fetchDataAndSetRows();
+    if (isMounted) {
+      fetchDataTable();
     }
 
     return () => {
@@ -117,17 +110,21 @@ export default function Nesbestashghal() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {rows.map((row, index) => (
                     <TableRow
-                      key={row.name}
+                      key={index}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      <TableCell scope="row">{row.name}</TableCell>
-                      {row.data.map((el, index) => (
-                        <TableCell key={index} align="center">
-                          {el}
-                        </TableCell>
-                      ))}
+                      <TableCell scope="row" key={index} />
+                      {row.map((el, index) => {
+                        if (index !== 0) {
+                          return (
+                            <TableCell key={index} align="center">
+                              {el}
+                            </TableCell>
+                          );
+                        }
+                      })}
                     </TableRow>
                   ))}
                 </TableBody>

@@ -27,7 +27,7 @@ export default function nozomreports() {
         paddingInline: "5%",
       }}
     >
-      <h1 marginTop="1000">تقارير فرع النظم</h1>
+      <h1 margintop="1000">تقارير فرع النظم</h1>
       <Box
         display="flex"
         flexDirection="row"
