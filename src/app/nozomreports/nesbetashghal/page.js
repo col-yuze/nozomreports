@@ -78,7 +78,15 @@ export default function Nesbestashghal() {
   }, []);
 
   return (
-    <div style={{ padding: 50 }}>
+    <div
+      style={{
+        padding: 65,
+        backgroundImage: "url('/background.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "repeat-x",
+      }}
+    >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
