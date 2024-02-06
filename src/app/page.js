@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Button from "@mui/material/Button";
+import NavBar from "../components/NavBar";
 // import { useState } from "react";
 // const [showMe, setShowMe] = useState(false);
 // function toggle() {
@@ -8,113 +9,7 @@ import Button from "@mui/material/Button";
 export default function Home() {
   return (
     <>
-      <nav class="bg-lavender border-gray-200 light:b-white" marginTop="0px">
-        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4 h-20">
-          <a
-            class="flex items-center space-x-3 rtl:space-x-reverse h-14"
-            padding="0px"
-          >
-            <img
-              src="logo.png"
-              class="h-8"
-              alt="Kobry El Kobba Military Medical Complex Logo"
-              style={{ width: 80, height: "auto" }}
-            />
-            <span class="self-center text-2xl font-Lemon font-semibold  whitespace-nowrap  text-white dark:text-white text">
-              المجمع الطبي ق.م. بك القبة
-            </span>
-          </a>
-          <div class="flex items-center space-x-6 rtl:space-x-reverse">
-            {/* <button
-              class="bg-white hover:bg-lavender text-lavender  hover:text-white font-bold py-2 px-4 border-b-4 bg-lavender hover:border-lavendertint rounded"
-              // onClick={toggle}
-            >
-              Login
-            </button> */}
-          </div>
-        </div>
-      </nav>
-      <nav class="bg-zinc-300 dark:bg-gray-700">
-        <div class="max-w-screen-xl px-4 py-3 mx-auto">
-          <div class="flex items-center">
-            <ul class="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
-              <li>
-                <a
-                  href="/nozomreports"
-                  class="text-lavender dark:text-white hover:underline"
-                  aria-current="page"
-                >
-                  تقارير فرع النظم
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-lavender dark:text-white hover:underline"
-                >
-                  عيادات
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-lavender dark:text-white hover:underline"
-                >
-                  الصيدليات الخارجي
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <NavBar></NavBar>
       <main
         className="flex min-h-screen flex-col items-center justify-between p-24"
         style={{

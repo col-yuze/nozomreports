@@ -21,5 +21,5 @@ module.exports = {
       display: "Muslimah-thin.otf", // Adds a new `font-display` class
     },
   },
-  plugins: [],
+  plugins: [require("flowbite/plugin")],
 };
