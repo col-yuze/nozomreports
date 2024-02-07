@@ -26,10 +26,10 @@ export default function FromTo() {
             placeholder="Select date start"
           />
         </div>
-        <span class="mx-4 text-gray-500">to</span>
+        <span class="mx-8 text-gray-500 text-2xl">إلى</span>
         <div class="relative">
           <DatePicker
-            placeholderText="Click to select a date"
+            placeholderText="بداية الفترة"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             icon="fa fa-calendar"
