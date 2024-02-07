@@ -14,46 +14,33 @@ export default async function handler(req, res) {
 
     const query =
       // general query
-      `SELECT 
-              BUILDING.BUILDING_NUM,
-            -- sum the following again or add it outside in a with clause
-                    NVL(
-                      (SELECT SUM(NVL(ROOM.BED_COUNT, 0))
-                      FROM ROOM, WARD
-                      WHERE ROOM.F_W_CODE = WARD.F_W_CODE
-                        AND ROOM_CASE = 1
-                        AND ROOM_TYPE = 1
-                        AND WARD.BUILDING_NUM = BUILDING.BUILDING_NUM),
-                      0
-                    ) +
-                    NVL(
-                      (SELECT SUM(NVL(ROOM.BED_COUNT, 0))
-                      FROM ROOM, WARD
-                      WHERE ROOM.F_W_CODE = WARD.F_W_CODE
-                        AND ROOM_CASE = 1
-                        AND ROOM_TYPE = 2
-                        AND WARD.BUILDING_NUM = BUILDING.BUILDING_NUM),
-                      0
-                    ) +
-                    NVL(
-                      (SELECT SUM(NVL(ROOM.BED_COUNT, 0))
-                      FROM ROOM, WARD
-                      WHERE ROOM.F_W_CODE = WARD.F_W_CODE
-                        AND ROOM_CASE = 0
-                        AND ROOM_TYPE = 1
-                        AND WARD.BUILDING_NUM = BUILDING.BUILDING_NUM),
-                      0
-                    ) +
-                  NVL(
-                      (SELECT SUM(NVL(ROOM.BED_COUNT, 0))
-                      FROM ROOM, WARD
-                      WHERE ROOM.F_W_CODE = WARD.F_W_CODE
-                        AND ROOM_CASE = 0
-                        AND ROOM_TYPE = 2
-                        AND WARD.BUILDING_NUM = BUILDING.BUILDING_NUM),
-                      0
-                    ) AS TOTAL_SUM,
-                    --
+      `
+      SELECT BUILDING, 
+      (BED_STORE1_CNT+BED_STORE2_CNT+BED_WRK1_CNT+BED_WRK2_CNT) as total_sum,
+      BED_STORE1_CNT,BED_STORE2_CNT,BED_WRK1_CNT,
+        BED_WRK2_CNT,DOBAT_1,DOBAT_2,SAF1,SAF2,
+        DOBAT_F1,DOBAT_F2,SAF_F1,SAF_F2,
+        MADNY1,MADNY2,MORAFK1,MORAFK2,BEDS_CNT,
+      
+        CASE 
+        WHEN NVL(BED_WRK1_CNT,0) = 0 THEN '0%'
+        ELSE TO_CHAR(ROUND(((NVL(DOBAT_1,0)+NVL(SAF1,0)+NVL(DOBAT_F1,0)+NVL(SAF_F1,0)+NVL(MADNY1,0)+NVL(MORAFK1,0))/NVL(BED_WRK1_CNT,0)*100)))||'%'
+        END AS BED_RAT1,
+      
+        CASE 
+        WHEN NVL(BED_WRK2_CNT,0) = 0 THEN '0%'
+        ELSE TO_CHAR(ROUND(((NVL(DOBAT_2,0)+NVL(SAF2,0)+NVL(DOBAT_F2,0)+NVL(SAF_F2,0)+NVL(MADNY2,0)+NVL(MORAFK2,0))/NVL(BED_WRK2_CNT,1)*100)))||'%'
+        END AS BED_RAT2,
+
+        CASE 
+        WHEN NVL(BED_WRK1_CNT,0) + NVL(BED_WRK2_CNT,0) = 0 THEN '0%'
+        ELSE TO_CHAR(ROUND(((NVL(BEDS_CNT,0))/(NVL(BED_WRK1_CNT,0) + NVL(BED_WRK2_CNT,0)) * 100))) || '%'
+        END AS BED_RAT_TOTAL  
+        
+      FROM (
+        SELECT
+              BUILDING.BUILDING_NUM as BUILDING,
+           
                     NVL(
                       (SELECT SUM(NVL(ROOM.BED_COUNT, 0))
                       FROM ROOM, WARD
@@ -120,7 +107,7 @@ export default async function handler(req, res) {
         AND     WARD.BUILDING_NUM = BUILDING.BUILDING_NUM
         GROUP BY BUILDING.BUILDING_NUM,BUILDING.BUILDING_NAME
         UNION
-        SELECT BUILDING.BUILDING_NUM,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+        SELECT BUILDING.BUILDING_NUM,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         FROM   BUILDING
         WHERE NOT EXISTS (SELECT 1
                                       FROM    PATIENT,PATIENT_IN,PATIENT_GOING_IN_ROOM,PATIENT P2,ROOM,WARD
@@ -136,7 +123,8 @@ export default async function handler(req, res) {
                                       AND      PATIENT_GOING_IN_ROOM.ROOM_NUM = ROOM.ROOM_NUM)
         ORDER BY 1
         )
-        --ORDER BY BUILDING.BUILDING_NUM`;
+        --ORDER BY BUILDING)
+        ORDER BY BUILDING`;
 
     const result = await runQuery(query);
     res.status(200).json({ success: true, str: "toto", data: result });
