@@ -4,6 +4,21 @@ const {
   runQuery,
 } = require("../../lib/db");
 
+const total_fun = (arr, start, end, total_over, even) => {
+  let sum = 0;
+  arr.forEach((el, i) => {
+    // getting re3aya total even and between 6 and 16
+    if (i >= start && i <= end) {
+      if (even) {
+        if (i % 2 == 0) sum = sum + el;
+      } else {
+        if (i % 2 != 0) sum = sum + el;
+      }
+    }
+  });
+  console.log(sum);
+  return Math.ceil((sum / total_over) * 100) + "%";
+};
 export default async function handler(req, res) {
   let connection;
 
@@ -127,7 +142,41 @@ export default async function handler(req, res) {
         ORDER BY BUILDING`;
 
     const result = await runQuery(query);
-    res.status(200).json({ success: true, str: "toto", data: result });
+    // sum of columns
+
+    // initalizing sum array with zeros
+    const total_col_sum = [];
+    for (let index = 0; index < result[0].length; index++) {
+      total_col_sum[index] = 0;
+    }
+
+    // we'll ad each column and save the result in the sum array
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
+      for (let j = 0; j < element.length; j++) {
+        if (j > element.length - 4) {
+          total_col_sum[j] = 0;
+        } else {
+          total_col_sum[j] = total_col_sum[j] + element[j];
+        }
+      }
+    }
+    // calculating nesbest ashghal Total Re3aya, eqaba - Re3aya+Eqama
+    total_col_sum[19] = total_fun(total_col_sum, 6, 16, total_col_sum[4], true);
+    total_col_sum[20] = total_fun(
+      total_col_sum,
+      7,
+      17,
+      total_col_sum[5],
+      false
+    );
+    total_col_sum[21] =
+      Math.floor(
+        (total_col_sum[18] / (total_col_sum[4] + total_col_sum[5])) * 100
+      ) + "%";
+    result.push(total_col_sum);
+
+    res.status(200).json({ success: true, data: result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
