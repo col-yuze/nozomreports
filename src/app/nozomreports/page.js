@@ -14,7 +14,7 @@ const items = [
   { title: "4", route: "4" },
   { title: "5", route: "5" },
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" },
-  { title: "test", route: "test" },
+  { title: "test", route: "adweya" },
   { title: "test", route: "test" },
   { title: "test", route: "test" },
   { title: "test", route: "test" },

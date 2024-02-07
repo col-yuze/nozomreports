@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-// import FromTo from "../../../components/FromTo";
+import FromTo from "../../../components/FromTo";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -87,14 +87,17 @@ export default function Nesbestashghal() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
-          {/* <FromTo /> */}
-          <DatePicker
+          <h1 style={{ marginBottom: 20, color: "#31304d" }}>
+            تقرير المحجوزين بالمجمع
+            <br /> خلال فترة
+          </h1>
+          <FromTo></FromTo>
+          {/* <DatePicker
             showIcon
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             icon="fa fa-calendar"
-          />
+          /> */}
 
           {rows.length <= 0 ? (
             <div
