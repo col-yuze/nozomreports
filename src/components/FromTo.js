@@ -3,11 +3,23 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DropDown from "../components/DropDown";
 import "react-dropdown/style.css";
+import { format } from "date-fns";
 
-export default function FromTo() {
+export default function FromTo({ setStartDateTwo, setEndDateTwo }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
-  console.log(startDate);
+  // const formattedStartDate = startDate
+  //   ? format(startDate, "dd-MM-yyyy")
+  //   : "Select a start date";
+
+  // // Format the endDate for display or show a placeholder if it's null
+  // const formattedEndDate = endDate
+  //   ? format(endDate, "dd-MM-yyyy")
+  //   : "Select an end date";
+  // console.log(formattedStartDate);
+  // console.log(formattedEndDate);
+  // setStartDate(formattedStartDate);
+  // setEndDate(formattedEndDate);
   return (
     <>
       <div
@@ -25,8 +37,15 @@ export default function FromTo() {
                 className="text-left border-l-4 border-green-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
                 showIcon
                 placeholderText="نــهايــة الـفـتـرة"
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                selected={endDate}
+                onChange={(date) => {
+                  setEndDate(date);
+
+                  const formattedEndDate = date
+                    ? format(date, "dd-MM-yyyy")
+                    : "haven't selected an end date";
+                  setEndDateTwo(formattedEndDate);
+                }}
                 dateFormat="dd/MM/YYYY"
                 isClearable
               />
@@ -39,8 +58,15 @@ export default function FromTo() {
                 className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
                 showIcon
                 placeholderText="بــدايــة الـفـتـرة"
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
+                selected={startDate}
+                onChange={(date) => {
+                  setStartDate(date);
+
+                  const formattedStartDate = date
+                    ? format(date, "dd-MM-yyyy")
+                    : "haven't selected a start date";
+                  setStartDateTwo(formattedStartDate);
+                }}
                 dateFormat="dd/MM/YYYY"
                 isClearable
               />
