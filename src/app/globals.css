@@ -68,3 +68,12 @@ h2 {
     text-wrap: balance;
   }
 }
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+
+.react-datepicker {
+}
