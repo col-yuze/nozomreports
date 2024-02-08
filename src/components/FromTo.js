@@ -26,6 +26,7 @@ export default function FromTo() {
             placeholder="Select date start"
           />
         </div>
+<<<<<<< Updated upstream
         <span class="mx-8 text-gray-500 text-2xl">إلى</span>
         <div class="relative">
           <DatePicker
@@ -35,6 +36,21 @@ export default function FromTo() {
             icon="fa fa-calendar"
             dateFormat="dd/MM/YYYY"
           />
+=======
+        <span class="mx-4 text-gray-500 text-lg">إلى</span>
+        <div class="relative">
+          <span style={{ display: "inline-block" }}>
+            <DatePicker
+              className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
+              showIcon
+              placeholderText="Click to select a date"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              dateFormat="dd/MM/YYYY"
+              isClearable
+            />
+          </span>
+>>>>>>> Stashed changes
         </div>
       </div>
     </>
