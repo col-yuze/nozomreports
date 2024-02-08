@@ -1,15 +1,14 @@
 import React from 'react';
 import { Document, Page, View, Text, StyleSheet } from '@react-pdf/renderer';
-Font.register({ family: 'Roboto', src: source });
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
     backgroundColor: '#ffffff',
-    padding: 10,
   },
   section: {
-    margin: 10,
-    padding: 10,
+    margin: 5,
+    padding: 5,
     flexGrow: 1,
   },
   title: {
@@ -29,16 +28,56 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    border:"1px solid black",
     alignItems: 'center',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderLeft: '1px solid black',
+    borderRight: '1px solid black',
   },
   cell: {
     width: '100%',
+    height: '100%',
     textAlign: 'center',
-    padding: 8,
+    padding: 5,
+    border:"1px black solid"
   },
-  signatureContainer: {
+  headerCell1: {
+    width: '100%',
+    height: '100%',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems:'center',
+    flex: 1,
+    border:"1px black solid"
+  },
+  headerCell2: {
+    width: '100%',
+    height: '100%',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems:'center',
+    flex: 2,
+    border:"1px black solid"
+  },
+  headerCell3: {
+    width: '100%',
+    height: '100%',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems:'center',
+    flex: 3,
+    border:"1px black solid"
+  },
+   signatureContainer: {
     display: 'flex',
     flexDirection: "row",
     justifyContent:"space-around",
@@ -50,45 +89,84 @@ const styles = StyleSheet.create({
   },
 });
 
-const MyDocument = () => {
-  // Dummy data for table
-  const numRows = 11;
-  const numCols = 22;
+const MyDocument = ({ data }) => {
+  const getBackgroundColor = (rowIndex,colIndex) => {
+    if (rowIndex === 9) {
+      if (colIndex === 0 || colIndex === 20 || colIndex === 21 || colIndex === 19) {
+        return '#ffe0e0'
+      }
+      else if (colIndex === 1 || colIndex === 2 || colIndex === 3 || colIndex === 4 || colIndex === 5) {
+        return '#e1e1e1'
+      }
+      else {
+        return "#e0ffff"
+      }
+    }
+    else {
+      if (colIndex === 4 || colIndex === 5 || colIndex === 20 || colIndex === 19) {
+        return '#e0ffff'
+      }
+      else if (colIndex===21) {
+        return '#e1e1e1'
+      }
+      else {
+        return 'white'
+      }
+    }
+  }
+const renderRow = (rowData, rowIndex) => (
+  <View style={styles.row} key={rowIndex}>
+    {rowData.map((cellData, colIndex) => (
+      <Text style={[styles.cell, { backgroundColor:getBackgroundColor(rowIndex,colIndex)}]} key={colIndex}>
+        {cellData}
+      </Text>
+    ))}
+  </View>
+);
 
-  const renderRow = (rowData) => (
-    <View style={styles.row}>
-      {rowData.map((cell, colIndex) => (
-        <Text key={colIndex} style={styles.cell}>
-          {cell}
-        </Text>
-      ))}
-    </View>
-  );
 
-  const renderFirstRow = () => (
-    <View style={styles.row}>
-      {[...Array(numCols)].map((_, index) => (
-        <Text key={index} style={styles.cell}>
-          {index + 1}
-        </Text>
-      ))}
-    </View>
-  );
-
-  const renderTable = () => {
-    const tableData = Array.from({ length: numRows - 1 }, () =>
-      Array.from({ length: numCols }, () => 'nader')
-    );
-
-    return (
-      <View style={styles.table}>
-        {renderFirstRow()}
-        {tableData.map((rowData, index) => (
-          <React.Fragment key={index}>{renderRow(rowData)}</React.Fragment>
-        ))}
+  const renderHeader = () => (
+    <View>
+      <View style={styles.headerRow}>
+        <Text style={[styles.headerCell1, { backgroundColor:'#ffe0e0'}]}>hospitals</Text>
+        <Text style={[styles.headerCell1, { backgroundColor:'#e1e1e1'}]}>total beds</Text>
+        <Text style={[styles.headerCell2, { backgroundColor:'#e1e1e1'}]} colSpan={2}>stored beds</Text>
+        <Text style={[styles.headerCell2, { backgroundColor:'#e1e1e1'}]} colSpan={2}>working beds</Text>
+        <Text style={[styles.headerCell2, { backgroundColor:'#e1e1e1'}]} colSpan={2}>dobat</Text>
+        <Text style={[styles.headerCell2, { backgroundColor:'#e1e1e1'}]} colSpan={2}>drgat</Text>
+        <Text style={[styles.headerCell2, { backgroundColor:'#e1e1e1'}]} colSpan={2}>dobat fam</Text>
+        <Text style={[styles.headerCell2, { backgroundColor:'#e1e1e1'}]} colSpan={2}>drgat fam</Text>
+        <Text style={[styles.headerCell2, { backgroundColor:'#e1e1e1'}]} colSpan={2}>madny</Text>
+        <Text style={[styles.headerCell2, { backgroundColor:'#e1e1e1'}]} colSpan={2}>morafk</Text>
+        <Text style={[styles.headerCell1, { backgroundColor:'#e1e1e1'}]}>busy beds</Text>
+        <Text style={[styles.headerCell3, { backgroundColor:'#ffe0e0'}]} colSpan={3}>ash8al</Text>
       </View>
-    );
-  };
+      <View style={styles.row}>
+        <Text style={[styles.cell, { backgroundColor:'#ffe0e0'}]}></Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}></Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#e1e1e1'}]}></Text>
+        <Text style={[styles.cell, { backgroundColor:'#ffe0e0'}]}>stay</Text>
+        <Text style={[styles.cell, { backgroundColor:'#ffe0e0'}]}>icu</Text>
+        <Text style={[styles.cell, { backgroundColor:'#ffe0e0'}]}>total</Text>
+      </View>
+    </View>
+  );
 
   // Dummy data for signature
   const signatures = [
@@ -104,13 +182,16 @@ const MyDocument = () => {
         <View style={styles.section}>
           <Text style={styles.timestamp}>2024-02-06 12:00 PM</Text>
           <Text style={styles.title}>Page Title</Text>
-          {renderTable()}
+          <View style={styles.table}>
+            {renderHeader()}
+            {data.map((rowData, index) => renderRow(rowData, index))}
+          </View>
           <View style={styles.signatureContainer}>
             {signatures.map(({ name, signature }, index) => (
               <View key={index} style={styles.signature}>
                 <Text>{name}</Text>
-                    <Text>{signature}</Text>
-                    <Text>`(                                    )التوقيع`</Text>
+                <Text>{signature}</Text>
+                <Text>`(                                    )التوقيع`</Text>
               </View>
             ))}
           </View>

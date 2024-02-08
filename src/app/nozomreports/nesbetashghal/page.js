@@ -131,7 +131,7 @@ export default function Nesbestashghal() {
           >
             Save as PDF
           </Button>
-           <PDFDownloadLink document={<MyDocument />} fileName="example.pdf">
+           <PDFDownloadLink document={<MyDocument data={rows} />} fileName="example.pdf">
             {({ blob, url, loading, error }) =>
               loading ? 'Loading document...' : 'Save as PDF'
             }
