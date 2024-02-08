@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next dev",
     "lint": "next lint"
   },
   "dependencies": {
@@ -14,7 +14,10 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.6",
+    "@react-pdf/renderer": "^3.3.6",
     "babel-plugin-styled-components": "^2.1.4",
+    "file-saver": "^2.0.5",
+    "FileSaver": "^0.10.0",
     "html2pdf.js": "^0.10.1",
     "jspdf": "^2.5.1",
     "next": "14.1.0",
