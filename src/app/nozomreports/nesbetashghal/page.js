@@ -8,6 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import MyDocument from './pdf'
+import FileSaver from 'file-saver';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+
 
 export default function Nesbestashghal() {
   const [rows, setRows] = React.useState([]);
@@ -37,27 +41,6 @@ export default function Nesbestashghal() {
         console.error(err);
       });
   };
-  const handleSaveAsPDF = async () => {
-    // Dynamically import html2pdf only on the client-side
-    const html2pdf = (await import("html2pdf.js")).default;
-
-    const content = document.getElementById("pdf-container");
-
-    if (!content) {
-      console.error("Could not find PDF container");
-      return;
-    }
-
-    const pdfOptions = {
-      margin: 10,
-      filename: "table.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
-    html2pdf().from(content).set(pdfOptions).save();
-  };
-
   React.useEffect(() => {
     let isMounted = true; // Variable to check if the component is still mounted
     if (isMounted) {
@@ -141,10 +124,18 @@ export default function Nesbestashghal() {
               fontWeight: "bold",
             }}
             variant="contained"
-            onClick={handleSaveAsPDF}
+            onClick={(e) => {
+              const pdfBlob = MyDocument();
+              FileSaver.saveAs(pdfBlob, 'example.pdf');
+            }}
           >
             Save as PDF
           </Button>
+           <PDFDownloadLink document={<MyDocument />} fileName="example.pdf">
+            {({ blob, url, loading, error }) =>
+              loading ? 'Loading document...' : 'Save as PDF'
+            }
+          </PDFDownloadLink>
         </div>
       </div>
     </div>
