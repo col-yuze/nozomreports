@@ -56,7 +56,7 @@ const fetchDataTable = async () => {
               {" "}
             </div>
           ) : (
-            <PDFViewer showToolbar={false} width="100%" height='720px' ><MyDocument data={rows} /></PDFViewer>
+            <PDFViewer showToolbar={true} width="100%" height='720px' ><MyDocument data={rows} /></PDFViewer>
           )}
         </div>
         <div style={{display:'flex',alignItems:'center',justifyContent:'center',margin:'20px auto' }}>

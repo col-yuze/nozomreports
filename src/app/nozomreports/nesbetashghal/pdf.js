@@ -263,7 +263,7 @@ const MyDocument = ({ data }) => {
               <View key={index} style={styles.signature}>
                 <Text style={{textAlign:'right'}}>{name}</Text>
                 <Text style={{textAlign:'right'}}>{signature}</Text>
-                <Text style={{textAlign:'right'}}>(                               )التوقيع</Text>
+                <Text style={{textAlign:'right'}}>(                                  )التوقيع</Text>
               </View>
             ))}
           </View>

@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config, { isServer }) => {
-    console.log('Webpack configuration is being applied:', config);
-
     // Add a rule to handle font files
     config.module.rules.push({
       test: /\.(woff|woff2|eot|ttf|otf)$/i,
