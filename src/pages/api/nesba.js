@@ -16,7 +16,6 @@ const total_fun = (arr, start, end, total_over, even) => {
       }
     }
   });
-  console.log(sum);
   return  "%" +Math.ceil((sum / total_over) * 100) ;
 };
 export default async function handler(req, res) {
