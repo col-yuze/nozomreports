@@ -17,7 +17,7 @@ const total_fun = (arr, start, end, total_over, even) => {
     }
   });
   console.log(sum);
-  return Math.ceil((sum / total_over) * 100) + "%";
+  return  "%" +Math.ceil((sum / total_over) * 100) ;
 };
 export default async function handler(req, res) {
   let connection;
@@ -38,18 +38,18 @@ export default async function handler(req, res) {
         MADNY1,MADNY2,MORAFK1,MORAFK2,BEDS_CNT,
       
         CASE 
-        WHEN NVL(BED_WRK1_CNT,0) = 0 THEN '0%'
-        ELSE TO_CHAR(ROUND(((NVL(DOBAT_1,0)+NVL(SAF1,0)+NVL(DOBAT_F1,0)+NVL(SAF_F1,0)+NVL(MADNY1,0)+NVL(MORAFK1,0))/NVL(BED_WRK1_CNT,0)*100)))||'%'
+        WHEN NVL(BED_WRK1_CNT,0) = 0 THEN '%0'
+        ELSE '%'|| TO_CHAR(ROUND(((NVL(DOBAT_1,0)+NVL(SAF1,0)+NVL(DOBAT_F1,0)+NVL(SAF_F1,0)+NVL(MADNY1,0)+NVL(MORAFK1,0))/NVL(BED_WRK1_CNT,0)*100)))
         END AS BED_RAT1,
       
         CASE 
-        WHEN NVL(BED_WRK2_CNT,0) = 0 THEN '0%'
-        ELSE TO_CHAR(ROUND(((NVL(DOBAT_2,0)+NVL(SAF2,0)+NVL(DOBAT_F2,0)+NVL(SAF_F2,0)+NVL(MADNY2,0)+NVL(MORAFK2,0))/NVL(BED_WRK2_CNT,1)*100)))||'%'
+        WHEN NVL(BED_WRK2_CNT,0) = 0 THEN '%0'
+        ELSE '%'|| TO_CHAR(ROUND(((NVL(DOBAT_2,0)+NVL(SAF2,0)+NVL(DOBAT_F2,0)+NVL(SAF_F2,0)+NVL(MADNY2,0)+NVL(MORAFK2,0))/NVL(BED_WRK2_CNT,1)*100)))
         END AS BED_RAT2,
 
         CASE 
-        WHEN NVL(BED_WRK1_CNT,0) + NVL(BED_WRK2_CNT,0) = 0 THEN '0%'
-        ELSE TO_CHAR(ROUND(((NVL(BEDS_CNT,0))/(NVL(BED_WRK1_CNT,0) + NVL(BED_WRK2_CNT,0)) * 100))) || '%'
+        WHEN NVL(BED_WRK1_CNT,0) + NVL(BED_WRK2_CNT,0) = 0 THEN '%0'
+        ELSE '%'|| TO_CHAR(ROUND(((NVL(BEDS_CNT,0))/(NVL(BED_WRK1_CNT,0) + NVL(BED_WRK2_CNT,0)) * 100)))
         END AS BED_RAT_TOTAL  
         
       FROM (
@@ -171,9 +171,10 @@ export default async function handler(req, res) {
       false
     );
     total_col_sum[21] =
-      Math.floor(
+       "%"
+      + Math.floor(
         (total_col_sum[18] / (total_col_sum[4] + total_col_sum[5])) * 100
-      ) + "%";
+      ) ;
     result.push(total_col_sum);
 
     res.status(200).json({ success: true, data: result });
