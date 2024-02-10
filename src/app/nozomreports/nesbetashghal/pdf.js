@@ -12,7 +12,7 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
-import NotoNaskh from "./NotoNaskhArabic-VariableFont_wght.ttf";
+import NotoNaskh from "./TheYearofTheCamel-ExtraBold.otf";
 
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 5,
     flex: 1,
+    fontSize: 9,
   },
   headerCell1: {
     width: "100%",
@@ -212,18 +213,19 @@ const MyDocument = ({ data }) => {
               backgroundColor: getBackgroundColor(rowIndex, colIndex),
               borderLeft:
                 (colIndex === 0 || colIndex % 2 != 0 || colIndex === 18) &&
-                colIndex !== 19
+                colIndex !== 19 &&
+                colIndex !== 21
                   ? "1px solid black"
                   : "",
               flex:
                 colIndex === 0
-                  ? "2.855"
+                  ? "2.869"
                   : colIndex === 18
                   ? "1.7"
                   : colIndex === 19
-                  ? "0.968"
+                  ? "1"
                   : "1",
-              fontSize: colIndex === 0 ? "8px" : "10px",
+              fontSize: colIndex === 0 ? "10px" : "10px",
               borderTop: rowIndex !== 0 ? "1px solid black" : "",
             },
           ]}
@@ -274,7 +276,7 @@ const MyDocument = ({ data }) => {
           ]}
           colSpan={2}
         >
-          اجمالي الأسرة العاملة
+          اجمـالي الأســرة العاملة
         </Text>
         <Text
           style={[
@@ -336,7 +338,7 @@ const MyDocument = ({ data }) => {
             {
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
-              flex: "1.5",
+              flex: "1.489",
             },
           ]}
         >
@@ -356,7 +358,7 @@ const MyDocument = ({ data }) => {
             {
               borderBottom: "1px solid black",
               backgroundColor: "#ffe0e0",
-              flex: "2.855",
+              flex: "2.869",
               borderLeft: "1px solid black",
             },
           ]}
@@ -605,7 +607,8 @@ const MyDocument = ({ data }) => {
               <View key={index} style={styles.signature}>
                 <Text style={{ textAlign: "right" }}>{name}</Text>
                 <Text style={{ textAlign: "right" }}>{signature}</Text>
-                <Text style={{ textAlign: "right" }}>( )التوقيع</Text>
+                {/* prettier-ignore */}
+                <Text style={{ textAlign: "right" }}>(                                             )التوقيع</Text>
               </View>
             ))}
           </View>
