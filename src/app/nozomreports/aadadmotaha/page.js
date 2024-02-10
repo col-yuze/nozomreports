@@ -1,7 +1,5 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
-import MyDocument from "./pdf";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 
 export default function Nesbestashghal() {
   const [rows, setRows] = React.useState([]);
@@ -43,22 +41,6 @@ export default function Nesbestashghal() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
-          {rows.length <= 0 ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: 500,
-              }}
-            >
-              {" "}
-            </div>
-          ) : (
-            <PDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
-            </PDFViewer>
-          )}
         </div>
         <div
           style={{
@@ -67,23 +49,7 @@ export default function Nesbestashghal() {
             justifyContent: "center",
             margin: "20px auto",
           }}
-        >
-          <PDFDownloadLink
-            document={<MyDocument data={rows} />}
-            fileName={`نسبة الأشغال عن يوم ${new Date().toLocaleDateString(
-              "en-GB",
-              { day: "2-digit", month: "2-digit", year: "numeric" }
-            )} - ${new Date().toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })}`}
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? "wait Loading document..." : "Save as PDF"
-            }
-          </PDFDownloadLink>
-        </div>
+        ></div>
       </div>
     </div>
   );
