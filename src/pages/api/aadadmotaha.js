@@ -9,7 +9,6 @@ export default async function handler(req, res) {
 
   try {
     connection = await connectToDatabase();
-    console.log("A33333");
 
     // Your database queries or operations go here
 
