@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    flex: 3,
+    flex: 3.019,
   },
   signatureContainer: {
     display: "flex",
@@ -178,7 +178,7 @@ const MyDocument = ({ data }) => {
     if (colIndex === 0) {
       switch (cellData) {
         case 1:
-          return "مستشفى الجراجة";
+          return "مستشفى الجراحة";
         case 2:
           return "مستشفى الباطنة";
         case 3:
@@ -212,9 +212,13 @@ const MyDocument = ({ data }) => {
             {
               backgroundColor: getBackgroundColor(rowIndex, colIndex),
               borderLeft:
-                (colIndex === 0 || colIndex % 2 != 0 || colIndex === 18) &&
+                (colIndex % 2 != 0 || colIndex === 18) && colIndex !== 21
+                  ? "1px solid black"
+                  : "",
+              borderRight:
+                (colIndex % 2 != 0 || colIndex === 18) &&
                 colIndex !== 19 &&
-                colIndex !== 21
+                colIndex !== 18
                   ? "1px solid black"
                   : "",
               flex:
@@ -244,9 +248,14 @@ const MyDocument = ({ data }) => {
           style={[
             styles.headerCell1,
             {
+              height: "100%",
               backgroundColor: "#ffe0e0",
-              flex: "2.3",
+              flex: "2.25",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
               borderLeft: "1px solid black",
+              paddingTop: "20px", // Adjust as needed for inner spacing
             },
           ]}
         >
@@ -255,15 +264,24 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.headerCell1,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "15px",
+            },
           ]}
         >
-          طاقة الأسرة
+          طاقة
         </Text>
         <Text
           style={[
             styles.headerCell2,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "5px",
+              borderBottom: "1px black solid",
+            },
           ]}
           colSpan={2}
         >
@@ -272,7 +290,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.headerCell2,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "5px",
+              borderBottom: "1px black solid",
+            },
           ]}
           colSpan={2}
         >
@@ -281,7 +304,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.headerCell2,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "10px",
+              borderBottom: "1px black solid",
+            },
           ]}
           colSpan={2}
         >
@@ -290,7 +318,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.headerCell2,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "10px",
+              borderBottom: "1px black solid",
+            },
           ]}
           colSpan={2}
         >
@@ -299,7 +332,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.headerCell2,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "10px",
+              borderBottom: "1px black solid",
+            },
           ]}
           colSpan={2}
         >
@@ -308,7 +346,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.headerCell2,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "10px",
+              borderBottom: "1px black solid",
+            },
           ]}
           colSpan={2}
         >
@@ -317,7 +360,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.headerCell2,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "10px",
+              borderBottom: "1px black solid",
+            },
           ]}
           colSpan={2}
         >
@@ -326,7 +374,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.headerCell2,
-            { backgroundColor: "#e1e1e1", borderLeft: "1px solid black" },
+            {
+              backgroundColor: "#e1e1e1",
+              borderLeft: "1px solid black",
+              paddingTop: "10px",
+              borderBottom: "1px black solid",
+            },
           ]}
           colSpan={2}
         >
@@ -338,14 +391,22 @@ const MyDocument = ({ data }) => {
             {
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
-              flex: "1.489",
+              flex: "1.455",
+              paddingTop: "15px",
             },
           ]}
         >
-          اجمالي الأسرة المشغولة
+          اجمالي الأسرة
         </Text>
         <Text
-          style={[styles.headerCell3, { backgroundColor: "#ffe0e0" }]}
+          style={[
+            styles.headerCell3,
+            {
+              backgroundColor: "#ffe0e0",
+              paddingTop: "10px",
+              borderBottom: "1px black solid",
+            },
+          ]}
           colSpan={3}
         >
           نسبة الأشغال
@@ -372,7 +433,9 @@ const MyDocument = ({ data }) => {
               borderLeft: "1px solid black",
             },
           ]}
-        ></Text>
+        >
+          الأسرة
+        </Text>
         <Text
           style={[
             styles.cell,
@@ -388,6 +451,7 @@ const MyDocument = ({ data }) => {
               borderBottom: "1px solid black",
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
+              borderRight: "1px solid black",
             },
           ]}
         >
@@ -408,6 +472,7 @@ const MyDocument = ({ data }) => {
               borderBottom: "1px solid black",
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
+              borderRight: "1px solid black",
             },
           ]}
         >
@@ -428,6 +493,7 @@ const MyDocument = ({ data }) => {
               borderBottom: "1px solid black",
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
+              borderRight: "1px solid black",
             },
           ]}
         >
@@ -448,6 +514,7 @@ const MyDocument = ({ data }) => {
               borderBottom: "1px solid black",
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
+              borderRight: "1px solid black",
             },
           ]}
         >
@@ -468,6 +535,7 @@ const MyDocument = ({ data }) => {
               borderBottom: "1px solid black",
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
+              borderRight: "1px solid black",
             },
           ]}
         >
@@ -488,6 +556,7 @@ const MyDocument = ({ data }) => {
               borderBottom: "1px solid black",
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
+              borderRight: "1px solid black",
             },
           ]}
         >
@@ -508,6 +577,7 @@ const MyDocument = ({ data }) => {
               borderBottom: "1px solid black",
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
+              borderRight: "1px solid black",
             },
           ]}
         >
@@ -528,6 +598,7 @@ const MyDocument = ({ data }) => {
               borderBottom: "1px solid black",
               backgroundColor: "#e1e1e1",
               borderLeft: "1px solid black",
+              borderRight: "1px solid black",
             },
           ]}
         >
@@ -543,7 +614,9 @@ const MyDocument = ({ data }) => {
               borderLeft: "1px solid black",
             },
           ]}
-        ></Text>
+        >
+          المشغولة
+        </Text>
         <Text
           style={[
             styles.cell,
@@ -555,7 +628,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.cell,
-            { borderBottom: "1px solid black", backgroundColor: "#ffe0e0" },
+            {
+              borderBottom: "1px solid black",
+              backgroundColor: "#ffe0e0",
+              borderLeft: "1px solid black",
+              borderRight: "1px solid black",
+            },
           ]}
         >
           رعاية
