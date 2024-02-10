@@ -15,6 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 export default function Nesbestashghal() {
   const [rows, setRows] = React.useState([]);
   const [startDate, setStartDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(new Date());
 
   const headers = [
     "",
@@ -29,6 +30,8 @@ export default function Nesbestashghal() {
     "h9",
     "h10",
   ];
+  console.log("satrt" + startDate + " end " + endDate);
+
   // api fetching
   const fetchDataTable = async () => {
     fetch("/api/nesba")
@@ -91,7 +94,7 @@ export default function Nesbestashghal() {
             تقرير المحجوزين بالمجمع
             <br /> خلال فترة
           </h1>
-          <FromTo></FromTo>
+          <FromTo setStartDateTwo={setStartDate} setEndDateTwo={setEndDate} />
           {/* <DatePicker
             showIcon
             selected={startDate}
