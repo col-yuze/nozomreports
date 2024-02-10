@@ -75,5 +75,14 @@ body {
   height: 100%;
 }
 
-.react-datepicker {
+.react-datepicker__close-icon::after {
+  background-color: #31304d !important;
+}
+.react-datepicker__calendar-icon {
+  font-size: x-large;
+  color: #31304d;
+}
+.react-datepicker__view-calendar-icon input {
+  padding: 6px 2px 5px 37px;
+  text-align: center;
 }
