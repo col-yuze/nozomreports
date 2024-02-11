@@ -2,13 +2,13 @@ import React from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 const options = ["one", "two", "three"];
-const defaultOption = options[0];
+const defaultOption = "اختـــــــر";
 class DropDown extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedOption: options[0], // Set the default selected option
+      selectedOption: defaultOption, // Set the default selected option
     };
   }
 
@@ -23,7 +23,7 @@ class DropDown extends React.Component {
       <Dropdown
         options={options}
         onChange={this._onSelect}
-        value={selectedOption}
+        value={defaultOption}
         placeholder="Select an option"
       />
     );

@@ -41,7 +41,7 @@ export default function nozomreports() {
       }}
     >
       <NavBar></NavBar>
-      <h1 style={{ position: "relative", top: 50 }}>تقارير فرع النظم</h1>
+      <h1 style={{ position: "relative", top: 50 }}>تقارير فرع النظمـ</h1>
       <Box
         display="flex"
         flexDirection="row"

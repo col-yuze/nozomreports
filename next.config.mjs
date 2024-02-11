@@ -3,12 +3,12 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     // Add a rule to handle font files
     config.module.rules.push({
-      test: /\.(woff|woff2|eot|ttf|otf)$/i,
+      test: /\.(woff|woff2|eot|otf)$/i,
       use: {
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          publicPath: '/_next',
-          name: 'static/fonts/[name].[hash].[ext]',
+          publicPath: "/_next",
+          name: "static/fonts/[name].[hash].[ext]",
         },
       },
     });

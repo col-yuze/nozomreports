@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import url(https://fonts.googleapis.com/earlyaccess/amiri.css); */
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -17,8 +16,8 @@
 }
 @font-face {
   font-family: "Jomhuria";
-  src: local("Jomhuria"), url("../styles/Muslimah-Thin.otf") format("opentype"),
-    url("../styles/Muslimah-Thin.otf") format("opentype");
+  src: local("Jomhuria"), url("../styles/Muslimah-Thin.ttf") format("truetype"),
+    url("../styles/Muslimah-Thin.ttf") format("truetype");
   /* font-weight: 300; /* Adjust as needed */
   /* font-style: normal; Adjust as needed */
 }

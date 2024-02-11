@@ -1,23 +1,36 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
-import MyDocument from './pdf'
-import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
-
+import MyDocument from "./pdf";
+import dynamic from "next/dynamic";
+// Load PDFDownloadLink and PDFViewer dynamically to ensure they're only executed on the client-side
+const DynamicPDFDownloadLink = dynamic(
+  () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
+  {
+    ssr: false, // Disable server-side rendering for this component
+  }
+);
+const DynamicPDFViewer = dynamic(
+  () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
+  {
+    ssr: false, // Disable server-side rendering for this component
+  }
+);
+// import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
 
 export default function Nesbestashghal() {
   const [rows, setRows] = React.useState([]);
   // api fetching
-const fetchDataTable = async () => {
-  fetch("/api/nesba")
-    .then((response) => {
-      response.json().then((res) => {
-        setRows(res.data); // Set the state with the modified rows
+  const fetchDataTable = async () => {
+    fetch("/api/nesba")
+      .then((response) => {
+        response.json().then((res) => {
+          setRows(res.data); // Set the state with the modified rows
+        });
+      })
+      .catch((err) => {
+        console.error(err);
       });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-};
+  };
 
   React.useEffect(() => {
     let isMounted = true; // Variable to check if the component is still mounted
@@ -56,15 +69,34 @@ const fetchDataTable = async () => {
               {" "}
             </div>
           ) : (
-            <PDFViewer showToolbar={true} width="100%" height='720px' ><MyDocument data={rows} /></PDFViewer>
+            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+              <MyDocument data={rows} />
+            </DynamicPDFViewer>
           )}
         </div>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'center',margin:'20px auto' }}>
-           <PDFDownloadLink document={<MyDocument data={rows} />} fileName={`نسبة الأشغال عن يوم ${new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })} - ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}`}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "20px auto",
+          }}
+        >
+          <DynamicPDFDownloadLink
+            document={<MyDocument data={rows} />}
+            fileName={`نسبة الأشغال عن يوم ${new Date().toLocaleDateString(
+              "en-GB",
+              { day: "2-digit", month: "2-digit", year: "numeric" }
+            )} - ${new Date().toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}`}
+          >
             {({ blob, url, loading, error }) =>
-              loading ? 'wait Loading document...' : 'Save as PDF'
+              loading ? "wait Loading document..." : "Save as PDF"
             }
-          </PDFDownloadLink>
+          </DynamicPDFDownloadLink>
         </div>
       </div>
     </div>

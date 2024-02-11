@@ -25,9 +25,9 @@ export default function FromTo({ setStartDateTwo, setEndDateTwo }) {
       <div
         date-rangepicker
         class="flex items-center"
-        style={{ justifyContent: "end", justifyContent: "space-between" }}
+        style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
-        <div class="relative">
+        <div class="relative" style={{ width: "24%" }}>
           <DropDown />
         </div>
         <div class="flex items-center" style={{ justifyContent: "end" }}>
