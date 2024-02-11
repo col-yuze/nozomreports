@@ -14,9 +14,12 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export default function Nesbestashghal() {
   const [rows, setRows] = React.useState([]);
+  const [show, setShow] = React.useState(false);
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
-
+  const toggleVisibility = () => {
+    setShow(!show);
+  };
   const headers = [
     "",
     "h1",
@@ -95,14 +98,22 @@ export default function Nesbestashghal() {
             <br /> خلال فترة
           </h1>
           <FromTo setStartDateTwo={setStartDate} setEndDateTwo={setEndDate} />
-          {/* <DatePicker
-            showIcon
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            icon="fa fa-calendar"
-          /> */}
+          <div style={{ alignSelf: "center" }}>
+            <Button
+              style={{
+                backgroundColor: "#F0ECE5",
+                color: "#161A30",
+                marginTop: 100,
+                fontWeight: "bold",
+              }}
+              variant="contained"
+              onClick={toggleVisibility}
+            >
+              اظهر البيانات
+            </Button>
+          </div>
 
-          {rows.length <= 0 ? (
+          {rows.length <= 0 && !show ? (
             <div
               style={{
                 display: "flex",
@@ -118,6 +129,7 @@ export default function Nesbestashghal() {
               component={Paper}
               style={{ backgroundColor: "#F0ECE5" }}
             >
+              <h3>شــكـــوكـــو</h3>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
