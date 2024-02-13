@@ -1,4 +1,4 @@
-import { DATE } from "oracledb";
+import formatOracleDate from "@/lib/utils";
 
 const {
   connectToDatabase,
@@ -6,36 +6,11 @@ const {
   runQuery,
 } = require("../../lib/db");
 
-function formatDate(old_date) {
-  // date in the format of MM-DD-YYYY
-  old_date = old_date.split("-");
-  // Date function takes YYYY-MM-DD
-  const date = new Date(`${old_date[2]}-${old_date[1]}-${old_date[0]}`);
-  const months = [
-    "JAN",
-    "FEB",
-    "MAR",
-    "APR",
-    "MAY",
-    "JUN",
-    "JUL",
-    "AUG",
-    "SEP",
-    "OCT",
-    "NOV",
-    "DEC",
-  ];
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = months[date.getMonth()];
-  const year = date.getFullYear().toString().slice(-2);
-  return `${day}-${month}-${year}`;
-}
-
 export default async function handler(req, res) {
   let connection;
   // two dates in the format ex: 11-JAN-23
-  const D1 = formatDate(req.query.param1); //req.data.param1;
-  const D2 = formatDate(req.query.param2); //req.data.param2;
+  const D1 = formatOracleDate(req.query.param1); //req.data.param1;
+  const D2 = formatOracleDate(req.query.param2); //req.data.param2;
   try {
     connection = await connectToDatabase();
     // Your database queries or operations go here

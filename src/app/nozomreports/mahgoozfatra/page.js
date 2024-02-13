@@ -10,16 +10,33 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import FromTo from "../../../components/FromTo";
 import DatePicker from "react-datepicker";
+import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function Nesbestashghal() {
-  const [rows, setRows] = React.useState([]);
+export default function Mahgoozfatra() {
+  const [rows, setRows] = React.useState([
+    [1, 2, 3, 4, 5, 5],
+    [1, 2, 3, 4, , 7, 5],
+  ]);
   const [show, setShow] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
-  const toggleVisibility = () => {
-    setShow(!show);
+  // prettier-ignore
+  const [startDate, setStartDate] = React.useState(null);
+  const itemsPerPage = 10; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(0);
+  const totalPages = Math.ceil(rows.length / itemsPerPage);
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, rows.length);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
   };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+  };
+  // prettier-ignore
+  const [endDate, setEndDate] = React.useState(null);
+
   const headers = [
     "",
     "h1",
@@ -33,21 +50,54 @@ export default function Nesbestashghal() {
     "h9",
     "h10",
   ];
-  console.log("satrt" + startDate + " end " + endDate);
+  function formatDate(date) {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+    return formattedDay + "-" + formattedMonth + "-" + year;
+  }
 
   // api fetching
+
   const fetchDataTable = async () => {
-    fetch("/api/nesba")
-      .then((response) => {
-        response.json().then((res) => {
-          setRows(res.data);
-          console.log(res.data);
+    if (startDate && endDate) {
+      const _startDate = new Date(
+        startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+      );
+      const _endDate = new Date(
+        endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+      );
+      const formattedStartDate = formatDate(_startDate);
+      const formattedEndDate = formatDate(_endDate);
+      fetch(
+        "/api/mahgoozfatra?StartDate=" +
+          formattedStartDate +
+          "&EndDate=" +
+          formattedEndDate +
+          "&Options=" +
+          0
+      )
+        .then((response) => {
+          response.json().then((res) => {
+            setRows(res.data);
+            console.log(res.data);
+          });
+        })
+        .catch((err) => {
+          console.error(err);
         });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    } else {
+      console.log("nader and filo");
+    }
   };
+
+  const toggleVisibility = () => {
+    setShow(!show);
+    fetchDataTable();
+  };
+
   const handleSaveAsPDF = async () => {
     // Dynamically import html2pdf only on the client-side
     const html2pdf = (await import("html2pdf.js")).default;
@@ -72,7 +122,7 @@ export default function Nesbestashghal() {
   React.useEffect(() => {
     let isMounted = true; // Variable to check if the component is still mounted
     if (isMounted) {
-      //   fetchDataTable();
+      fetchDataTable();
     }
 
     return () => {
@@ -91,6 +141,7 @@ export default function Nesbestashghal() {
         backgroundRepeat: "repeat-x",
       }}
     >
+      {/* heeee */}
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#31304d" }}>
@@ -113,7 +164,7 @@ export default function Nesbestashghal() {
             </Button>
           </div>
 
-          {rows.length <= 0 && !show ? (
+          {rows && rows?.length <= 0 ? (
             <div
               style={{
                 display: "flex",
@@ -129,7 +180,6 @@ export default function Nesbestashghal() {
               component={Paper}
               style={{ backgroundColor: "#F0ECE5" }}
             >
-              <h3>شــكـــوكـــو</h3>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
@@ -141,21 +191,13 @@ export default function Nesbestashghal() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell scope="row" key={index} />
-                      {row.map((el, index) => {
-                        if (index !== 0) {
-                          return (
-                            <TableCell key={index} align="center">
-                              {el}
-                            </TableCell>
-                          );
-                        }
-                      })}
+                  {rows.slice(startIndex, endIndex).map((row, rowIndex) => (
+                    <TableRow key={rowIndex}>
+                      {row.map((el, cellIndex) => (
+                        <TableCell key={cellIndex} align="center">
+                          {cellIndex !== 0 ? el : null}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -176,6 +218,15 @@ export default function Nesbestashghal() {
           >
             Save as PDF
           </Button>
+          <button onClick={handlePrevPage} disabled={currentPage === 0}>
+            Previous
+          </button>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages - 1}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

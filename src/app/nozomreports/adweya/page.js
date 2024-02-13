@@ -49,7 +49,6 @@ export default function Nesbestashghal() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          console.log(res.data);
         });
       })
       .catch((err) => {
