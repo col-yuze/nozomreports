@@ -1,6 +1,5 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
-import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,26 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 
-export default function Adweya() {
-  const [rows, setRows] = useState([]);
-  const itemsPerPage = 10; // Number of items per page
-
-  const [startDate, setStartDate] = useState("2-2-2023");
-  const [endDate, setEndDate] = useState("5-2-2023");
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const totalPages = Math.ceil(rows.length / itemsPerPage);
-
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, rows.length);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
-  };
+export default function AadadMotaha() {
+  const [rows, setRows] = React.useState([]);
   const headers = [
     "",
     "h1",
@@ -45,7 +26,7 @@ export default function Adweya() {
   ];
   // api fetching
   const fetchDataTable = async () => {
-    fetch(`/api/adweya?param1=${startDate}&param2=${endDate}`)
+    fetch("/api/aadadmotaha")
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
@@ -129,13 +110,21 @@ export default function Adweya() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.slice(startIndex, endIndex).map((row, rowIndex) => (
-                    <TableRow key={rowIndex}>
-                      {row.map((el, cellIndex) => (
-                        <TableCell key={cellIndex} align="center">
-                          {cellIndex !== 0 ? el : null}
-                        </TableCell>
-                      ))}
+                  {rows.map((row, index) => (
+                    <TableRow
+                      key={index}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell scope="row" key={index} />
+                      {row.map((el, index) => {
+                        if (index !== 0) {
+                          return (
+                            <TableCell key={index} align="center">
+                              {el}
+                            </TableCell>
+                          );
+                        }
+                      })}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -156,15 +145,6 @@ export default function Adweya() {
           >
             Save as PDF
           </Button>
-          <button onClick={handlePrevPage} disabled={currentPage === 0}>
-            Previous
-          </button>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            Next
-          </button>
         </div>
       </div>
     </div>
