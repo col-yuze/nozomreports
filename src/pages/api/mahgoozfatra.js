@@ -15,7 +15,6 @@ export default async function handler(req, res) {
     const Options = req.query.Options;
     const D1 = formatOracleDate(req.query.StartDate); //req.data.param1;
     const D2 = formatOracleDate(req.query.EndDate); //req.data.param2;
-    console.log(req.query.StartDate, D1, D2, Options);
 
     // Your database queries or operations go here
     const query = `
