@@ -30,7 +30,6 @@ export default function AadadMotaha() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          console.log(res.data);
         });
       })
       .catch((err) => {
@@ -82,7 +81,9 @@ export default function AadadMotaha() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            الاعداد المتاحة
+          </h1>
           {rows.length <= 0 ? (
             <div
               style={{

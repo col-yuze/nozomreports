@@ -7,8 +7,8 @@ import NavBar from "./../../components/NavBar.js";
 
 const items = [
   { title: "نسبة الاشغال", route: "nesbetashghal" },
-  { title: "adweya", route: "adweya" },
-  { title: "1", route: "1" },
+  { title: "ادوية", route: "adweya" },
+  { title: "اعداد متاحة", route: "aadadmotaha" },
   { title: "2", route: "2" },
   { title: "3", route: "3" },
   { title: "4", route: "4" },

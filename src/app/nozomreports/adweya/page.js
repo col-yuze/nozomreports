@@ -100,7 +100,7 @@ export default function Adweya() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية</h1>
           {rows.length <= 0 ? (
             <div
               style={{
