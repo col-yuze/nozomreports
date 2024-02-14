@@ -5,7 +5,7 @@ import DropDown from "../components/DropDown";
 import "react-dropdown/style.css";
 import { format } from "date-fns";
 
-export default function FromTo({ setStartDateTwo, setEndDateTwo }) {
+export default function FromTo({ options, setStartDateTwo, setEndDateTwo }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
   // const formattedStartDate = startDate

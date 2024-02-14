@@ -149,13 +149,21 @@ export default function Mahgoozfatra() {
             <br /> خلال فترة
           </h1>
           <FromTo setStartDateTwo={setStartDate} setEndDateTwo={setEndDate} />
-          <div style={{ alignSelf: "center" }}>
+          <div
+            style={{
+              alignSelf: "center",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Button
               style={{
                 backgroundColor: "#F0ECE5",
                 color: "#161A30",
-                marginTop: 100,
+                marginTop: 50,
                 fontWeight: "bold",
+                width: "83%",
               }}
               variant="contained"
               onClick={toggleVisibility}
@@ -163,6 +171,9 @@ export default function Mahgoozfatra() {
               اظهر البيانات
             </Button>
           </div>
+          <br></br>
+          <br></br>
+          <br></br>
 
           {rows && rows?.length <= 0 ? (
             <div
@@ -218,15 +229,15 @@ export default function Mahgoozfatra() {
           >
             Save as PDF
           </Button>
-          <button onClick={handlePrevPage} disabled={currentPage === 0}>
+          <Button onClick={handlePrevPage} disabled={currentPage === 0}>
             Previous
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleNextPage}
             disabled={currentPage === totalPages - 1}
           >
             Next
-          </button>
+          </Button>
         </div>
       </div>
     </div>
