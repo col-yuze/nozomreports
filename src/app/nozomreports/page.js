@@ -18,7 +18,7 @@ const items = [
   { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" },
   { title: "احصائية القدوم", route: "ehsaeyaqodoom" },
   { title: "محجوزين", route: "mahgozeen" },
-  { title: "test", route: "test" },
+  { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" },
   { title: "test", route: "test" },
   { title: "test", route: "test" },
   { title: "test", route: "test" },
