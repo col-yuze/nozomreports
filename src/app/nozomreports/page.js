@@ -15,7 +15,7 @@ const items = [
   { title: "5", route: "5" },
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" },
   { title: "احصائية العيادات", route: "ehsaeyaeyadat" },
-  { title: "test", route: "test" },
+  { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" },
   { title: "test", route: "test" },
   { title: "test", route: "test" },
   { title: "test", route: "test" },
