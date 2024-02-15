@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 
-export default function Test() {
+export default function AdweyaEyadat() {
   const [rows, setRows] = useState([]);
   const itemsPerPage = 10; // Number of items per page
 
@@ -45,7 +45,7 @@ export default function Test() {
   ];
   // api fetching
   const fetchDataTable = async () => {
-    fetch(`/api/adweyadakhly?dept=5&date=05-01-2015`)
+    fetch(`/api/adweyaeyadat?fdate=01-02-2024&tdate=01-02-2024`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
@@ -101,7 +101,7 @@ export default function Test() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية عيادات</h1>
           {rows.length <= 0 ? (
             <div
               style={{

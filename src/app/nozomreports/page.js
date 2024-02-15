@@ -8,9 +8,9 @@ import NavBar from "./../../components/NavBar.js";
 const items = [
   { title: "نسبة الاشغال", route: "nesbetashghal" },
   { title: "adweya", route: "adweya" },
-  { title: "1", route: "1" },
-  { title: "2", route: "2" },
-  { title: "3", route: "3" },
+  { title: "ادوية دخلي", route: "adweyadakhly" },
+  { title: "ادوية عيادات", route: "adweyaeyadat" },
+  { title: "ادوية رمد", route: "adweyaramad" },
   { title: "4", route: "4" },
   { title: "5", route: "5" },
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" },
