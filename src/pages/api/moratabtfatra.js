@@ -1,3 +1,5 @@
+import formatOracleDate from "@/lib/utils";
+
 const {
   connectToDatabase,
   closeDatabaseConnection,
@@ -11,8 +13,8 @@ export default async function handler(req, res) {
     connection = await connectToDatabase();
 
     // Your database queries or operations go here
-    const D1 = req.data.param1;
-    const D2 = req.data.param2;
+    const D1 = formatOracleDate(req.query.fdate);
+    const D2 = formatOracleDate(req.query.tdate);
     const query = `
     SELECT DISTINCT PRESCRIPTION.PRESCRIPTION_DATE,PRESCRIPTION.CREATION_USER,--PRESCRIPTION.CREATION_DATE,
             USERS.USER_DESC,USERS.USER_NAME,NVL(MEDICINE_USED.MEDICINE_NAME_A,PRESCRIPTION_MEDICINE.COMMENTS) MED_NM,PRESCRIPTION_MEDICINE.REQUEST_QUANTITY,PRESCRIPTION.PRESCRIPTION_TYPE,PHARMACY.PHARMACY_NAME
@@ -26,8 +28,8 @@ AND     PRESCRIPTION.PHARMACY_CODE = PHARMACY.PHARMACY_CODE
 AND     PRESCRIPTION.CREATION_USER = USERS.USER_CODE
 --AND     PRESCRIPTION.PRESCRIPTION_TYPE IN (3,7,8)
 AND     PRESCRIPTION.PATIENT_NUM = :PATIENT_IN
-AND     (PRESCRIPTION.PRESCRIPTION_DATE >= ${D1} OR ${D1} IS NULL)
-AND     (PRESCRIPTION.PRESCRIPTION_DATE <= ${D2} OR ${D2} IS NULL)
+AND     (PRESCRIPTION.PRESCRIPTION_DATE >= '${D1}' OR '${D1}' IS NULL)
+AND     (PRESCRIPTION.PRESCRIPTION_DATE <= '${D2}' OR '${D2}' IS NULL)
 ORDER BY PRESCRIPTION.PRESCRIPTION_DATE DESC,PRESCRIPTION.CREATION_USER
     `;
     const result = await runQuery(query);

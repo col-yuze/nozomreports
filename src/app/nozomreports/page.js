@@ -19,7 +19,7 @@ const items = [
   { title: "احصائية القدوم", route: "ehsaeyaqodoom" },
   { title: "محجوزين", route: "mahgozeen" },
   { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" },
-  { title: "test", route: "test" },
+  { title: "مرتبات فترة", route: "moratabtfatra" },
   { title: "test", route: "test" },
   { title: "test", route: "test" },
   { title: "test", route: "test" },
