@@ -1,3 +1,5 @@
+import formatOracleDate from "@/lib/utils";
+
 const {
   connectToDatabase,
   closeDatabaseConnection,
@@ -11,7 +13,7 @@ export default async function handler(req, res) {
     connection = await connectToDatabase();
 
     // Your database queries or operations go here
-    const DATE_IN = req.data.param1;
+    const DATE_IN = formatOracleDate(req.query.datein);
     const query = `
     SELECT  SPECIALISIM.SPECIALISIM_CODE,SPECIALISIM.SPECIALISIM_NAME_A,COUNT(DISTINCT PRESCRIPTION_MEDICINE_MON.PATIENT_NUM) CNT
 FROM PRESCRIPTION_MEDICINE_MON,CLINIC,SPECIALISIM
@@ -22,7 +24,7 @@ AND    EXISTS (SELECT 1
                       FROM    PRESCRIPTION
                       WHERE PRESCRIPTION.PATIENT_NUM = PRESCRIPTION_MEDICINE_MON.PATIENT_NUM
                       AND     PRESCRIPTION.PRESCRIPTION_TYPE IN (3,8)
-                      AND     PRESCRIPTION_DATE >= ${DATE_IN})
+                      AND     PRESCRIPTION_DATE >= '${DATE_IN}')
 GROUP BY SPECIALISIM.SPECIALISIM_CODE,SPECIALISIM.SPECIALISIM_NAME_A
 ORDER BY 1
     `;
