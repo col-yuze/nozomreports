@@ -4,8 +4,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import DropDown from "../components/DropDown";
 import "react-dropdown/style.css";
 import { format } from "date-fns";
+import ReactTooltip from "react-tooltip";
 
-export default function FromTo({ options, setStartDateTwo, setEndDateTwo }) {
+export default function FromTo({
+  setStartDateTwo,
+  setEndDateTwo,
+  selectedOption,
+  setSelectedOption,
+}) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
   // const formattedStartDate = startDate
@@ -24,14 +30,17 @@ export default function FromTo({ options, setStartDateTwo, setEndDateTwo }) {
     <>
       <div
         date-rangepicker
-        class="flex items-center"
+        className="flex items-center"
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
-        <div class="relative" style={{ width: "24%" }}>
-          <DropDown />
+        <div className="relative" style={{ width: "24%" }}>
+          <DropDown
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+          />
         </div>
-        <div class="flex items-center" style={{ justifyContent: "end" }}>
-          <div class="relative">
+        <div className="flex items-center" style={{ justifyContent: "end" }}>
+          <div className="relative">
             <span style={{ display: "inline-block" }}>
               <DatePicker
                 className="text-left border-l-4 border-green-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
@@ -46,13 +55,20 @@ export default function FromTo({ options, setStartDateTwo, setEndDateTwo }) {
                     : "haven't selected an end date";
                   setEndDateTwo(formattedEndDate);
                 }}
+                minDate={startDate}
                 dateFormat="dd/MM/YYYY"
                 isClearable
+                disabled={startDate === null}
+                data-tip={
+                  startDate === null
+                    ? "Please select a start date first"
+                    : "You can't select an end date without a start date"
+                }
               />
             </span>
           </div>
-          <span class="mx-4 text-white text-2xl">إلى</span>
-          <div class="relative">
+          <span className="mx-4 text-white text-2xl">إلى</span>
+          <div className="relative">
             <span style={{ display: "inline-block" }}>
               <DatePicker
                 className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
