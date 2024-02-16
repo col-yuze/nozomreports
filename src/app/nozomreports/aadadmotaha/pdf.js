@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 25; // Adjusted for the first page which includes the title
-const rowsPerPage = 26; // For subsequent pages
+const rowsPerPageTitled = 24; // Adjusted for the first page which includes the title
+const rowsPerPage = 25; // For subsequent pages
 
 const MyDocument = ({ data }) => {
   // Your helper functions and logic remain unchanged
@@ -121,7 +121,8 @@ const MyDocument = ({ data }) => {
                   style={[
                     styles.row,
                     {
-                      backgroundColor: index === 0 ? "#e1e1e1" : "white",
+                      backgroundColor:
+                        index === 0 && pageIndex === 0 ? "#e1e1e1" : "white",
                     },
                   ]}
                   key={index}
@@ -130,7 +131,10 @@ const MyDocument = ({ data }) => {
                     <Text
                       style={[
                         styles.cell,
-                        { fontSize: index === 0 ? "13px" : "9px" },
+                        {
+                          fontSize:
+                            index === 0 && pageIndex === 0 ? "13px" : "9px",
+                        },
                       ]}
                       key={cellIndex}
                     >
@@ -139,9 +143,6 @@ const MyDocument = ({ data }) => {
                   ))}
                 </View>
               ))}
-            </View>
-            <View style={styles.signatureContainer}>
-              {/* Signature or other content */}
             </View>
           </View>
         </Page>
