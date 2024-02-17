@@ -26,8 +26,8 @@ const items = [
     route: "sarfmoratabatten",
   },
   { title: "تخصصات", route: "takhasosat" },
-  { title: "test", route: "test" },
-  { title: "test", route: "test" },
+  { title: "تقرير وافدين دخلي", route: "wafedeendakhly" },
+  { title: "تقرير وافدين عيادات", route: "wafedeeneyadat" },
   { title: "test", route: "test" },
 ];
 
