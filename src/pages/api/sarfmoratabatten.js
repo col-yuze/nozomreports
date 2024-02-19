@@ -1,3 +1,5 @@
+import formatOracleDate from "@/lib/utils";
+
 const {
   connectToDatabase,
   closeDatabaseConnection,
@@ -11,10 +13,10 @@ export default async function handler(req, res) {
     connection = await connectToDatabase();
 
     // Your database queries or operations go here
-    const RANK_IN = req.data.param1;
-    const SPEC_IN = req.data.param2;
-    const CNT_IN = req.data.param3;
-    const DATE_IN = req.data.param4;
+    const RANK_IN = req.query.rank;
+    const SPEC_IN = req.query.spec;
+    const CNT_IN = req.query.count;
+    const DATE_IN = formatOracleDate(req.query.datein);
     const query = `
     SELECT PRESCRIPTION_MEDICINE_MON.PATIENT_NUM,GET_PAT_RANK_NAME_FULL(PRESCRIPTION_MEDICINE_MON.PATIENT_NUM) RANK_NAME,COUNT(*) CNT
 FROM   PRESCRIPTION_MEDICINE_MON,PATIENT,CLINIC
@@ -31,7 +33,7 @@ AND  EXISTS (SELECT 1
                          FROM    PRESCRIPTION
                          WHERE  PRESCRIPTION.PATIENT_NUM = PRESCRIPTION_MEDICINE_MON.PATIENT_NUM
                          AND      PRESCRIPTION_TYPE IN (3,8)
-                         AND      (PRESCRIPTION.PRESCRIPTION_DATE >= ${DATE_IN} OR ${DATE_IN} IS NULL))
+                         AND      (PRESCRIPTION.PRESCRIPTION_DATE >= '${DATE_IN}' OR '${DATE_IN}' IS NULL))
 GROUP BY PRESCRIPTION_MEDICINE_MON.PATIENT_NUM
 ORDER BY 3 DESC,2
     `;

@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     connection = await connectToDatabase();
 
     // Your database queries or operations go here
-    const BU_IN = req.data.param1;
+    const BU_IN = req.query.buildnumber;
     const query = `
     SELECT BUILDING.BUILDING_NUM,BUILDING.BUILDING_NAME,PATIENT.PATIENT_NUM,HOSP.F_GET_PAT_NAME_RANK_FULL( PATIENT.PATIENT_NUM) RANK_FULL_NAME,
             PATIENT_GOING_IN_ROOM.GOING_IN_DATE,PATIENT_GOING_IN_ROOM.GOING_IN_DATE,PATIENT_IN.IN_DATE,PATIENT_GOING_IN_ROOM.ROOM_NUM,ROOM.ROOM_NAME,DEPARTMENT.DEPARTMENT_CODE,DEPARTMENT.DEPARTMENT_NAME

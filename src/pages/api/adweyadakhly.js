@@ -1,3 +1,5 @@
+import formatOracleDate from "@/lib/utils";
+
 const {
   connectToDatabase,
   closeDatabaseConnection,
@@ -11,8 +13,8 @@ export default async function handler(req, res) {
     connection = await connectToDatabase();
 
     // Your database queries or operations go here
-    const DEP_IN = req.data.param1;
-    const DATE_IN = req.data.param2;
+    const DEP_IN = req.query.dept;
+    const DATE_IN = formatOracleDate(req.query.date);
     const query = `
     SELECT PRESCRIPTION.PATIENT_NUM,HOSP.F_GET_PAT_NAME_RANK_FULL(PRESCRIPTION.PATIENT_NUM) PATIENT_NAME,PRESCRIPTION_MEDICINE.MEDICINE_CODE,MEDICINE_USED.MEDICINE_NAME_A,SUM(PRESCRIPTION_MEDICINE.REQUEST_QUANTITY) REQUEST_QUANTITY
 FROM PRESCRIPTION,PRESCRIPTION_MEDICINE,MEDICINE_USED,PATIENT_GOING_IN_ROOM,ROOM
@@ -26,7 +28,7 @@ AND     PATIENT_GOING_IN_ROOM.GOING_OUT_FLAG = 0
 AND     PATIENT_GOING_IN_ROOM.GOING_OUT_DATE IS NULL
 AND     ROOM.DEPARTMENT_CODE = ${DEP_IN}
 AND     PRESCRIPTION.PRESCRIPTION_TYPE = 4
-AND     PRESCRIPTION.PRESCRIPTION_DATE = ${DATE_IN}
+AND     PRESCRIPTION.PRESCRIPTION_DATE = '${DATE_IN}'
 GROUP BY PRESCRIPTION.PATIENT_NUM,PRESCRIPTION_MEDICINE.MEDICINE_CODE,MEDICINE_USED.MEDICINE_NAME_A
     `;
     const result = await runQuery(query);
