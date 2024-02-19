@@ -8,28 +8,32 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import dynamic from "next/dynamic";
+import MyDocument from "./pdf";
+
+const DynamicPDFDownloadLink = dynamic(
+  () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
+  {
+    ssr: false, // Disable server-side rendering for this component
+  }
+);
+const DynamicPDFViewer = dynamic(
+  () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
+  {
+    ssr: false, // Disable server-side rendering for this component
+  }
+);
 
 export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
-  const headers = [
-    "",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "h7",
-    "h8",
-    "h9",
-    "h10",
-  ];
+  const headers = ["h1", "h2", "h3", "h4", "h5"];
   // api fetching
   const fetchDataTable = async () => {
     fetch("/api/aadadmotaha")
       .then((response) => {
         response.json().then((res) => {
-          setRows(res.data);
+          setRows([headers, ...res.data]);
+          console.log(res.data);
         });
       })
       .catch((err) => {
@@ -96,41 +100,44 @@ export default function AadadMotaha() {
               {" "}
             </div>
           ) : (
-            <TableContainer
-              component={Paper}
-              style={{ backgroundColor: "#F0ECE5" }}
-            >
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    {headers.map((header, index) => (
-                      <TableCell align="center" key={index}>
-                        {header}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell scope="row" key={index} />
-                      {row.map((el, index) => {
-                        if (index !== 0) {
-                          return (
-                            <TableCell key={index} align="center">
-                              {el}
-                            </TableCell>
-                          );
-                        }
-                      })}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+              <MyDocument data={rows} />
+            </DynamicPDFViewer>
+            // <TableContainer
+            //   component={Paper}
+            //   style={{ backgroundColor: "#F0ECE5" }}
+            // >
+            //   <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            //     <TableHead>
+            //       <TableRow>
+            //         {headers.map((header, index) => (
+            //           <TableCell align="center" key={index}>
+            //             {header}
+            //           </TableCell>
+            //         ))}
+            //       </TableRow>
+            //     </TableHead>
+            //     <TableBody>
+            //       {rows.map((row, index) => (
+            //         <TableRow
+            //           key={index}
+            //           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            //         >
+            //           <TableCell scope="row" key={index} />
+            //           {row.map((el, index) => {
+            //             if (index !== 0) {
+            //               return (
+            //                 <TableCell key={index} align="center">
+            //                   {el}
+            //                 </TableCell>
+            //               );
+            //             }
+            //           })}
+            //         </TableRow>
+            //       ))}
+            //     </TableBody>
+            //   </Table>
+            // </TableContainer>
           )}
         </div>
         <div style={{ alignSelf: "center" }}>

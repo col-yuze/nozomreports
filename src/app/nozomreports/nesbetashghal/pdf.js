@@ -12,7 +12,7 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
-import NotoNaskh from "./TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
 
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 

@@ -26,6 +26,7 @@ export default function Mahgoozfatra() {
   const totalPages = Math.ceil(rows.length / itemsPerPage);
   const startIndex = currentPage * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, rows.length);
+  const [selectedOption, setSelectedOption] = useState("0-الكل");
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
@@ -77,7 +78,7 @@ export default function Mahgoozfatra() {
           "&EndDate=" +
           formattedEndDate +
           "&Options=" +
-          0
+          selectedOption[0]
       )
         .then((response) => {
           response.json().then((res) => {
@@ -131,6 +132,10 @@ export default function Mahgoozfatra() {
     };
   }, []);
 
+  React.useEffect(() => {
+    console.log(selectedOption, "nader");
+  }, [selectedOption]);
+
   return (
     <div
       style={{
@@ -148,7 +153,12 @@ export default function Mahgoozfatra() {
             تقرير المحجوزين بالمجمع
             <br /> خلال فترة
           </h1>
-          <FromTo setStartDateTwo={setStartDate} setEndDateTwo={setEndDate} />
+          <FromTo
+            setStartDateTwo={setStartDate}
+            setEndDateTwo={setEndDate}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+          />
           <div
             style={{
               alignSelf: "center",

@@ -15,7 +15,6 @@ const DynamicPDFViewer = dynamic(
     ssr: false, // Disable server-side rendering for this component
   }
 );
-// import { PDFDownloadLink,PDFViewer } from '@react-pdf/renderer';
 
 export default function Nesbestashghal() {
   const [rows, setRows] = React.useState([]);
