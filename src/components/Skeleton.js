@@ -11,7 +11,7 @@ Return Data for:
     ehsa2yet qodom √
     ehsa2eyet el moratabat √
     ehsa2eyet el 3eyadat √
-    moratbat fatra 
+    moratbat fatra (bayza)
     marada_not_out √
     mahgozeen √
     ta5sosat √
