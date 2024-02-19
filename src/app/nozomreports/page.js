@@ -7,16 +7,14 @@ import NavBar from "./../../components/NavBar.js";
 
 const items = [
   { title: "نسبة الاشغال", route: "nesbetashghal" },
-  { title: "adweya", route: "adweya" },
+  { title: "ادوية", route: "adweya" },
   { title: "ادوية دخلي", route: "adweyadakhly" },
   { title: "ادوية عيادات", route: "adweyaeyadat" },
   { title: "ادوية رمد", route: "adweyaramad" },
-  { title: "4", route: "4" },
-  { title: "5", route: "5" },
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" },
   { title: "احصائية العيادات", route: "ehsaeyaeyadat" },
   { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" },
-  { title: "احصائية القدوم", route: "ehsaeyaqodoom" },
+  { title: "احصائية القدوم اليومية", route: "ehsaeyaqodoom" },
   { title: "محجوزين", route: "mahgozeen" },
   { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" },
   { title: "مرتبات فترة", route: "moratabtfatra" },
@@ -28,7 +26,7 @@ const items = [
   { title: "تخصصات", route: "takhasosat" },
   { title: "تقرير وافدين دخلي", route: "wafedeendakhly" },
   { title: "تقرير وافدين عيادات", route: "wafedeeneyadat" },
-  { title: "test", route: "test" },
+  { title: "احصائية بالاعداد المتاحة في العيادات", route: "aadadmotaha" },
 ];
 
 const elements = ["Page1", "Page2"];

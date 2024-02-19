@@ -1,9 +1,28 @@
 `
 Return Data for:
-    nesbet ashghal
-    adweya
-    Aadad Motaha
-    mahgoozen fatra
+    nesbet ashghal √
+    adweya √
+    adweya dakhly (fadya)
+    adweya 3eyadat √
+    adweya ramad √
+    ehsa2eya bel a3dad el motaha  √
+    adweya 3eyadat √
+    mahgoozen fatra √
+    ehsa2yet qodom √
+    ehsa2eyet el moratabat √
+    ehsa2eyet el 3eyadat √
+    moratbat fatra 
+    marada_not_out √
+    mahgozeen √
+    ta5sosat √
+    ehsa2yet el adweya el monsarefa (fadya)
+    moratbat (fadya)
+    taqreer wafdeen dakhly (fadya)
+    taqreer wafdeen el 3eyadat √
+
+
+
+
 --------
 2D Array
 [
