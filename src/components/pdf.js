@@ -8,8 +8,7 @@ import {
   Font,
   Image,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
-import logo from "../../../../public/logo.png";
+import NotoNaskh from "../styles/TheYearofTheCamel-ExtraBold.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 

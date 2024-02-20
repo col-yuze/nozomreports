@@ -1,22 +1,8 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "./pdf";
-
-const DynamicPDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
-  {
-    ssr: false, // Disable server-side rendering for this component
-  }
-);
+import MyDocument from "../../../components/pdf";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -103,41 +89,6 @@ export default function AadadMotaha() {
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
               <MyDocument data={rows} />
             </DynamicPDFViewer>
-            // <TableContainer
-            //   component={Paper}
-            //   style={{ backgroundColor: "#F0ECE5" }}
-            // >
-            //   <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            //     <TableHead>
-            //       <TableRow>
-            //         {headers.map((header, index) => (
-            //           <TableCell align="center" key={index}>
-            //             {header}
-            //           </TableCell>
-            //         ))}
-            //       </TableRow>
-            //     </TableHead>
-            //     <TableBody>
-            //       {rows.map((row, index) => (
-            //         <TableRow
-            //           key={index}
-            //           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            //         >
-            //           <TableCell scope="row" key={index} />
-            //           {row.map((el, index) => {
-            //             if (index !== 0) {
-            //               return (
-            //                 <TableCell key={index} align="center">
-            //                   {el}
-            //                 </TableCell>
-            //               );
-            //             }
-            //           })}
-            //         </TableRow>
-            //       ))}
-            //     </TableBody>
-            //   </Table>
-            // </TableContainer>
           )}
         </div>
         <div style={{ alignSelf: "center" }}>
