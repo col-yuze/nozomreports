@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 const rowsPerPageTitled = 24; // Adjusted for the first page which includes the title
 const rowsPerPage = 25; // For subsequent pages
 
-const MyDocument = ({ data }) => {
+const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
 
   // Dynamically split data into pages considering different row limits
@@ -111,7 +111,7 @@ const MyDocument = ({ data }) => {
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>اعداد متاحة</Text>
+                <Text style={styles.title}>{title}</Text>
               </View>
             )}
             <View style={styles.table}>

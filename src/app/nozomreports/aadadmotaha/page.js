@@ -87,7 +87,10 @@ export default function AadadMotaha() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
+              <MyDocument
+                data={rows}
+                title="بيان بالعدد المتاح للحجز بالعيادات الخارجية"
+              />
             </DynamicPDFViewer>
           )}
         </div>
