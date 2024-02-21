@@ -6,13 +6,13 @@ import CustomBox from "./CustomBox.js";
 import NavBar from "./../../components/NavBar.js";
 
 const items = [
-  { title: "نسبة الاشغال", route: "nesbetashghal" },
-  { title: "ادوية", route: "adweya" },
-  { title: "ادوية دخلي", route: "adweyadakhly" },
-  { title: "ادوية عيادات", route: "adweyaeyadat" },
-  { title: "ادوية رمد", route: "adweyaramad" },
-  { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" },
-  { title: "احصائية العيادات", route: "ehsaeyaeyadat" },
+  { title: "نسبة الاشغال", route: "nesbetashghal" }, //done input skeleton
+  { title: "ادوية", route: "adweya" }, //done input skeleton
+  { title: "ادوية داخلي", route: "adweyadakhly" },
+  { title: "ادوية عيادات", route: "adweyaeyadat" }, //done input skeleton
+  { title: "ادوية رمد", route: "adweyaramad" }, //done input skeleton
+  { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" }, //done input skeleton
+  { title: "احصائية العيادات", route: "ehsaeyaeyadat" }, //done input skeleton
   { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" },
   { title: "احصائية القدوم اليومية", route: "ehsaeyaqodoom" },
   { title: "محجوزين", route: "mahgozeen" },
