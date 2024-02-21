@@ -12,7 +12,7 @@ const DynamicPDFViewer = dynamic(
 
 export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
-  const headers = ["h1", "h2", "h3", "h4", "h5"];
+  const headers = ["م", "اسم العيادة", "العدد المتاح"];
   // api fetching
   const fetchDataTable = async () => {
     fetch("/api/aadadmotaha")
