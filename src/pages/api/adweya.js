@@ -6,6 +6,50 @@ const {
   runQuery,
 } = require("../../lib/db");
 
+function countMedicineAtPlaces(medicineArray) {
+  // Create an object to store counts
+  const counts = {};
+  const sums = {};
+
+  // Iterate through the medicine array
+  for (const [medicine, place, quantity] of medicineArray) {
+    // If the place doesn't exist in counts, initialize it
+    if (!counts[place]) {
+      counts[place] = {};
+    }
+    // If the medicine doesn't exist at this place, initialize it
+    if (!counts[place][medicine]) {
+      counts[place][medicine] = 0;
+    }
+    // Increment the count for this medicine at this place
+    counts[place][medicine] += quantity;
+
+    // If the medicine doesn't exist in sums, initialize it
+    if (!sums[medicine]) {
+      sums[medicine] = 0;
+    }
+    // Increment the sum for this medicine
+    sums[medicine] += quantity;
+  }
+
+  // Convert counts object to 2D array
+  const result = [];
+  for (const place in counts) {
+    const medicineCounts = counts[place];
+    for (const medicine in medicineCounts) {
+      result.push([medicine, place, medicineCounts[medicine], sums[medicine]]);
+    }
+  }
+  // sort alphabetically
+  result.sort((a, b) => a[0].localeCompare(b[0]));
+  // remove dupes
+  const uniqueResult = Array.from(new Set(result.map(JSON.stringify))).map(
+    JSON.parse
+  );
+
+  return uniqueResult;
+}
+
 export default async function handler(req, res) {
   let connection;
   // two dates in the format ex: 11-JAN-23
@@ -38,7 +82,10 @@ AND      EXISTS (SELECT 1
                         AND      MORATAB_NXT_DATE BETWEEN '${D1}' AND '${D2}' )
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    const filtered_res_table = result.map((el) => [el[1], el[3], el[4]]);
+    const filtered_res = countMedicineAtPlaces(filtered_res_table);
+    console.log(filtered_res_table);
+    res.status(200).json({ success: true, data: filtered_res });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

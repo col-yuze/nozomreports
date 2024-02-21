@@ -1,11 +1,11 @@
 `
-Return Data for:
-    nesbet ashghal √
-    adweya √
+Return Data for: -  ui   -    results
+    nesbet ashghal - √ - √
+    adweya  - √   -   
     adweya dakhly (fadya)
     adweya 3eyadat √
     adweya ramad √
-    ehsa2eya bel a3dad el motaha  √
+    ehsa2eya bel a3dad el motaha - √ - √
     adweya 3eyadat √
     mahgoozen fatra √
     ehsa2yet qodom √

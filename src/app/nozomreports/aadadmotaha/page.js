@@ -19,7 +19,6 @@ export default function AadadMotaha() {
       .then((response) => {
         response.json().then((res) => {
           setRows([headers, ...res.data]);
-          console.log(res.data);
         });
       })
       .catch((err) => {
