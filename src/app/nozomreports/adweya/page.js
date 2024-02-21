@@ -114,7 +114,7 @@ export default function Adweya() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
+              <MyDocument data={rows} title="الادوية" />
             </DynamicPDFViewer>
           )}
         </div>
