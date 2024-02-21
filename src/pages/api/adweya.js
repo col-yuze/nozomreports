@@ -37,17 +37,17 @@ function countMedicineAtPlaces(medicineArray) {
   for (const p in counts) {
     place_arr.push(p);
   }
-  console.log(place_arr);
   for (const place in counts) {
     const medicineCounts = counts[place];
     for (const medicine in medicineCounts) {
       result.push([
         medicine,
-        // counts[place_arr[0]][medicine],
-        // counts[place_arr[1]][medicine],
-        // counts[place_arr[2]][medicine],
-        // counts[place_arr[3]][medicine],
-        // counts[place_arr[4]][medicine],
+        counts[place_arr[1]][medicine] ?? "",
+        counts[place_arr[2]][medicine] ?? "",
+        counts[place_arr[3]][medicine] ?? "",
+        counts[place_arr[4]][medicine] ?? "",
+        counts[place_arr[5]][medicine] ?? "",
+        counts[place_arr[6]][medicine] ?? "",
         sums[medicine],
       ]);
     }
@@ -59,7 +59,10 @@ function countMedicineAtPlaces(medicineArray) {
     JSON.parse
   );
   place_arr.push("الاجمالي");
-  uniqueResult.unshift(place_arr);
+  const place_arr_mapped = place_arr.map((el) => {
+    return el.includes("?") ? "صيدلية الصدر الخارجية" : el;
+  });
+  uniqueResult.unshift(place_arr_mapped);
   return uniqueResult;
 }
 
