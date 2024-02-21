@@ -20,7 +20,7 @@ export default function Adweya() {
     fetch(`/api/adweya?param1=${startDate}&param2=${endDate}`)
       .then((response) => {
         response.json().then((res) => {
-          setRows([headers, ...res.data]);
+          setRows(res.data);
         });
       })
       .catch((err) => {

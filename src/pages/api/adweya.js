@@ -10,6 +10,7 @@ function countMedicineAtPlaces(medicineArray) {
   // Create an object to store counts
   const counts = {};
   const sums = {};
+  const place_arr = ["الصيدلية / الدواء"];
 
   // Iterate through the medicine array
   for (const [medicine, place, quantity] of medicineArray) {
@@ -31,13 +32,24 @@ function countMedicineAtPlaces(medicineArray) {
     // Increment the sum for this medicine
     sums[medicine] += quantity;
   }
-
   // Convert counts object to 2D array
   const result = [];
+  for (const p in counts) {
+    place_arr.push(p);
+  }
+  console.log(place_arr);
   for (const place in counts) {
     const medicineCounts = counts[place];
     for (const medicine in medicineCounts) {
-      result.push([medicine, place, medicineCounts[medicine], sums[medicine]]);
+      result.push([
+        medicine,
+        // counts[place_arr[0]][medicine],
+        // counts[place_arr[1]][medicine],
+        // counts[place_arr[2]][medicine],
+        // counts[place_arr[3]][medicine],
+        // counts[place_arr[4]][medicine],
+        sums[medicine],
+      ]);
     }
   }
   // sort alphabetically
@@ -46,7 +58,8 @@ function countMedicineAtPlaces(medicineArray) {
   const uniqueResult = Array.from(new Set(result.map(JSON.stringify))).map(
     JSON.parse
   );
-
+  place_arr.push("الاجمالي");
+  uniqueResult.unshift(place_arr);
   return uniqueResult;
 }
 
@@ -84,7 +97,7 @@ AND      EXISTS (SELECT 1
     const result = await runQuery(query);
     const filtered_res_table = result.map((el) => [el[1], el[3], el[4]]);
     const filtered_res = countMedicineAtPlaces(filtered_res_table);
-    console.log(filtered_res_table);
+
     res.status(200).json({ success: true, data: filtered_res });
   } catch (err) {
     console.error("Error in API endpoint:", err);
