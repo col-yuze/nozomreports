@@ -6,6 +6,49 @@ const {
   runQuery,
 } = require("../../lib/db");
 
+function countMedicineForPatients(arr) {
+  // add all meds
+  const meds = [];
+  const counts = {};
+  for (const [id, name, med_code, medicine, quantity] of arr) {
+    meds.push(medicine);
+    // for each id and medicine insert the quantity
+    if (!counts[id]) counts[id] = {};
+
+    // If the medicine doesn't exist at this place, initialize it
+    if (!counts[id][name]) counts[id][name] = name;
+    if (!counts[id][medicine]) counts[id][medicine] = 0;
+
+    // Increment the count for this medicine at this place
+    counts[id][medicine] += quantity;
+  }
+  // remove unique values
+  const unique_meds = meds.filter(
+    (value, index, array) => array.indexOf(value) === index
+  );
+  unique_meds.unshift("رقم حاسب");
+  unique_meds.unshift("الاسم");
+  unique_meds.push("الاجمالي");
+
+  const result = [];
+  for (const id in counts) {
+    const medicineCounts = counts[id];
+    const med_count = [];
+    var sum = 0;
+    for (const med_part in medicineCounts) {
+      med_count.push(medicineCounts[med_part]);
+      if (typeof medicineCounts[med_part] === "number") {
+        sum += medicineCounts[med_part];
+      }
+    }
+    result.push([id, ...med_count, sum]);
+  }
+
+  // append the first row to be headers
+  result.unshift(unique_meds);
+  return result;
+}
+
 export default async function handler(req, res) {
   let connection;
 
@@ -32,7 +75,8 @@ AND     PRESCRIPTION.PRESCRIPTION_DATE = '${DATE_IN}'
 GROUP BY PRESCRIPTION.PATIENT_NUM,PRESCRIPTION_MEDICINE.MEDICINE_CODE,MEDICINE_USED.MEDICINE_NAME_A
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    const filtered_result = countMedicineForPatients(result);
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

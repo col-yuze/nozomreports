@@ -10,7 +10,7 @@ function countMedicineAtPlaces(medicineArray) {
   // Create an object to store counts
   const counts = {};
   const sums = {};
-  const place_arr = ["الصيدلية / الدواء"];
+  const place_arr = ["الدواء"];
 
   // Iterate through the medicine array
   for (const [medicine, place, quantity] of medicineArray) {

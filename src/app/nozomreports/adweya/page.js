@@ -1,7 +1,6 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
 import { useState } from "react";
-import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
 const DynamicPDFViewer = dynamic(
@@ -14,7 +13,6 @@ export default function Adweya() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState("2-2-2024");
   const [endDate, setEndDate] = useState("3-2-2024");
-  const headers = ["الدواء", "الصيدلية", "العدد", "الاجمالي"];
   // api fetching
   const fetchDataTable = async () => {
     fetch(`/api/adweya?param1=${startDate}&param2=${endDate}`)
