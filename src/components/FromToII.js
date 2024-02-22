@@ -29,7 +29,7 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
         <div className="flex items-center" style={{ justifyContent: "end" }}>
-          {two ? (
+          {two === "true" ? (
             <>
               <div className="relative">
                 <span style={{ display: "inline-block" }}>
@@ -47,7 +47,7 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
                     showIcon
                     placeholderText="نــهايــة الـفـتـرة"
                     selected={endDate}
-                    style={{ width: "250%" }}
+                    style={{ width: "250%", ...style }}
                     onChange={(date) => {
                       setEndDate(date);
 
@@ -75,7 +75,9 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
                 className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
                 showIcon
                 data-tooltip-target="tooltip-default"
-                placeholderText={two ? "بــدايــة الـفـتـرة" : "اخـــتــــر"}
+                placeholderText={
+                  two === "true" ? "بــدايــة الـفـتـرة" : "اخـــتــــر"
+                }
                 selected={startDate}
                 onChange={(date) => {
                   setStartDate(date);
