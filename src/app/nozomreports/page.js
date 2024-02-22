@@ -14,10 +14,10 @@ const items = [
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" }, //done input skeleton
   { title: "احصائية العيادات", route: "ehsaeyaeyadat" }, //done input skeleton
   { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" },
-  { title: "احصائية القدوم اليومية", route: "ehsaeyaqodoom" },
-  { title: "محجوزين", route: "mahgozeen" },
-  { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" },
-  { title: "مرتبات فترة", route: "moratabtfatra" },
+  { title: "احصائية القدوم اليومية", route: "ehsaeyaqodoom" }, //done input skeleton
+  { title: "محجوزين", route: "mahgozeen" }, //done input skeleton
+  { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" }, //done input skeleton
+  { title: "مرتبات فترة", route: "moratabtfatra" }, //done input skeleton
   { title: "مرتبات", route: "moratbat" },
   {
     title: "احصائية الادوية المنصرفة بالقسم الداخلي عن يوم",

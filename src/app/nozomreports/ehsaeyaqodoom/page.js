@@ -111,8 +111,6 @@ export default function EhsaeyaQodoom() {
               display: "grid",
               justifyContent: "center",
               alignItems: "center",
-
-              minWidth: "450px",
             }}
           >
             <FromToII
@@ -127,7 +125,6 @@ export default function EhsaeyaQodoom() {
                 color: "#161A30",
                 marginTop: 50,
                 fontWeight: "bold",
-                width: "150%",
               }}
               variant="contained"
             >

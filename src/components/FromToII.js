@@ -47,7 +47,7 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
                     showIcon
                     placeholderText="نــهايــة الـفـتـرة"
                     selected={endDate}
-                    style={{ width: "250%", ...style }}
+                    style={{ width: "250%" }}
                     onChange={(date) => {
                       setEndDate(date);
 
@@ -89,6 +89,7 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
                 }}
                 dateFormat="dd/MM/YYYY"
                 isClearable
+                style={{ width: "550px" }}
               />
             </span>
           </div>
