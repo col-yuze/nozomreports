@@ -18,15 +18,15 @@ const items = [
   { title: "محجوزين", route: "mahgozeen" }, //done input skeleton
   { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" }, //done input skeleton
   { title: "مرتبات فترة", route: "moratabtfatra" }, //done input skeleton
-  { title: "مرتبات", route: "moratbat" },
+  { title: "مرتبات", route: "moratbat" }, //done input skeleton
   {
-    title: "احصائية الادوية المنصرفة بالقسم الداخلي عن يوم",
+    title: "ادوية منصرفة بالقسم الداخلي عن يوم",
     route: "sarfmoratabatten",
   },
-  { title: "تخصصات", route: "takhasosat" },
-  { title: "تقرير وافدين دخلي", route: "wafedeendakhly" },
-  { title: "تقرير وافدين عيادات", route: "wafedeeneyadat" },
-  { title: "احصائية بالاعداد المتاحة في العيادات", route: "aadadmotaha" },
+  { title: "تخصصات", route: "takhasosat" }, //done input skeleton
+  { title: "تقرير وافدين دخلي", route: "wafedeendakhly" }, //done input skeleton
+  { title: "تقرير وافدين عيادات", route: "wafedeeneyadat" }, //done input skeleton
+  { title: "احصائية بالاعداد المتاحة في العيادات", route: "aadadmotaha" }, // no need for input skeleton
 ];
 
 const elements = ["Page1", "Page2"];
