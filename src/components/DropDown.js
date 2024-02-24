@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
-const options = [
+var options = [
   "0-الكل",
   "1-مستشفى الجراحة",
   "2-مستشفى الباطنة",
@@ -17,11 +17,15 @@ const options = [
 
 const defaultOption = "اختـــــــر";
 
-const DropDown = ({ selectedOption, setSelectedOption }) => {
+const DropDown = ({ selectedOption, setSelectedOption, mode }) => {
   const onSelect = (selectedOption) => {
     setSelectedOption(selectedOption.value);
   };
-
+  mode === "2"
+    ? (options = ["asdasd", "dasd"])
+    : mode === "3"
+    ? (options = ["مرتبات", "اكتر ", "من", "10"])
+    : " ";
   return (
     <Dropdown options={options} onChange={onSelect} value={selectedOption} />
   );

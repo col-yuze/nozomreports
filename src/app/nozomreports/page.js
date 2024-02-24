@@ -8,12 +8,12 @@ import NavBar from "./../../components/NavBar.js";
 const items = [
   { title: "نسبة الاشغال", route: "nesbetashghal" }, //done input skeleton
   { title: "ادوية", route: "adweya" }, //done input skeleton
-  { title: "ادوية داخلي", route: "adweyadakhly" },
+  { title: "ادوية داخلي", route: "adweyadakhly" }, //done input skeleton
   { title: "ادوية عيادات", route: "adweyaeyadat" }, //done input skeleton
   { title: "ادوية رمد", route: "adweyaramad" }, //done input skeleton
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" }, //done input skeleton
   { title: "احصائية العيادات", route: "ehsaeyaeyadat" }, //done input skeleton
-  { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" },
+  { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" }, //done input skeleton
   { title: "احصائية القدوم اليومية", route: "ehsaeyaqodoom" }, //done input skeleton
   { title: "محجوزين", route: "mahgozeen" }, //done input skeleton
   { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" }, //done input skeleton

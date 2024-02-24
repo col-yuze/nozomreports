@@ -11,6 +11,7 @@ export default function FromTo({
   setEndDateTwo,
   selectedOption,
   setSelectedOption,
+  mode,
 }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
@@ -37,43 +38,53 @@ export default function FromTo({
           <DropDown
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
+            mode={mode}
           />
         </div>
         <div className="flex items-center" style={{ justifyContent: "end" }}>
-          <div className="relative">
-            <span style={{ display: "inline-block" }}>
-              <DatePicker
-                className="text-left border-l-4 border-green-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
-                showIcon
-                placeholderText="نــهايــة الـفـتـرة"
-                selected={endDate}
-                onChange={(date) => {
-                  setEndDate(date);
+          {mode === "1" ? (
+            <>
+              <div className="relative">
+                <span style={{ display: "inline-block" }}>
+                  <DatePicker
+                    className="text-left border-l-4 border-green-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
+                    showIcon
+                    placeholderText="نــهايــة الـفـتـرة"
+                    selected={endDate}
+                    onChange={(date) => {
+                      setEndDate(date);
 
-                  const formattedEndDate = date
-                    ? format(date, "dd-MM-yyyy")
-                    : "haven't selected an end date";
-                  setEndDateTwo(formattedEndDate);
-                }}
-                minDate={startDate}
-                dateFormat="dd/MM/YYYY"
-                isClearable
-                disabled={startDate === null}
-                data-tip={
-                  startDate === null
-                    ? "Please select a start date first"
-                    : "You can't select an end date without a start date"
-                }
-              />
-            </span>
-          </div>
-          <span className="mx-4 text-white text-2xl">إلى</span>
+                      const formattedEndDate = date
+                        ? format(date, "dd-MM-yyyy")
+                        : "haven't selected an end date";
+                      setEndDateTwo(formattedEndDate);
+                    }}
+                    minDate={startDate}
+                    dateFormat="dd/MM/YYYY"
+                    isClearable
+                    disabled={startDate === null}
+                    data-tip={
+                      startDate === null
+                        ? "Please select a start date first"
+                        : "You can't select an end date without a start date"
+                    }
+                  />
+                </span>
+              </div>
+
+              <span className="mx-4 text-white text-2xl">إلى</span>
+            </>
+          ) : (
+            " "
+          )}
           <div className="relative">
             <span style={{ display: "inline-block" }}>
               <DatePicker
                 className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
                 showIcon
-                placeholderText="بــدايــة الـفـتـرة"
+                placeholderText={
+                  mode === "1" ? "بــدايــة الـفـتـرة" : "اخــتـر"
+                }
                 selected={startDate}
                 onChange={(date) => {
                   setStartDate(date);
