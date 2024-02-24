@@ -1,10 +1,69 @@
-import formatOracleDate from "@/lib/utils";
+`
+counts:{
+  clinic_name:{
+    rank_name1:number,
+    rank_name2:number,
+    ..
+  }
+}
 
+
+`;
+import formatOracleDate from "@/lib/utils";
 const {
   connectToDatabase,
   closeDatabaseConnection,
   runQuery,
 } = require("../../lib/db");
+
+function countMedicineForPatients(arr) {
+  // add all meds
+  const ranks = [];
+  const counts = {};
+  for (const [order, rank_number, rank, clinic, clinic_number] of arr) {
+    ranks.push(rank);
+    // for each id and medicine insert the quantity
+    if (!counts[clinic]) counts[clinic] = {};
+
+    // If the medicine doesn't exist at this place, initialize it
+    if (!counts[clinic][rank]) counts[clinic][rank] = 0;
+
+    // Increment the count for this medicine at this place
+    counts[clinic][rank]++;
+  }
+  // remove unique values
+  const unique_ranks = ranks.filter(
+    (value, index, array) => array.indexOf(value) === index
+  );
+
+  const result = [];
+  for (const clinic in counts) {
+    const clinicCounts = counts[clinic];
+    var sum = 0;
+    const clinic_count = [];
+    for (const rank_part of unique_ranks) {
+      clinic_count.push(clinicCounts[rank_part] ?? "");
+      if (typeof clinicCounts[rank_part] === "number") {
+        sum += clinicCounts[rank_part];
+      }
+    }
+    result.push([clinic, ...clinic_count, sum]);
+  }
+
+  // append the first row to be headers
+  const place_arr_mapped = unique_ranks.map((el) => {
+    return el.includes("?EC?")
+      ? "عائلات ضباط"
+      : el.includes("??CE")
+      ? "عائلات صف"
+      : el;
+  });
+  place_arr_mapped.push("الاجمالي");
+  place_arr_mapped.unshift("التخصص");
+  result.unshift(place_arr_mapped);
+
+  return result;
+}
 
 export default async function handler(req, res) {
   let connection;
@@ -104,7 +163,8 @@ AND     RESERVE_CLINIC.RESERVE_DATE >= '${FD}'
 AND     RESERVE_CLINIC.RESERVE_DATE <= '${TD}'
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    const filtered_result = countMedicineForPatients(result);
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

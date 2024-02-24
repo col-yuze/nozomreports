@@ -19,10 +19,6 @@ Return Data for: -  ui   -    results
     moratbat (fadya)
     taqreer wafdeen dakhly (fadya)
     taqreer wafdeen el 3eyadat √
-
-
-
-
 --------
 2D Array
 [

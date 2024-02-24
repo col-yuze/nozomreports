@@ -1,7 +1,6 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
 import { useState } from "react";
-import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
 const DynamicPDFViewer = dynamic(
@@ -12,37 +11,10 @@ const DynamicPDFViewer = dynamic(
 );
 export default function AdweyaEyadat() {
   const [rows, setRows] = useState([]);
-  const itemsPerPage = 10; // Number of items per page
 
   const [startDate, setStartDate] = useState("2-2-2023");
   const [endDate, setEndDate] = useState("5-2-2023");
-  const [currentPage, setCurrentPage] = useState(0);
 
-  const totalPages = Math.ceil(rows.length / itemsPerPage);
-
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, rows.length);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
-  };
-  const headers = [
-    "",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "h7",
-    "h8",
-    "h9",
-    "h10",
-  ];
   // api fetching
   const fetchDataTable = async () => {
     fetch(`/api/adweyaeyadat?fdate=01-02-2024&tdate=01-02-2024`)
@@ -115,32 +87,9 @@ export default function AdweyaEyadat() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
+              <MyDocument data={rows} title="ادوية عيادات" />
             </DynamicPDFViewer>
           )}
-        </div>
-        <div style={{ alignSelf: "center" }}>
-          <Button
-            style={{
-              backgroundColor: "#F0ECE5",
-              color: "#161A30",
-              marginTop: 100,
-              fontWeight: "bold",
-            }}
-            variant="contained"
-            onClick={handleSaveAsPDF}
-          >
-            Save as PDF
-          </Button>
-          <button onClick={handlePrevPage} disabled={currentPage === 0}>
-            Previous
-          </button>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            Next
-          </button>
         </div>
       </div>
     </div>
