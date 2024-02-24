@@ -16,7 +16,7 @@ function countMedicineForPatients(arr) {
     if (!counts[id]) counts[id] = {};
 
     // If the medicine doesn't exist at this place, initialize it
-    if (!counts[id][name]) counts[id][name] = name;
+    if (!counts[id][name]) counts[id].name = name;
     if (!counts[id][medicine]) counts[id][medicine] = 0;
 
     // Increment the count for this medicine at this place
@@ -26,25 +26,25 @@ function countMedicineForPatients(arr) {
   const unique_meds = meds.filter(
     (value, index, array) => array.indexOf(value) === index
   );
-  unique_meds.unshift("رقم حاسب");
-  unique_meds.unshift("الاسم");
-  unique_meds.push("الاجمالي");
 
   const result = [];
   for (const id in counts) {
     const medicineCounts = counts[id];
     const med_count = [];
     var sum = 0;
-    for (const med_part in medicineCounts) {
-      med_count.push(medicineCounts[med_part]);
+    for (const med_part of unique_meds) {
+      med_count.push(medicineCounts[med_part] ?? "");
       if (typeof medicineCounts[med_part] === "number") {
         sum += medicineCounts[med_part];
       }
     }
-    result.push([id, ...med_count, sum]);
+    result.push([id, counts[id].name, ...med_count, sum]);
   }
 
   // append the first row to be headers
+  unique_meds.unshift("رقم حاسب");
+  unique_meds.unshift("الاسم");
+  unique_meds.push("الاجمالي");
   result.unshift(unique_meds);
   return result;
 }

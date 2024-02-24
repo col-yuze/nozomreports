@@ -1,8 +1,8 @@
 `
 Return Data for: -  ui   -    results
     nesbet ashghal - √ - √
-    adweya  - √   -   
-    adweya dakhly (fadya)
+    adweya  - √   -   √
+    adweya dakhly - √ - √
     adweya 3eyadat √
     adweya ramad √
     ehsa2eya bel a3dad el motaha - √ - √
