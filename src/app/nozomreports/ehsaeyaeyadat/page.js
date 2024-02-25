@@ -16,6 +16,7 @@ export default function EhsaeyaEyadat() {
   const [rows, setRows] = useState([]);
 
   const [startDate, setStartDate] = useState("01-01-2024");
+  const [endDate, setEndDate] = React.useState("01-02-2024");
   // api fetching
   const fetchDataTable = async () => {
     fetch(`/api/ehsaeyaeyadat?datein=${startDate}`)
@@ -53,7 +54,6 @@ export default function EhsaeyaEyadat() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
-
             {" "}
             {`احصائية عددية للعيادات عن ${startDate}`}
           </h1>

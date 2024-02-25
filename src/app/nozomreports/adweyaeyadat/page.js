@@ -15,7 +15,8 @@ const DynamicPDFViewer = dynamic(
 export default function AdweyaEyadat() {
   const [rows, setRows] = useState([]);
 
-  const [startDate, setStartDate] = useState("01-02-2024");
+  const [startDate, setStartDate] = useState("01-01-2024");
+  const [endDate, setEndDate] = React.useState("01-02-2024");
 
   // api fetching
   const fetchDataTable = async () => {
