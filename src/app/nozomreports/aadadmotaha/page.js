@@ -12,39 +12,18 @@ const DynamicPDFViewer = dynamic(
 
 export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
-  const headers = ["h1", "h2", "h3", "h4", "h5"];
+  const headers = ["م", "اسم العيادة", "العدد المتاح"];
   // api fetching
   const fetchDataTable = async () => {
     fetch("/api/aadadmotaha")
       .then((response) => {
         response.json().then((res) => {
           setRows([headers, ...res.data]);
-          console.log(res.data);
         });
       })
       .catch((err) => {
         console.error(err);
       });
-  };
-  const handleSaveAsPDF = async () => {
-    // Dynamically import html2pdf only on the client-side
-    const html2pdf = (await import("html2pdf.js")).default;
-
-    const content = document.getElementById("pdf-container");
-
-    if (!content) {
-      console.error("Could not find PDF container");
-      return;
-    }
-
-    const pdfOptions = {
-      margin: 10,
-      filename: "table.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
-    html2pdf().from(content).set(pdfOptions).save();
   };
 
   React.useEffect(() => {
@@ -93,20 +72,6 @@ export default function AadadMotaha() {
               />
             </DynamicPDFViewer>
           )}
-        </div>
-        <div style={{ alignSelf: "center" }}>
-          <Button
-            style={{
-              backgroundColor: "#F0ECE5",
-              color: "#161A30",
-              marginTop: 100,
-              fontWeight: "bold",
-            }}
-            variant="contained"
-            onClick={handleSaveAsPDF}
-          >
-            Save as PDF
-          </Button>
         </div>
       </div>
     </div>

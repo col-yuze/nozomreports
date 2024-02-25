@@ -1,13 +1,14 @@
 `
-Return Data for:
-    nesbet ashghal √
-    adweya √
-    adweya dakhly (fadya)
-    adweya 3eyadat √
-    adweya ramad √
-    ehsa2eya bel a3dad el motaha  √
-    adweya 3eyadat √
-    mahgoozen fatra √
+Return Data for: -  ui   -    results
+    nesbet ashghal - √ - √
+    adweya  - √   -   √
+    adweya dakhly - √ - √
+    adweya 3eyadat √ - √
+    adweya ramad √ - √
+    ehsa2eya bel a3dad el motaha - √ - √
+    adweya 3eyadat √ - √
+    mahgoozen fatra √ - √
+    
     ehsa2yet qodom √
     ehsa2eyet el moratabat √
     ehsa2eyet el 3eyadat √
@@ -19,10 +20,6 @@ Return Data for:
     moratbat (fadya)
     taqreer wafdeen dakhly (fadya)
     taqreer wafdeen el 3eyadat √
-
-
-
-
 --------
 2D Array
 [

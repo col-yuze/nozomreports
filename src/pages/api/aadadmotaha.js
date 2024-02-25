@@ -25,7 +25,9 @@ AND       V_CLINIC_NAME.CLINIC_CODE NOT IN (20029110001,20029130001,20029140001,
 ORDER BY SPECIALISIM.M_SPEC_CODE,CLINIC.SPECIALISIM_CODE,CLINIC.TR_P_NUM DESC
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    // filter out 1,2,3 columns and add index
+    const filtered_res = result.map((el, i) => [i + 1, el[3], el[4]]);
+    res.status(200).json({ success: true, data: filtered_res });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
