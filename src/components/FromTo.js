@@ -11,6 +11,10 @@ export default function FromTo({
   setEndDateTwo,
   selectedOption,
   setSelectedOption,
+  selectedOptionII,
+  setSelectedOptionII,
+  selectedOptionIII,
+  setSelectedOptionIII,
   mode,
 }) {
   const [startDate, setStartDate] = React.useState(null);
@@ -74,8 +78,24 @@ export default function FromTo({
 
               <span className="mx-4 text-white text-2xl">إلى</span>
             </>
+          ) : mode === "4" ? (
+            <>
+              <br />
+              <DropDown
+                selectedOption={selectedOptionII}
+                setSelectedOption={setSelectedOptionII}
+                mode="5"
+                placeholderText="اختر الــقــسم"
+              />
+              <DropDown
+                selectedOption={selectedOptionIII}
+                setSelectedOption={setSelectedOptionIII}
+                placeholderText="اختر الرتبة"
+                mode="6"
+              />
+            </>
           ) : (
-            " "
+            ""
           )}
           <div className="relative">
             <span style={{ display: "inline-block" }}>

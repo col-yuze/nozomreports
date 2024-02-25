@@ -115,7 +115,7 @@ export default function AdweyaEyadat() {
             <FromToII
               setStartDateTwo={setStartDate}
               setEndDateTwo={setEndDate}
-              two="true"
+              two="1"
             />
             <br />
             <Button
