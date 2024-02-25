@@ -1,15 +1,17 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
 import { useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import dynamic from "next/dynamic";
+import MyDocument from "../../../components/pdf";
+import FromTo from "../../../components/FromTo";
 
+const DynamicPDFViewer = dynamic(
+  () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
+  {
+    ssr: false, // Disable server-side rendering for this component
+  }
+);
 export default function Mahgozeen() {
   const [rows, setRows] = useState([]);
   const itemsPerPage = 10; // Number of items per page
@@ -18,6 +20,9 @@ export default function Mahgozeen() {
   const [endDate, setEndDate] = useState("5-2-2023");
   const [currentPage, setCurrentPage] = useState(0);
 
+  const [selectedOption, setSelectedOption] = useState("0-الكل");
+  const [selectedOptionII, setSelectedOptionII] = useState("");
+  const [selectedOptionIII, setSelectedOptionIII] = useState("");
   const totalPages = Math.ceil(rows.length / itemsPerPage);
 
   const startIndex = currentPage * itemsPerPage;
@@ -102,6 +107,37 @@ export default function Mahgozeen() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية عيادات</h1>
+          <div
+            style={{
+              display: "grid",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FromTo
+              setStartDateTwo={setStartDate}
+              setEndDateTwo={setEndDate}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              selectedOptionII={selectedOptionII}
+              setSelectedOptionII={setSelectedOptionII}
+              selectedOptionIII={selectedOptionIII}
+              setSelectedOptionIII={setSelectedOptionIII}
+              mode="4"
+            />
+            <br />
+            <Button
+              style={{
+                backgroundColor: "#F0ECE5",
+                color: "#161A30",
+                marginTop: 50,
+                fontWeight: "bold",
+              }}
+              variant="contained"
+            >
+              اظهر البيانات
+            </Button>
+          </div>
           {rows.length <= 0 ? (
             <div
               style={{
@@ -114,33 +150,9 @@ export default function Mahgozeen() {
               {" "}
             </div>
           ) : (
-            <TableContainer
-              component={Paper}
-              style={{ backgroundColor: "#F0ECE5" }}
-            >
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    {headers.map((header, index) => (
-                      <TableCell align="center" key={index}>
-                        {header}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.slice(startIndex, endIndex).map((row, rowIndex) => (
-                    <TableRow key={rowIndex}>
-                      {row.map((el, cellIndex) => (
-                        <TableCell key={cellIndex} align="center">
-                          {cellIndex !== 0 ? el : null}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+              <MyDocument data={rows} />
+            </DynamicPDFViewer>
           )}
         </div>
         <div style={{ alignSelf: "center" }}>

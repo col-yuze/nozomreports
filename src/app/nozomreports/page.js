@@ -6,27 +6,27 @@ import CustomBox from "./CustomBox.js";
 import NavBar from "./../../components/NavBar.js";
 
 const items = [
-  { title: "نسبة الاشغال", route: "nesbetashghal" },
-  { title: "ادوية", route: "adweya" },
-  { title: "ادوية دخلي", route: "adweyadakhly" },
-  { title: "ادوية عيادات", route: "adweyaeyadat" },
-  { title: "ادوية رمد", route: "adweyaramad" },
-  { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" },
-  { title: "احصائية العيادات", route: "ehsaeyaeyadat" },
-  { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" },
-  { title: "احصائية القدوم اليومية", route: "ehsaeyaqodoom" },
-  { title: "محجوزين", route: "mahgozeen" },
-  { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" },
-  { title: "مرتبات فترة", route: "moratabtfatra" },
-  { title: "مرتبات", route: "moratbat" },
+  { title: "نسبة الاشغال", route: "nesbetashghal" }, //done input skeleton
+  { title: "ادوية", route: "adweya" }, //done input skeleton
+  { title: "ادوية داخلي", route: "adweyadakhly" }, //done input skeleton
+  { title: "ادوية عيادات", route: "adweyaeyadat" }, //done input skeleton
+  { title: "ادوية رمد", route: "adweyaramad" }, //done input skeleton
+  { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" }, //done input skeleton
+  { title: "احصائية العيادات", route: "ehsaeyaeyadat" }, //done input skeleton
+  { title: "احصائية المرتبات", route: "ehsaeyamoratabatten" }, //done input skeleton
+  { title: "احصائية القدوم اليومية", route: "ehsaeyaqodoom" }, //done input skeleton
+  { title: "محجوزين", route: "mahgozeen" }, //done input skeleton
+  { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" }, //done input skeleton
+  { title: "مرتبات فترة", route: "moratabtfatra" }, //done input skeleton
+  { title: "مرتبات", route: "moratbat" }, //done input skeleton
   {
-    title: "احصائية الادوية المنصرفة بالقسم الداخلي عن يوم",
+    title: "ادوية منصرفة بالقسم الداخلي عن يوم",
     route: "sarfmoratabatten",
   },
-  { title: "تخصصات", route: "takhasosat" },
-  { title: "تقرير وافدين دخلي", route: "wafedeendakhly" },
-  { title: "تقرير وافدين عيادات", route: "wafedeeneyadat" },
-  { title: "احصائية بالاعداد المتاحة في العيادات", route: "aadadmotaha" },
+  { title: "تخصصات", route: "takhasosat" }, //done input skeleton
+  { title: "تقرير وافدين دخلي", route: "wafedeendakhly" }, //done input skeleton
+  { title: "تقرير وافدين عيادات", route: "wafedeeneyadat" }, //done input skeleton
+  { title: "احصائية بالاعداد المتاحة في العيادات", route: "aadadmotaha" }, // no need for input skeleton
 ];
 
 const elements = ["Page1", "Page2"];

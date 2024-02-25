@@ -9,14 +9,23 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-
+import dynamic from "next/dynamic";
+import MyDocument from "../../../components/pdf";
+import FromTo from "../../../components/FromTo";
+const DynamicPDFViewer = dynamic(
+  () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
+  {
+    ssr: false, // Disable server-side rendering for this component
+  }
+);
 export default function AdweyaDakhly() {
   const [rows, setRows] = useState([]);
   const itemsPerPage = 10; // Number of items per page
-
-  const [startDate, setStartDate] = useState("2-2-2023");
-  const [endDate, setEndDate] = useState("5-2-2023");
+  const [show, setShow] = React.useState(false);
+  const [startDate, setStartDate] = React.useState(null);
+  const [endDate, setEndDate] = React.useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedOption, setSelectedOption] = useState("0");
 
   const totalPages = Math.ceil(rows.length / itemsPerPage);
 
@@ -44,18 +53,51 @@ export default function AdweyaDakhly() {
     "h10",
   ];
   // api fetching
+  function formatDate(date) {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+    return formattedDay + "-" + formattedMonth + "-" + year;
+  }
   const fetchDataTable = async () => {
-    fetch(`/api/adweyadakhly?dept=1&date=05-01-2024`)
-      .then((response) => {
-        response.json().then((res) => {
-          setRows(res.data);
-          console.log(res.data);
+    if (startDate && endDate) {
+      const _startDate = new Date(
+        startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+      );
+      const _endDate = new Date(
+        endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+      );
+      const formattedStartDate = formatDate(_startDate);
+      const formattedEndDate = formatDate(_endDate);
+      fetch(
+        "/api/mahgoozfatra?StartDate=" +
+          formattedStartDate +
+          "&EndDate=" +
+          formattedEndDate +
+          "&Options=" +
+          selectedOption[0]
+      )
+        .then((response) => {
+          response.json().then((res) => {
+            setRows(res.data);
+            console.log(res.data);
+          });
+        })
+        .catch((err) => {
+          console.error(err);
         });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    } else {
+      console.log("nader and filo");
+    }
   };
+
+  const toggleVisibility = () => {
+    setShow(!show);
+    fetchDataTable();
+  };
+
   const handleSaveAsPDF = async () => {
     // Dynamically import html2pdf only on the client-side
     const html2pdf = (await import("html2pdf.js")).default;
@@ -102,6 +144,33 @@ export default function AdweyaDakhly() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>نسبة الاشغال</h1>
+          <div
+            style={{
+              display: "grid",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FromTo
+              setStartDateTwo={setStartDate}
+              setEndDateTwo={setEndDate}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              mode="2"
+            />
+            <br />
+            <Button
+              style={{
+                backgroundColor: "#F0ECE5",
+                color: "#161A30",
+                marginTop: 50,
+                fontWeight: "bold",
+              }}
+              variant="contained"
+            >
+              اظهر البيانات
+            </Button>
+          </div>
           {rows.length <= 0 ? (
             <div
               style={{
@@ -114,33 +183,9 @@ export default function AdweyaDakhly() {
               {" "}
             </div>
           ) : (
-            <TableContainer
-              component={Paper}
-              style={{ backgroundColor: "#F0ECE5" }}
-            >
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    {headers.map((header, index) => (
-                      <TableCell align="center" key={index}>
-                        {header}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.slice(startIndex, endIndex).map((row, rowIndex) => (
-                    <TableRow key={rowIndex}>
-                      {row.map((el, cellIndex) => (
-                        <TableCell key={cellIndex} align="center">
-                          {cellIndex !== 0 ? el : null}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+              <MyDocument data={rows} />
+            </DynamicPDFViewer>
           )}
         </div>
         <div style={{ alignSelf: "center" }}>
