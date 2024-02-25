@@ -108,6 +108,7 @@ export default function Mahgoozfatra() {
             setEndDateTwo={setEndDate}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
+            mode="1"
           />
           <div
             style={{

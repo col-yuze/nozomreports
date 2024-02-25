@@ -4,6 +4,8 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
+
+import FromToII from "../../../components/FromToII";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -51,9 +53,37 @@ export default function EhsaeyaEyadat() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+
             {" "}
             {`احصائية عددية للعيادات عن ${startDate}`}
           </h1>
+
+          <div
+            style={{
+              display: "grid",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FromToII
+              setStartDateTwo={setStartDate}
+              setEndDateTwo={setEndDate}
+              two="true"
+            />
+            <br />
+            <Button
+              style={{
+                backgroundColor: "#F0ECE5",
+                color: "#161A30",
+                marginTop: 50,
+                fontWeight: "bold",
+                width: "100%",
+              }}
+              variant="contained"
+            >
+              اظهر البيانات
+            </Button>
+          </div>
           {rows.length <= 0 ? (
             <div
               style={{

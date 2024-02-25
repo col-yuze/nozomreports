@@ -4,6 +4,8 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
+
+import FromTo from "../../../components/FromTo";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -17,7 +19,7 @@ export default function EhsaeyaMoratabatten() {
   const [startDate, setStartDate] = useState("2-2-2023");
   const [endDate, setEndDate] = useState("5-2-2023");
   const [currentPage, setCurrentPage] = useState(0);
-
+  const [selectedOption, setSelectedOption] = useState("0");
   const totalPages = Math.ceil(rows.length / itemsPerPage);
 
   const startIndex = currentPage * itemsPerPage;
@@ -101,7 +103,37 @@ export default function EhsaeyaMoratabatten() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية رمد</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            {" "}
+            احصائية اكثر من 10
+          </h1>
+          <div
+            style={{
+              display: "grid",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FromTo
+              setStartDateTwo={setStartDate}
+              setEndDateTwo={setEndDate}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              mode="3"
+            />
+            <br />
+            <Button
+              style={{
+                backgroundColor: "#F0ECE5",
+                color: "#161A30",
+                marginTop: 50,
+                fontWeight: "bold",
+              }}
+              variant="contained"
+            >
+              اظهر البيانات
+            </Button>
+          </div>
           {rows.length <= 0 ? (
             <div
               style={{

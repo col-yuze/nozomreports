@@ -6,17 +6,7 @@ import "react-dropdown/style.css";
 import { format } from "date-fns";
 import ReactTooltip from "react-tooltip";
 
-export default function FromTo({
-  setStartDateTwo,
-  setEndDateTwo,
-  selectedOption,
-  setSelectedOption,
-  selectedOptionII,
-  setSelectedOptionII,
-  selectedOptionIII,
-  setSelectedOptionIII,
-  mode,
-}) {
+export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
   // const formattedStartDate = startDate
@@ -38,23 +28,26 @@ export default function FromTo({
         className="flex items-center"
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
-        <div className="relative" style={{ width: "24%" }}>
-          <DropDown
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
-            mode={mode}
-          />
-        </div>
         <div className="flex items-center" style={{ justifyContent: "end" }}>
-          {mode === "1" ? (
+          {two === "true" ? (
             <>
               <div className="relative">
                 <span style={{ display: "inline-block" }}>
+                  <div
+                    id="tooltip-default"
+                    role="tooltip"
+                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                  >
+                    Tooltip content
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                  </div>
+
                   <DatePicker
                     className="text-left border-l-4 border-green-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
                     showIcon
                     placeholderText="نــهايــة الـفـتـرة"
                     selected={endDate}
+                    style={{ width: "250%" }}
                     onChange={(date) => {
                       setEndDate(date);
 
@@ -67,43 +60,23 @@ export default function FromTo({
                     dateFormat="dd/MM/YYYY"
                     isClearable
                     disabled={startDate === null}
-                    data-tip={
-                      startDate === null
-                        ? "Please select a start date first"
-                        : "You can't select an end date without a start date"
-                    }
+                    data-tooltip-target="tooltip-default"
                   />
                 </span>
               </div>
-
               <span className="mx-4 text-white text-2xl">إلى</span>
             </>
-          ) : mode === "4" ? (
-            <>
-              <br />
-              <DropDown
-                selectedOption={selectedOptionII}
-                setSelectedOption={setSelectedOptionII}
-                mode="5"
-                placeholderText="اختر الــقــسم"
-              />
-              <DropDown
-                selectedOption={selectedOptionIII}
-                setSelectedOption={setSelectedOptionIII}
-                placeholderText="اختر الرتبة"
-                mode="6"
-              />
-            </>
           ) : (
-            ""
+            " "
           )}
           <div className="relative">
             <span style={{ display: "inline-block" }}>
               <DatePicker
                 className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
                 showIcon
+                data-tooltip-target="tooltip-default"
                 placeholderText={
-                  mode === "1" ? "بــدايــة الـفـتـرة" : "اخــتـر"
+                  two === "true" ? "بــدايــة الـفـتـرة" : "اخـــتــــر"
                 }
                 selected={startDate}
                 onChange={(date) => {
@@ -116,6 +89,7 @@ export default function FromTo({
                 }}
                 dateFormat="dd/MM/YYYY"
                 isClearable
+                style={{ width: "550px" }}
               />
             </span>
           </div>

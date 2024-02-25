@@ -4,6 +4,8 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
+import FromTo from "../../../components/FromTo";
+
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -18,6 +20,9 @@ export default function Mahgozeen() {
   const [endDate, setEndDate] = useState("5-2-2023");
   const [currentPage, setCurrentPage] = useState(0);
 
+  const [selectedOption, setSelectedOption] = useState("0-الكل");
+  const [selectedOptionII, setSelectedOptionII] = useState("");
+  const [selectedOptionIII, setSelectedOptionIII] = useState("");
   const totalPages = Math.ceil(rows.length / itemsPerPage);
 
   const startIndex = currentPage * itemsPerPage;
@@ -102,6 +107,37 @@ export default function Mahgozeen() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية عيادات</h1>
+          <div
+            style={{
+              display: "grid",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FromTo
+              setStartDateTwo={setStartDate}
+              setEndDateTwo={setEndDate}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              selectedOptionII={selectedOptionII}
+              setSelectedOptionII={setSelectedOptionII}
+              selectedOptionIII={selectedOptionIII}
+              setSelectedOptionIII={setSelectedOptionIII}
+              mode="4"
+            />
+            <br />
+            <Button
+              style={{
+                backgroundColor: "#F0ECE5",
+                color: "#161A30",
+                marginTop: 50,
+                fontWeight: "bold",
+              }}
+              variant="contained"
+            >
+              اظهر البيانات
+            </Button>
+          </div>
           {rows.length <= 0 ? (
             <div
               style={{
