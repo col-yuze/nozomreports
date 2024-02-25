@@ -7,8 +7,8 @@ Return Data for: -  ui   -    results
     adweya ramad √ - √
     ehsa2eya bel a3dad el motaha - √ - √
     adweya 3eyadat √ - √
+    mahgoozen fatra √ - √
     
-    mahgoozen fatra √
     ehsa2yet qodom √
     ehsa2eyet el moratabat √
     ehsa2eyet el 3eyadat √
