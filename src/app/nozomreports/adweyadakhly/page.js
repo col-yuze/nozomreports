@@ -4,6 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
 import FromTo from "../../../components/FromTo";
+import { Button } from "@mui/material";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -19,7 +20,6 @@ export default function AdweyaDakhly() {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedOption, setSelectedOption] = useState("0");
 
-
   // api fetching
   function formatDate(date) {
     const day = date.getDate();
@@ -30,7 +30,6 @@ export default function AdweyaDakhly() {
     return formattedDay + "-" + formattedMonth + "-" + year;
   }
   const fetchDataTable = async () => {
-
     if (startDate && endDate) {
       const _startDate = new Date(
         startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
@@ -40,9 +39,7 @@ export default function AdweyaDakhly() {
       );
       const formattedStartDate = formatDate(_startDate);
       const formattedEndDate = formatDate(_endDate);
-      fetch(
-        `/api/adweyadakhly?dept=200540&date=18-02-2024`
-      )
+      fetch(`/api/adweyadakhly?dept=200540&date=18-02-2024`)
         .then((response) => {
           response.json().then((res) => {
             setRows(res.data);
@@ -56,7 +53,6 @@ export default function AdweyaDakhly() {
       console.log("nader and filo");
     }
   };
-
 
   const toggleVisibility = () => {
     setShow(!show);

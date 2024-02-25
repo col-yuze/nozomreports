@@ -3,6 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
+import { Button } from "@mui/material";
 
 import FromToII from "../../../components/FromToII";
 const DynamicPDFViewer = dynamic(
@@ -52,7 +53,6 @@ export default function AdweyaRamad() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-
           <h1
             style={{ marginBottom: 20, color: "#F0ECE5" }}
           >{`احصائية عددية لعيادات الرمد للفترة من ${startDate} الي ${endDate}`}</h1>
