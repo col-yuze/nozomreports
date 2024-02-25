@@ -13,43 +13,15 @@ const DynamicPDFViewer = dynamic(
   }
 );
 export default function Mahgoozfatra() {
-  const [rows, setRows] = React.useState([
-    [1, 2, 3, 4, 5, 5],
-    [1, 2, 3, 4, , 7, 5],
-  ]);
+  const [rows, setRows] = React.useState([]);
   const [show, setShow] = React.useState(false);
   // prettier-ignore
   const [startDate, setStartDate] = React.useState(null);
-  const itemsPerPage = 10; // Number of items per page
-  const [currentPage, setCurrentPage] = useState(0);
-  const totalPages = Math.ceil(rows.length / itemsPerPage);
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, rows.length);
+
   const [selectedOption, setSelectedOption] = useState("0-الكل");
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
-  };
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
 
-  const headers = [
-    "",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "h7",
-    "h8",
-    "h9",
-    "h10",
-  ];
   function formatDate(date) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -89,34 +61,13 @@ export default function Mahgoozfatra() {
           console.error(err);
         });
     } else {
-      console.log("nader and filo");
+      console.log("shit");
     }
   };
 
   const toggleVisibility = () => {
     setShow(!show);
     fetchDataTable();
-  };
-
-  const handleSaveAsPDF = async () => {
-    // Dynamically import html2pdf only on the client-side
-    const html2pdf = (await import("html2pdf.js")).default;
-
-    const content = document.getElementById("pdf-container");
-
-    if (!content) {
-      console.error("Could not find PDF container");
-      return;
-    }
-
-    const pdfOptions = {
-      margin: 10,
-      filename: "table.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
-    html2pdf().from(content).set(pdfOptions).save();
   };
 
   React.useEffect(() => {
@@ -184,45 +135,18 @@ export default function Mahgoozfatra() {
           <br></br>
           <br></br>
 
-          {rows && rows?.length <= 0 ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: 500,
-              }}
-            >
-              {" "}
-            </div>
-          ) : (
+          {rows.length > 0 ? (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
+              <MyDocument
+                data={rows}
+                title={
+                  "بيان بالمحجوزين حاليا داخل المجمع الطبي ق.م بكوبري القبة"
+                }
+              />
             </DynamicPDFViewer>
+          ) : (
+            <div style={{ height: 500 }}></div>
           )}
-        </div>
-        <div style={{ alignSelf: "center" }}>
-          <Button
-            style={{
-              backgroundColor: "#F0ECE5",
-              color: "#161A30",
-              marginTop: 100,
-              fontWeight: "bold",
-            }}
-            variant="contained"
-            onClick={handleSaveAsPDF}
-          >
-            Save as PDF
-          </Button>
-          <Button onClick={handlePrevPage} disabled={currentPage === 0}>
-            Previous
-          </Button>
-          <Button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            Next
-          </Button>
         </div>
       </div>
     </div>

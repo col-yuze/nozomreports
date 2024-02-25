@@ -42,8 +42,8 @@ function countMedicineForPatients(arr) {
   }
 
   // append the first row to be headers
-  unique_meds.unshift("رقم حاسب");
   unique_meds.unshift("الاسم");
+  unique_meds.unshift("رقم حاسب");
   unique_meds.push("الاجمالي");
   result.unshift(unique_meds);
   return result;

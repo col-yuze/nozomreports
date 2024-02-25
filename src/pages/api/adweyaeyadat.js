@@ -6,6 +6,55 @@ const {
   runQuery,
 } = require("../../lib/db");
 
+function countMedicineForPatients(arr) {
+  // add all meds
+  const ranks = [];
+  const counts = {};
+  for (const [order, rank, rank_number, clinic, clinic_number] of arr) {
+    ranks.push(rank);
+    // for each id and medicine insert the quantity
+    if (!counts[clinic]) counts[clinic] = {};
+
+    // If the medicine doesn't exist at this place, initialize it
+    if (!counts[clinic][rank]) counts[clinic][rank] = 0;
+
+    // Increment the count for this medicine at this place
+    counts[clinic][rank]++;
+  }
+  // remove unique values
+  const unique_ranks = ranks.filter(
+    (value, index, array) => array.indexOf(value) === index
+  );
+
+  const result = [];
+  for (const clinic in counts) {
+    const clinicCounts = counts[clinic];
+    var sum = 0;
+    const clinic_count = [];
+    for (const rank_part of unique_ranks) {
+      clinic_count.push(clinicCounts[rank_part] ?? "");
+      if (typeof clinicCounts[rank_part] === "number") {
+        sum += clinicCounts[rank_part];
+      }
+    }
+    result.push([clinic, ...clinic_count, sum]);
+  }
+
+  // append the first row to be headers
+  const place_arr_mapped = unique_ranks.map((el) => {
+    return el.includes("?EC?")
+      ? "عائلات ضباط"
+      : el.includes("??CE")
+      ? "عائلات صف"
+      : el;
+  });
+  place_arr_mapped.push("الاجمالي");
+  place_arr_mapped.unshift("التخصص");
+  result.unshift(place_arr_mapped);
+
+  return result;
+}
+
 export default async function handler(req, res) {
   let connection;
 
@@ -14,7 +63,6 @@ export default async function handler(req, res) {
 
     // Your database queries or operations go here
     const FD = formatOracleDate(req.query.fdate);
-    const TD = formatOracleDate(req.query.tdate);
     const query = `
     SELECT RANK_CLASS.RANK_CLASS,RANK_CLASS.RANK_CLASS_NAME,V_CLINIC_NAME.CLINIC_CODE,V_CLINIC_NAME.CLINIC_OUT_NAME CLINIC_NAME_A,RESERVE_CLINIC.PATIENT_NUM
       FROM   RESERVE_CLINIC,V_CLINIC_NAME,PATIENT P1,RANK_CLASS
@@ -24,7 +72,7 @@ export default async function handler(req, res) {
       AND     RESERVE_CLINIC.CLINIC_CODE = V_CLINIC_NAME.CLINIC_CODE
       AND     RANK_CLASS.RANK_CLASS < 99
       AND     RESERVE_CLINIC.RESERVE_DATE >= '${FD}'
-      AND     RESERVE_CLINIC.RESERVE_DATE <= '${TD}'
+      AND     RESERVE_CLINIC.RESERVE_DATE <= '${FD}'
       UNION ALL
       SELECT 25 RANK_CLASS,'ÚÇÆáÇÊ ÖÈÇØ' RANK_CLASS_NAME,V_CLINIC_NAME.CLINIC_CODE,V_CLINIC_NAME.CLINIC_OUT_NAME CLINIC_NAME_A,RESERVE_CLINIC.PATIENT_NUM
       FROM   RESERVE_CLINIC,V_CLINIC_NAME,PATIENT P1,RANK_CLASS,PATIENT P2
@@ -35,7 +83,7 @@ export default async function handler(req, res) {
       AND     RANK_CLASS.RANK_CLASS < 99
       AND     P2.RANK IN (1,2,3,4,5,6,7,8,9,10,11)
       AND     RESERVE_CLINIC.RESERVE_DATE >= '${FD}'
-      AND     RESERVE_CLINIC.RESERVE_DATE <= '${TD}'
+      AND     RESERVE_CLINIC.RESERVE_DATE <= '${FD}'
       UNION ALL
       SELECT 26 RANK_CLASS,'ÚÇÆáÇÊ ÕÝ' RANK_CLASS_NAME,V_CLINIC_NAME.CLINIC_CODE,V_CLINIC_NAME.CLINIC_OUT_NAME CLINIC_NAME_A,RESERVE_CLINIC.PATIENT_NUM
       FROM   RESERVE_CLINIC,V_CLINIC_NAME,PATIENT P1,RANK_CLASS,PATIENT P2
@@ -46,10 +94,11 @@ export default async function handler(req, res) {
       AND     RANK_CLASS.RANK_CLASS < 99
       AND     P2.RANK IN (12,13,14,15,16,17,18,19,23)
       AND     RESERVE_CLINIC.RESERVE_DATE >= '${FD}'
-      AND     RESERVE_CLINIC.RESERVE_DATE <= '${TD}'
+      AND     RESERVE_CLINIC.RESERVE_DATE <= '${FD}'
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    const filtered_result = countMedicineForPatients(result);
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

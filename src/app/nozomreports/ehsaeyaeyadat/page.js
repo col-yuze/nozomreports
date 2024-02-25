@@ -122,7 +122,7 @@ export default function EhsaeyaEyadat() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
+              <MyDocument data={rows} title={`إحصائية العيادات اليومية`} />
             </DynamicPDFViewer>
           )}
         </div>
