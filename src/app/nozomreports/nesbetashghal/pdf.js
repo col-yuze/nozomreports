@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     padding: 5,
     flex: 1,
     fontSize: 9,
+    justifyContent: "center",
   },
   headerCell1: {
     width: "100%",
@@ -221,6 +222,14 @@ const MyDocument = ({ data }) => {
                 colIndex !== 18
                   ? "1px solid black"
                   : "",
+              paddingTop:
+                (rowIndex === 2 && colIndex !== 0) ||
+                (rowIndex === 3 && colIndex !== 0) ||
+                (rowIndex === 4 && colIndex !== 0) ||
+                (rowIndex === 6 && colIndex !== 0) ||
+                (rowIndex === 7 && colIndex !== 0)
+                  ? "11px"
+                  : "auto",
               flex:
                 colIndex === 0
                   ? "2.869"
@@ -481,7 +490,12 @@ const MyDocument = ({ data }) => {
         <Text
           style={[
             styles.cell,
-            { borderBottom: "1px solid black", backgroundColor: "#e1e1e1" },
+            {
+              borderBottom: "1px solid black",
+              backgroundColor: "#e1e1e1",
+              justifyContent: "center",
+              alignItems: "center",
+            },
           ]}
         >
           إقامة
@@ -660,7 +674,7 @@ const MyDocument = ({ data }) => {
     },
     {
       name: "مدير المجمع الطبي ق.م بك القبة",
-      signature: "لواء ط/ علاء الدين فتحي غيتة",
+      signature: "لواء ط/ علاء الدين فتحي غيته",
     },
   ];
 
