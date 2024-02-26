@@ -3,6 +3,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
+import { CircularProgress } from "@mui/material";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -12,9 +13,12 @@ const DynamicPDFViewer = dynamic(
 
 export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
+
+  const [loading, setLoading] = React.useState(false);
   const headers = ["م", "اسم العيادة", "العدد المتاح"];
   // api fetching
   const fetchDataTable = async () => {
+    setLoading(true);
     fetch("/api/aadadmotaha")
       .then((response) => {
         response.json().then((res) => {
@@ -23,6 +27,9 @@ export default function AadadMotaha() {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -62,7 +69,7 @@ export default function AadadMotaha() {
                 minHeight: 500,
               }}
             >
-              {" "}
+              {loading ? <CircularProgress /> : null}
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">

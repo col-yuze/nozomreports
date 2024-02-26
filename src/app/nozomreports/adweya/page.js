@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import FromToII from "../../../components/FromToII";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
@@ -13,10 +13,12 @@ const DynamicPDFViewer = dynamic(
 );
 export default function Adweya() {
   const [rows, setRows] = useState([]);
-  const [startDate, setStartDate] = useState("2-2-2024");
-  const [endDate, setEndDate] = useState("3-2-2024");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [loading, setLoading] = useState(false);
   // api fetching
   const fetchDataTable = async () => {
+    setLoading(true);
     fetch(`/api/adweya?param1=${startDate}&param2=${endDate}`)
       .then((response) => {
         response.json().then((res) => {
@@ -25,20 +27,11 @@ export default function Adweya() {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
-
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
-
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
 
   return (
     <div
@@ -71,10 +64,13 @@ export default function Adweya() {
                 backgroundColor: "#F0ECE5",
                 color: "#161A30",
                 marginTop: 50,
+                marginBottom: 50,
                 fontWeight: "bold",
                 width: "100%",
               }}
+              onClick={fetchDataTable}
               variant="contained"
+              disabled={!(startDate && endDate)}
             >
               اظهر البيانات
             </Button>
@@ -88,14 +84,14 @@ export default function Adweya() {
                 minHeight: 500,
               }}
             >
-              {" "}
+              {loading ? <CircularProgress /> : null}
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
               <MyDocument
                 data={rows}
                 title={`
-                احصائية بأدوية المرتبات العلاجية المطلوب صرفها خلال فترة من ${endDate} الي ${startDate}`}
+                احصائية بأدوية المرتبات العلاجية المطلوب صرفها خلال فترة من ${startDate} الي ${endDate}`}
               />
             </DynamicPDFViewer>
           )}

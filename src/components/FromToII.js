@@ -24,7 +24,7 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
   return (
     <>
       <div
-        date-rangepicker
+        date-rangepicker={true}
         className="flex items-center"
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
@@ -36,10 +36,10 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
                   <div
                     id="tooltip-default"
                     role="tooltip"
-                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                    className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
                   >
                     Tooltip content
-                    <div class="tooltip-arrow" data-popper-arrow></div>
+                    <div className="tooltip-arrow" data-popper-arrow></div>
                   </div>
 
                   <DatePicker
@@ -50,11 +50,11 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
                     style={{ width: "250%" }}
                     onChange={(date) => {
                       setEndDate(date);
-
                       const formattedEndDate = date
                         ? format(date, "dd-MM-yyyy")
-                        : "haven't selected an end date";
+                        : null;
                       setEndDateTwo(formattedEndDate);
+                      console.log(formattedEndDate);
                     }}
                     minDate={startDate}
                     dateFormat="dd/MM/YYYY"
@@ -84,7 +84,7 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
 
                   const formattedStartDate = date
                     ? format(date, "dd-MM-yyyy")
-                    : "haven't selected a start date";
+                    : null;
                   setStartDateTwo(formattedStartDate);
                 }}
                 dateFormat="dd/MM/YYYY"

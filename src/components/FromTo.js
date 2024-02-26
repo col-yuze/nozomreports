@@ -34,7 +34,7 @@ export default function FromTo({
   return (
     <>
       <div
-        date-rangepicker
+        date-rangepicker={true}
         className="flex items-center"
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
@@ -60,7 +60,7 @@ export default function FromTo({
 
                       const formattedEndDate = date
                         ? format(date, "dd-MM-yyyy")
-                        : "haven't selected an end date";
+                        : null;
                       setEndDateTwo(formattedEndDate);
                     }}
                     minDate={startDate}
@@ -111,7 +111,7 @@ export default function FromTo({
 
                   const formattedStartDate = date
                     ? format(date, "dd-MM-yyyy")
-                    : "haven't selected a start date";
+                    : null;
                   setStartDateTwo(formattedStartDate);
                 }}
                 dateFormat="dd/MM/YYYY"

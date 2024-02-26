@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 import FromToII from "../../../components/FromToII";
 const DynamicPDFViewer = dynamic(
@@ -14,11 +14,13 @@ const DynamicPDFViewer = dynamic(
 );
 export default function AdweyaRamad() {
   const [rows, setRows] = useState([]);
-  const [startDate, setStartDate] = useState("2-2-2023");
-  const [endDate, setEndDate] = useState("5-2-2023");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [loading, setLoading] = useState(false);
   // api fetching
   const fetchDataTable = async () => {
-    fetch(`/api/adweyaramad?fdate=01-01-2024&tdate=01-01-2024`)
+    setLoading(true);
+    fetch(`/api/adweyaramad?fdate=${startDate}&tdate=${endDate}`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
@@ -27,19 +29,11 @@ export default function AdweyaRamad() {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
-
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
 
   return (
     <div
@@ -55,7 +49,7 @@ export default function AdweyaRamad() {
         <div id="pdf-container">
           <h1
             style={{ marginBottom: 20, color: "#F0ECE5" }}
-          >{`احصائية عددية لعيادات الرمد للفترة من ${startDate} الي ${endDate}`}</h1>
+          >{`احصائية عددية لعيادات الرمد عن فترة `}</h1>
 
           <div
             style={{
@@ -78,7 +72,9 @@ export default function AdweyaRamad() {
                 fontWeight: "bold",
                 width: "100%",
               }}
+              onClick={fetchDataTable}
               variant="contained"
+              disabled={!(startDate && endDate)}
             >
               اظهر البيانات
             </Button>
@@ -92,7 +88,7 @@ export default function AdweyaRamad() {
                 minHeight: 500,
               }}
             >
-              {" "}
+              {loading ? <CircularProgress /> : null}
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">

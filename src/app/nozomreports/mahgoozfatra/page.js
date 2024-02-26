@@ -6,6 +6,7 @@ import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
+import { CircularProgress } from "@mui/material";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -18,10 +19,11 @@ export default function Mahgoozfatra() {
   // prettier-ignore
   const [startDate, setStartDate] = React.useState(null);
 
+  const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState("0-الكل");
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
-
+  var dept = "بكل الأقسام";
   function formatDate(date) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -34,6 +36,7 @@ export default function Mahgoozfatra() {
   // api fetching
 
   const fetchDataTable = async () => {
+    setLoading(true);
     if (startDate && endDate) {
       const _startDate = new Date(
         startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
@@ -65,26 +68,26 @@ export default function Mahgoozfatra() {
     }
   };
 
-  const toggleVisibility = () => {
-    setShow(!show);
-    fetchDataTable();
-  };
+  // const toggleVisibility = () => {
+  //   setShow(!show);
+  //   fetchDataTable();
+  // };
 
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
+  // React.useEffect(() => {
+  //   let isMounted = true; // Variable to check if the component is still mounted
+  //   if (isMounted) {
+  //     fetchDataTable();
+  //   }
 
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
+  //   return () => {
+  //     // Cleanup function to set isMounted to false when the component is unmounted
+  //     isMounted = false;
+  //   };
+  // }, []);
 
-  React.useEffect(() => {
-    console.log(selectedOption, "nader");
-  }, [selectedOption]);
+  // React.useEffect(() => {
+  //   console.log(selectedOption, "nader");
+  // }, [selectedOption]);
 
   return (
     <div
@@ -126,8 +129,9 @@ export default function Mahgoozfatra() {
                 fontWeight: "bold",
                 width: "83%",
               }}
+              onClick={fetchDataTable}
               variant="contained"
-              onClick={toggleVisibility}
+              disabled={!(startDate && endDate)}
             >
               اظهر البيانات
             </Button>
@@ -137,16 +141,20 @@ export default function Mahgoozfatra() {
           <br></br>
 
           {rows.length > 0 ? (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument
-                data={rows}
-                title={
-                  "بيان بالمحجوزين حاليا داخل المجمع الطبي ق.م بكوبري القبة"
-                }
-              />
-            </DynamicPDFViewer>
+            <div>
+              <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+                {selectedOption === "0-الكل"
+                  ? (dept = "كل الأقسام")
+                  : (dept = selectedOption.substring(2))}
+
+                <MyDocument
+                  data={rows}
+                  title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}
+                />
+              </DynamicPDFViewer>
+            </div>
           ) : (
-            <div style={{ height: 500 }}></div>
+            <div>{loading ? <CircularProgress /> : null}</div>
           )}
         </div>
       </div>

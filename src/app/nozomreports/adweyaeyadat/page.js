@@ -4,7 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
 import FromToII from "../../../components/FromToII";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
@@ -15,11 +15,12 @@ const DynamicPDFViewer = dynamic(
 export default function AdweyaEyadat() {
   const [rows, setRows] = useState([]);
 
-  const [startDate, setStartDate] = useState("01-01-2024");
-  const [endDate, setEndDate] = React.useState("01-02-2024");
+  const [startDate, setStartDate] = useState();
+  const [loading, setLoading] = useState(false);
 
   // api fetching
   const fetchDataTable = async () => {
+    setLoading(true);
     fetch(`/api/adweyaeyadat?fdate=${startDate}`)
       .then((response) => {
         response.json().then((res) => {
@@ -28,20 +29,11 @@ export default function AdweyaEyadat() {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
-
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
-
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
 
   return (
     <div
@@ -63,11 +55,7 @@ export default function AdweyaEyadat() {
               alignItems: "center",
             }}
           >
-            <FromToII
-              setStartDateTwo={setStartDate}
-              setEndDateTwo={setEndDate}
-              two="1"
-            />
+            <FromToII setStartDateTwo={setStartDate} two="1" />
             <br />
             <Button
               style={{
@@ -77,12 +65,17 @@ export default function AdweyaEyadat() {
                 fontWeight: "bold",
                 width: "100%",
               }}
+              onClick={fetchDataTable}
               variant="contained"
+              disabled={!startDate}
             >
               اظهر البيانات
             </Button>
+            <br />
+            <br />
+            {loading ? <CircularProgress /> : null}
           </div>
-          {rows.length <= 0 ? (
+          {rows.length <= 0 || !startDate ? (
             <div
               style={{
                 display: "flex",
