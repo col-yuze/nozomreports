@@ -58,6 +58,9 @@ export default function Mahgozeen() {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   const handleSaveAsPDF = async () => {
@@ -81,17 +84,17 @@ export default function Mahgozeen() {
     html2pdf().from(content).set(pdfOptions).save();
   };
 
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
+  // React.useEffect(() => {
+  //   let isMounted = true; // Variable to check if the component is still mounted
+  //   if (isMounted) {
+  //     fetchDataTable();
+  //   }
 
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
+  //   return () => {
+  //     // Cleanup function to set isMounted to false when the component is unmounted
+  //     isMounted = false;
+  //   };
+  // }, []);
 
   return (
     <div
@@ -126,6 +129,7 @@ export default function Mahgozeen() {
                 marginTop: 50,
                 fontWeight: "bold",
               }}
+              onClick={fetchDataTable}
               variant="contained"
             >
               اظهر البيانات
@@ -140,7 +144,7 @@ export default function Mahgozeen() {
                 minHeight: 500,
               }}
             >
-              {" "}
+              {loading ? <CircularProgress /> : null}
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">

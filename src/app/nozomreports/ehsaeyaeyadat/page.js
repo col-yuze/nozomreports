@@ -36,7 +36,7 @@ export default function EhsaeyaEyadat() {
 
   return (
     <>
-      <NavBar />
+      <NavBar></NavBar>
       <div
         style={{
           padding: 65,
