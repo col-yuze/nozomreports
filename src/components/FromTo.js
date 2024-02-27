@@ -34,11 +34,10 @@ export default function FromTo({
   return (
     <>
       <div
-        date-rangepicker={true}
         className="flex items-center"
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
-        <div className="relative" style={{ width: "24%" }}>
+        <div className="relative" style={{ maxwidth: "100%" }}>
           <DropDown
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
@@ -97,28 +96,32 @@ export default function FromTo({
           ) : (
             ""
           )}
-          <div className="relative">
-            <span style={{ display: "inline-block" }}>
-              <DatePicker
-                className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
-                showIcon
-                placeholderText={
-                  mode === "1" ? "بــدايــة الـفـتـرة" : "اخــتـر"
-                }
-                selected={startDate}
-                onChange={(date) => {
-                  setStartDate(date);
+          {mode !== "7" ? (
+            <div className="relative">
+              <span style={{ display: "inline-block" }}>
+                <DatePicker
+                  className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
+                  showIcon
+                  placeholderText={
+                    mode === "1" ? "بــدايــة الـفـتـرة" : "اخــتـر"
+                  }
+                  selected={startDate}
+                  onChange={(date) => {
+                    setStartDate(date);
 
-                  const formattedStartDate = date
-                    ? format(date, "dd-MM-yyyy")
-                    : null;
-                  setStartDateTwo(formattedStartDate);
-                }}
-                dateFormat="dd/MM/YYYY"
-                isClearable
-              />
-            </span>
-          </div>
+                    const formattedStartDate = date
+                      ? format(date, "dd-MM-yyyy")
+                      : null;
+                    setStartDateTwo(formattedStartDate);
+                  }}
+                  dateFormat="dd/MM/YYYY"
+                  isClearable
+                />
+              </span>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

@@ -5,7 +5,8 @@ import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
 
-import FromToII from "../../../components/FromToII";
+import { CircularProgress } from "@mui/material";
+import FromTo from "../../../components/FromTo";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -15,11 +16,11 @@ const DynamicPDFViewer = dynamic(
 export default function Mahgozeen() {
   const [rows, setRows] = useState([]);
   const itemsPerPage = 10; // Number of items per page
-
-  const [startDate, setStartDate] = useState("2-2-2023");
-  const [endDate, setEndDate] = useState("5-2-2023");
+  var dept = "بكل الأقسام";
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
+  const [selectedOption, setSelectedOption] = useState("0-الكل");
   const totalPages = Math.ceil(rows.length / itemsPerPage);
 
   const startIndex = currentPage * itemsPerPage;
@@ -47,7 +48,8 @@ export default function Mahgozeen() {
   ];
   // api fetching
   const fetchDataTable = async () => {
-    fetch(`/api/mahgozeen?buildnumber=4`)
+    setLoading(true);
+    fetch(`/api/mahgozeen?buildnumber=${selectedOption[0]}`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
@@ -111,10 +113,10 @@ export default function Mahgozeen() {
               alignItems: "center",
             }}
           >
-            <FromToII
-              setStartDateTwo={setStartDate}
-              setEndDateTwo={setEndDate}
-              two="one"
+            <FromTo
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              mode="7"
             />
             <br />
             <Button

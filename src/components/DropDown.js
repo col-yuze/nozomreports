@@ -1,3 +1,4 @@
+import { minifyRaw } from "babel-plugin-styled-components/lib/minify";
 import React, { useState } from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
@@ -71,14 +72,41 @@ const DropDown = ({
         "8-مستشفى العيون التخصصي",
         "9-السموم",
       ])
-    : "";
+    : mode === "7"
+    ? (options = [
+        "0-الكل",
+        "1-مستشفى الجراحة",
+        "2-مستشفى الباطنة",
+        "3-مستشفى الجهاز التنفسي",
+        "4-مستشفى الاسنان التخصصي",
+        "5-الاستقبال و الطوارئ و الحوادث",
+        "6-مستشفى الكلى",
+        "7-مستشفى القلب التخصصي",
+        "8-مستشفى العيون التخصصي",
+        "9-السموم",
+      ])
+    : (options = [
+        "0-الكل",
+        "1-مستشفى الجراحة",
+        "2-مستشفى الباطنة",
+        "3-مستشفى الجهاز التنفسي",
+        "4-مستشفى الاسنان التخصصي",
+        "5-الاستقبال و الطوارئ و الحوادث",
+        "6-مستشفى الكلى",
+        "7-مستشفى القلب التخصصي",
+        "8-مستشفى العيون التخصصي",
+        "9-السموم",
+      ]);
   return (
-    <Dropdown
-      options={options}
-      onChange={onSelect}
-      value={selectedOption}
-      placeholder={placeholderText}
-    />
+    <div className="fixed-width-dropdown">
+      <Dropdown
+        options={options}
+        onChange={onSelect}
+        value={selectedOption}
+        placeholder={placeholderText}
+        style={{ width: "200px" }}
+      />
+    </div>
   );
 };
 
