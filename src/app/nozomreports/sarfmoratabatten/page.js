@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
 import FromTo from "../../../components/FromTo";
+import { CircularProgress } from "@mui/material";
 
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
@@ -16,11 +17,11 @@ export default function Mahgozeen() {
   const [rows, setRows] = useState([]);
   const itemsPerPage = 10; // Number of items per page
 
-  const [startDate, setStartDate] = useState("2-2-2023");
-  const [endDate, setEndDate] = useState("5-2-2023");
+  const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState();
   const [currentPage, setCurrentPage] = useState(0);
 
-  const [selectedOption, setSelectedOption] = useState("0-الكل");
+  const [selectedOption, setSelectedOption] = useState("");
   const [selectedOptionII, setSelectedOptionII] = useState("");
   const [selectedOptionIII, setSelectedOptionIII] = useState("");
   const totalPages = Math.ceil(rows.length / itemsPerPage);
@@ -50,7 +51,11 @@ export default function Mahgozeen() {
   ];
   // api fetching
   const fetchDataTable = async () => {
-    fetch(`/api/sarfmoratabatten?datein=01-02-2024&rank=7&spec=3&count=10`)
+    setLoading(true);
+    //taree5 3adad rotba ta5asos
+    fetch(
+      `/api/sarfmoratabatten?datein=${startDate}&rank=${selectedOptionIII}&spec=3&count=10`
+    )
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
@@ -106,7 +111,10 @@ export default function Mahgozeen() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية عيادات</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            {" "}
+            تقرير بصارفي مرتبات اكثر من ١٠
+          </h1>
           <div
             style={{
               display: "grid",
@@ -116,7 +124,6 @@ export default function Mahgozeen() {
           >
             <FromTo
               setStartDateTwo={setStartDate}
-              setEndDateTwo={setEndDate}
               selectedOption={selectedOption}
               setSelectedOption={setSelectedOption}
               selectedOptionII={selectedOptionII}
