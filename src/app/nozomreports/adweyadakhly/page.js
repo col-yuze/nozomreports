@@ -84,7 +84,7 @@ export default function AdweyaDakhly() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
-            الادوية المنصرفة للقسم الدخلي
+            الادوية المنصرفة للقسم الداخلي
           </h1>
 
           <div
