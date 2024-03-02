@@ -15,6 +15,8 @@ export default function Adweya() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [startDateStatic, setStartDateStatic] = useState();
+  const [endDateStatic, setEndDateStatic] = useState();
   const [loading, setLoading] = useState(false);
   // api fetching
   const fetchDataTable = async () => {
@@ -23,6 +25,8 @@ export default function Adweya() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
+          setEndDateStatic(endDate);
+          setStartDateStatic(startDate);
         });
       })
       .catch((err) => {
@@ -93,7 +97,7 @@ export default function Adweya() {
               <MyDocument
                 data={rows}
                 title={`
-                احصائية بأدوية المرتبات العلاجية المطلوب صرفها خلال فترة من ${startDate} الي ${endDate}`}
+                احصائية بأدوية المرتبات العلاجية المطلوب صرفها خلال فترة من ${startDateStatic} الي ${endDateStatic}`}
               />
             </DynamicPDFViewer>
           )}

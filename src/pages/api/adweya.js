@@ -7,74 +7,57 @@ const {
 } = require("../../lib/db");
 
 function countMedicineAtPlaces(medicineArray) {
-  // Create an object to store counts
   const counts = {};
   const sums = {};
-  const place_arr = ["الدواء"];
+  const places = new Set();
 
   // Iterate through the medicine array
   for (const [medicine, place, quantity] of medicineArray) {
-    // If the place doesn't exist in counts, initialize it
-    if (!counts[place]) {
-      counts[place] = {};
-    }
-    // If the medicine doesn't exist at this place, initialize it
-    if (!counts[place][medicine]) {
-      counts[place][medicine] = 0;
-    }
     // Increment the count for this medicine at this place
-    counts[place][medicine] += quantity;
+    counts[place] = counts[place] || {};
+    counts[place][medicine] = (counts[place][medicine] || 0) + quantity;
 
-    // If the medicine doesn't exist in sums, initialize it
-    if (!sums[medicine]) {
-      sums[medicine] = 0;
-    }
     // Increment the sum for this medicine
-    sums[medicine] += quantity;
+    sums[medicine] = (sums[medicine] || 0) + quantity;
+
+    places.add(place);
   }
+
   // Convert counts object to 2D array
-  const result = [];
-  for (const p in counts) {
-    place_arr.push(p);
-  }
-  for (const place in counts) {
-    const medicineCounts = counts[place];
-    for (const medicine in medicineCounts) {
-      result.push([
-        medicine,
-        counts[place_arr[1]][medicine] ?? 0,
-        counts[place_arr[2]][medicine] ?? 0,
-        counts[place_arr[3]][medicine] ?? 0,
-        counts[place_arr[4]][medicine] ?? 0,
-        counts[place_arr[5]][medicine] ?? 0,
-        counts[place_arr[6]][medicine] ?? 0,
-        sums[medicine],
-      ]);
+  const result = [["", ...Array.from(places), "الاجمالي"]];
+  let totalColumns = Array.from(places).fill(0);
+
+  for (const medicine in sums) {
+    const currentRow = [medicine];
+    let total = 0;
+    for (const place of places) {
+      const count = counts[place]?.[medicine] || 0;
+      currentRow.push(count);
+      total += count;
+      totalColumns[Array.from(places).indexOf(place)] += count;
     }
+    currentRow.push(total);
+    result.push(currentRow);
   }
-  // sort alphabetically
+
+  // Add total row
+  const totalRow = [
+    "الاجمالي",
+    ...totalColumns,
+    Object.values(sums).reduce((acc, val) => acc + val, 0),
+  ];
+
+  // Sort alphabetically
   result.sort((a, b) => a[0].localeCompare(b[0]));
-  // remove dupes
-  const uniqueResult = Array.from(new Set(result.map(JSON.stringify))).map(
-    JSON.parse
+
+  // Replace "?" with "صيدلية الصدر الخارجية"
+  const mappedPlaces = Array.from(places).map((place) =>
+    place.includes("?") ? "صيدلية الصدر الخارجية" : place
   );
-  place_arr.push("الاجمالي");
-  const place_arr_mapped = place_arr.map((el) => {
-    return el.includes("?") ? "صيدلية الصدر الخارجية" : el;
-  });
-  const sum_arr = ["الاجمالي", 0, 0, 0, 0, 0, 0, 0];
-  for (const [title, g, s, l, m, ma, r, t] of uniqueResult) {
-    sum_arr[1] += g;
-    sum_arr[2] += s;
-    sum_arr[3] += l;
-    sum_arr[4] += m;
-    sum_arr[5] += ma;
-    sum_arr[6] += r;
-    sum_arr[7] += t;
-  }
-  uniqueResult.unshift(place_arr_mapped);
-  uniqueResult.push(sum_arr);
-  return uniqueResult;
+  result.push(totalRow);
+  result[0] = ["الدواء", ...mappedPlaces, "الاجمالي"];
+
+  return result;
 }
 
 export default async function handler(req, res) {
