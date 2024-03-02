@@ -52,6 +52,7 @@ function countMedicineAtPlaces(medicineArray) {
       ]);
     }
   }
+  console.log(result);
   // sort alphabetically
   result.sort((a, b) => a[0].localeCompare(b[0]));
   // remove dupes

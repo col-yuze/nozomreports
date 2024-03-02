@@ -45,7 +45,9 @@ export default function Adweya() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            الادوية االمطلوب صرفها خلال فترة
+          </h1>
           <div
             style={{
               display: "grid",

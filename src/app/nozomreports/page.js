@@ -7,7 +7,7 @@ import NavBar from "./../../components/NavBar.js";
 
 const items = [
   { title: "نسبة الاشغال", route: "nesbetashghal" }, //done input skeleton
-  { title: "ادوية", route: "adweya" }, //done input skeleton
+  { title: "الادوية المطلوب صرفها خلال فترة", route: "adweya" }, //done input skeleton
   { title: "ادوية داخلي", route: "adweyadakhly" }, //done input skeleton
   { title: "ادوية عيادات", route: "adweyaeyadat" }, //done input skeleton
   { title: "ادوية رمد", route: "adweyaramad" }, //done input skeleton
