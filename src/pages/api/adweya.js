@@ -42,17 +42,16 @@ function countMedicineAtPlaces(medicineArray) {
     for (const medicine in medicineCounts) {
       result.push([
         medicine,
-        counts[place_arr[1]][medicine] ?? "",
-        counts[place_arr[2]][medicine] ?? "",
-        counts[place_arr[3]][medicine] ?? "",
-        counts[place_arr[4]][medicine] ?? "",
-        counts[place_arr[5]][medicine] ?? "",
-        counts[place_arr[6]][medicine] ?? "",
+        counts[place_arr[1]][medicine] ?? 0,
+        counts[place_arr[2]][medicine] ?? 0,
+        counts[place_arr[3]][medicine] ?? 0,
+        counts[place_arr[4]][medicine] ?? 0,
+        counts[place_arr[5]][medicine] ?? 0,
+        counts[place_arr[6]][medicine] ?? 0,
         sums[medicine],
       ]);
     }
   }
-  console.log(result);
   // sort alphabetically
   result.sort((a, b) => a[0].localeCompare(b[0]));
   // remove dupes
@@ -63,7 +62,18 @@ function countMedicineAtPlaces(medicineArray) {
   const place_arr_mapped = place_arr.map((el) => {
     return el.includes("?") ? "صيدلية الصدر الخارجية" : el;
   });
+  const sum_arr = ["الاجمالي", 0, 0, 0, 0, 0, 0, 0];
+  for (const [title, g, s, l, m, ma, r, t] of uniqueResult) {
+    sum_arr[1] += g;
+    sum_arr[2] += s;
+    sum_arr[3] += l;
+    sum_arr[4] += m;
+    sum_arr[5] += ma;
+    sum_arr[6] += r;
+    sum_arr[7] += t;
+  }
   uniqueResult.unshift(place_arr_mapped);
+  uniqueResult.push(sum_arr);
   return uniqueResult;
 }
 
