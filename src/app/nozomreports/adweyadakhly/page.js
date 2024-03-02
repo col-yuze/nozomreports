@@ -1,4 +1,6 @@
 "use client"; // this part for handle click and error for client/server issues
+
+///////nneeeeds to be looked at and look at api
 import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -84,7 +86,7 @@ export default function AdweyaDakhly() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
-            الادوية المنصرفة للقسم الدخلي
+            الادوية المنصرفة للقسم الداخلي
           </h1>
 
           <div

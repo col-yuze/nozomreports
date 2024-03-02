@@ -85,3 +85,9 @@ body {
   padding: 6px 2px 5px 37px;
   text-align: center;
 }
+/* .Dropdown-root {
+  min-width: 550%;
+} */
+.fixed-width-dropdown .Dropdown-root {
+  width: 200px !important; /* Apply !important to override library styles */
+}

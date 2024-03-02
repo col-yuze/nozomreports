@@ -6,6 +6,8 @@ import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
 import FromToII from "../../../components/FromToII";
+
+import { CircularProgress } from "@mui/material";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -14,12 +16,12 @@ const DynamicPDFViewer = dynamic(
 );
 export default function Takhasosat() {
   const [rows, setRows] = useState([]);
-
   const [startDate, setStartDate] = useState();
   const [loading, setLoading] = useState(false);
 
   // api fetching
   const fetchDataTable = async () => {
+    setLoading(true);
     fetch(`/api/takhasosat?datein=${startDate}`)
       .then((response) => {
         response.json().then((res) => {
@@ -47,7 +49,10 @@ export default function Takhasosat() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>تخصصات</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            {" "}
+            احصائية الأدوية المنصرفة مرتبات علاجية تخصصات{" "}
+          </h1>
           <div
             style={{
               display: "grid",
@@ -55,7 +60,7 @@ export default function Takhasosat() {
               alignItems: "center",
             }}
           >
-            <FromToII setStartDateTwo={setStartDate} two="1" />
+            <FromToII setStartDateTwo={setStartDate} two="one" />
             <br />
             <Button
               style={{
@@ -83,13 +88,15 @@ export default function Takhasosat() {
                 alignItems: "center",
                 minHeight: 500,
               }}
-            ></div>
+            >
+              {loading ? <CircularProgress /> : null}
+            </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
               <MyDocument
                 data={rows}
                 title={`
-                احصائية بصارفي المرتبات العلاجية بالتخصصات اعتبارا من ${startDate}`}
+                 احصائية الأدوية المنصرفة مرتبات علاجية  تخصصات عن يوم ${startDate} `}
               />
             </DynamicPDFViewer>
           )}

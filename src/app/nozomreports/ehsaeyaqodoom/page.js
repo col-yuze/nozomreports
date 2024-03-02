@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
-
+import { CircularProgress } from "@mui/material";
 import FromToII from "../../../components/FromToII";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
@@ -16,8 +16,8 @@ export default function EhsaeyaQodoom() {
   const [rows, setRows] = useState([]);
   const itemsPerPage = 10; // Number of items per page
 
-  const [startDate, setStartDate] = useState("2-2-2023");
-  const [endDate, setEndDate] = useState("5-2-2023");
+  const [startDate, setStartDate] = useState();
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
   const totalPages = Math.ceil(rows.length / itemsPerPage);
@@ -47,7 +47,8 @@ export default function EhsaeyaQodoom() {
   ];
   // api fetching
   const fetchDataTable = async () => {
-    fetch(`/api/ehsaeyaqodoom?datein=01-02-2024`)
+    setLoading(true);
+    fetch(`/api/ehsaeyaqodoom?datein=${startDate}`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
@@ -56,6 +57,9 @@ export default function EhsaeyaQodoom() {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   const handleSaveAsPDF = async () => {
@@ -79,17 +83,17 @@ export default function EhsaeyaQodoom() {
     html2pdf().from(content).set(pdfOptions).save();
   };
 
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
+  // React.useEffect(() => {
+  //   let isMounted = true; // Variable to check if the component is still mounted
+  //   if (isMounted) {
+  //     fetchDataTable();
+  //   }
 
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
+  //   return () => {
+  //     // Cleanup function to set isMounted to false when the component is unmounted
+  //     isMounted = false;
+  //   };
+  // }, []);
 
   return (
     <div
@@ -113,11 +117,7 @@ export default function EhsaeyaQodoom() {
               alignItems: "center",
             }}
           >
-            <FromToII
-              setStartDateTwo={setStartDate}
-              setEndDateTwo={setEndDate}
-              two="one"
-            />
+            <FromToII setStartDateTwo={setStartDate} two="one" />
             <br />
             <Button
               style={{
@@ -126,7 +126,9 @@ export default function EhsaeyaQodoom() {
                 marginTop: 50,
                 fontWeight: "bold",
               }}
+              onClick={fetchDataTable}
               variant="contained"
+              disabled={!startDate}
             >
               اظهر البيانات
             </Button>
@@ -140,7 +142,7 @@ export default function EhsaeyaQodoom() {
                 minHeight: 500,
               }}
             >
-              {" "}
+              {loading ? <CircularProgress /> : null}
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">

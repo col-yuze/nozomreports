@@ -24,7 +24,6 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two }) {
   return (
     <>
       <div
-        date-rangepicker={true}
         className="flex items-center"
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
