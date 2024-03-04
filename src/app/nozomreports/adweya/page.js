@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import { Button, CircularProgress } from "@mui/material";
 import FromToII from "../../../components/FromToII";
 const DynamicPDFViewer = dynamic(
@@ -97,7 +97,7 @@ export default function Adweya() {
               <MyDocument
                 data={rows}
                 title={`
-                احصائية بأدوية المرتبات العلاجية المطلوب صرفها خلال فترة من ${startDateStatic} الي ${endDateStatic}`}
+                احصائية بأدوية المرتبات العلالاجية المطلوب صرفها خلال الفترة من ${startDateStatic} الي ${endDateStatic}`}
               />
             </DynamicPDFViewer>
           )}
