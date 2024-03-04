@@ -26,8 +26,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   titleContainer: {
-    width: "590px",
-    borderRadius: "15%",
+    width: "600px",
     padding: 0,
     backgroundColor: "#ffe0e0",
     marginBottom: 15,
@@ -87,8 +86,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 24; // Adjusted for the first page which includes the title
-const rowsPerPage = 25; // For subsequent pages
+const rowsPerPageTitled = 28; // Adjusted for the first page which includes the title
+const rowsPerPage = 33; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
@@ -133,9 +132,23 @@ const MyDocument = ({ data, title }) => {
                         styles.cell,
                         {
                           fontSize:
-                            index === 0 && pageIndex === 0 ? "9px" : "8px",
+                            index === 0 && cellIndex === 0 && pageIndex === 0
+                              ? "25px"
+                              : index === 0 && pageIndex === 0
+                              ? "10px"
+                              : "8px",
                           flex: cellIndex === 0 ? "4" : "0.5",
-                          padding: pageIndex === 0 && index === 0 ? 3 : 1,
+                          paddingTop:
+                            index === 0 && cellIndex === 0 && pageIndex === 0
+                              ? "17px"
+                              : "auto",
+                          backgroundColor:
+                            index === pageData.length - 1 &&
+                            pageIndex === pagesData.length - 1
+                              ? "#ffe0e0"
+                              : cellIndex === 7
+                              ? "#ffe0e0"
+                              : "transparent",
                         },
                       ]}
                       key={cellIndex}
