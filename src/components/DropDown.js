@@ -24,6 +24,24 @@ const DropDown = ({
   mode,
   placeholderText,
 }) => {
+  const [opts, setOpts] = React.useState([]);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  React.useEffect(() => {
+    const fetchData = async () => {
+      await fetch("/api/aqsamdakhly")
+        .then((response) => {
+          response.json().then((res) => {
+            setOpts(res.data);
+          });
+        })
+        .catch((err) => console.error(err));
+    };
+    console.log(mode);
+    if (mode == 8) {
+      fetchData();
+    }
+  }, []);
+
   const onSelect = (selectedOption) => {
     setSelectedOption(selectedOption.value);
   };
@@ -85,6 +103,8 @@ const DropDown = ({
         "8-مستشفى العيون التخصصي",
         "9-السموم",
       ])
+    : mode === "8"
+    ? (options = opts.map((el) => `${el[0]}-${el[1]}`))
     : (options = [
         "0-الكل",
         "1-مستشفى الجراحة",

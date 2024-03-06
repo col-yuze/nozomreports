@@ -21,12 +21,14 @@ export default function AdweyaDakhly() {
   const [startDate, setStartDate] = useState();
   const [loading, setLoading] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState("0-الكل");
+  const [selectedOption, setSelectedOption] = useState("0-القسم");
 
   // api fetching 200540
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch(`/api/adweyadakhly?dept=200540&date=${startDate}`)
+    fetch(
+      `/api/adweyadakhly?dept=${selectedOption.split("-")[0]}&date=${startDate}`
+    )
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
@@ -64,6 +66,12 @@ export default function AdweyaDakhly() {
             }}
           >
             <FromToII setStartDateTwo={setStartDate} wto="1" />
+            <br />
+            <FromTo
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              mode="8"
+            />
             <br />
             <Button
               style={{
