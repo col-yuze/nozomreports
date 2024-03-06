@@ -7,45 +7,50 @@ const {
 } = require("../../lib/db");
 
 function countMedicineForPatients(arr) {
-  // add all meds
-  const meds = [];
-  const counts = {};
+  const counts = new Map();
+  const uniqueMeds = new Set();
+
+  // Iterate through the array and calculate medicine counts
   for (const [id, name, med_code, medicine, quantity] of arr) {
-    meds.push(medicine);
-    // for each id and medicine insert the quantity
-    if (!counts[id]) counts[id] = {};
-
-    // If the medicine doesn't exist at this place, initialize it
-    if (!counts[id][name]) counts[id].name = name;
-    if (!counts[id][medicine]) counts[id][medicine] = 0;
-
-    // Increment the count for this medicine at this place
-    counts[id][medicine] += quantity;
-  }
-  // remove unique values
-  const unique_meds = meds.filter(
-    (value, index, array) => array.indexOf(value) === index
-  );
-
-  const result = [];
-  for (const id in counts) {
-    const medicineCounts = counts[id];
-    const med_count = [];
-    var sum = 0;
-    for (const med_part of unique_meds) {
-      med_count.push(medicineCounts[med_part] ?? "");
-      if (typeof medicineCounts[med_part] === "number") {
-        sum += medicineCounts[med_part];
-      }
+    // Initialize medicine count for the patient if not exists
+    if (!counts.has(id)) {
+      counts.set(id, { name, total: 0, medicines: new Map() });
     }
-    result.push([id, counts[id].name, ...med_count, sum]);
+
+    // Increment medicine count for the patient
+    const patient = counts.get(id);
+    patient.total += quantity;
+
+    // Increment medicine count
+    const medicineCount = patient.medicines.get(medicine) || 0;
+    patient.medicines.set(medicine, medicineCount + quantity);
+
+    // Add medicine to uniqueMeds set
+    uniqueMeds.add(medicine);
+  }
+  // Convert uniqueMeds set to an array
+  const uniqueMedsArray = Array.from(uniqueMeds);
+
+  // Construct result array
+  const result = [["رقم حاسب", "الاسم", ...uniqueMedsArray, "الاجمالي"]];
+
+  // Populate result array
+  let columnSums = Array(uniqueMedsArray.length).fill(0); // Array to store column sums
+  let totalSum = 0; // Total sum of all quantities
+  for (const [id, data] of counts) {
+    const medCounts = uniqueMedsArray.map((med, index) => {
+      const count = data.medicines.get(med) || 0;
+      columnSums[index] += count;
+      return count;
+    });
+    result.push([id, data.name, ...medCounts, data.total]);
+    totalSum += data.total;
   }
 
-  // append the first row to be headers
-  unique_meds.unshift("الاسم");
-  unique_meds.unshift("رقم حاسب");
-  unique_meds.push("الاجمالي");
-  result.unshift(unique_meds);
+  // Add row containing column sums
+  const columnSumRow = ["-", "الاجمالي", ...columnSums, totalSum];
+  result.push(columnSumRow);
+
   return result;
 }
 

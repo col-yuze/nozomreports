@@ -1,77 +1,46 @@
 "use client"; // this part for handle click and error for client/server issues
 
-///////nneeeeds to be looked at and look at api
+///////nneeeeds to be looked at and look at api1`
 import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
 import FromTo from "../../../components/FromTo";
 import { Button } from "@mui/material";
+import FromToII from "@/components/FromToII";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
     ssr: false, // Disable server-side rendering for this component
   }
 );
+
 export default function AdweyaDakhly() {
   const [rows, setRows] = useState([]);
 
-  const [show, setShow] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(null);
-  const [endDate, setEndDate] = React.useState(null);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [selectedOption, setSelectedOption] = useState("0");
+  const [startDate, setStartDate] = useState();
+  const [loading, setLoading] = useState(false);
 
-  // api fetching
-  function formatDate(date) {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const formattedDay = day < 10 ? "0" + day : day;
-    const formattedMonth = month < 10 ? "0" + month : month;
-    return formattedDay + "-" + formattedMonth + "-" + year;
-  }
+  const [selectedOption, setSelectedOption] = useState("0-القسم");
+
+  // api fetching 200540
   const fetchDataTable = async () => {
-    if (startDate && endDate) {
-      const _startDate = new Date(
-        startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-      );
-      const _endDate = new Date(
-        endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-      );
-      const formattedStartDate = formatDate(_startDate);
-      const formattedEndDate = formatDate(_endDate);
-      fetch(`/api/adweyadakhly?dept=200540&date=18-02-2024`)
-        .then((response) => {
-          response.json().then((res) => {
-            setRows(res.data);
-            console.log(res.data);
-          });
-        })
-        .catch((err) => {
-          console.error(err);
+    setLoading(true);
+    fetch(
+      `/api/adweyadakhly?dept=${selectedOption.split("-")[0]}&date=${startDate}`
+    )
+      .then((response) => {
+        response.json().then((res) => {
+          setRows(res.data);
         });
-    } else {
-      console.log("nader and filo");
-    }
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
-
-  const toggleVisibility = () => {
-    setShow(!show);
-    fetchDataTable();
-  };
-
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
-
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
 
   return (
     <div
@@ -96,12 +65,12 @@ export default function AdweyaDakhly() {
               alignItems: "center",
             }}
           >
+            <FromToII setStartDateTwo={setStartDate} wto="1" />
+            <br />
             <FromTo
-              setStartDateTwo={setStartDate}
-              setEndDateTwo={setEndDate}
               selectedOption={selectedOption}
               setSelectedOption={setSelectedOption}
-              mode="2"
+              mode="8"
             />
             <br />
             <Button
@@ -111,7 +80,9 @@ export default function AdweyaDakhly() {
                 marginTop: 50,
                 fontWeight: "bold",
               }}
+              onClick={fetchDataTable}
               variant="contained"
+              disabled={!startDate}
             >
               اظهر البيانات
             </Button>
