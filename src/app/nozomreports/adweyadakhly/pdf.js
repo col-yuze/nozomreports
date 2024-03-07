@@ -157,9 +157,16 @@ const MyDocument = ({ data, title }) => {
                             pageIndex === pagesData.length - 1
                               ? "#ffe0e0"
                               : "transparent",
-                          writingMode: "vertical-lr",
-                          transform: rotate("180deg"),
                         },
+                        // pageIndex === 0 &&
+                        // index === 0 &&
+                        // cellIndex !== 1 &&
+                        // cellIndex !== 0
+                        //   ? {
+                        //       transform: "rotate(-90deg)",
+                        //       writingMode: "vertical-lr",
+                        //     }
+                        //   : null,
                       ]}
                       key={cellIndex}
                     >
