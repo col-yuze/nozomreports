@@ -25,8 +25,8 @@ const PatientsHosps = (result) => {
 
     return [i + 1, el[2], el[3], formatDate(el[4]), el[10], el[8]];
   });
-  //hosps.get(5)
-  return hosps;
+  const grouped_result = Array.from(hosps, ([id, data]) => [id, data]);
+  return grouped_result;
 };
 
 export default async function handler(req, res) {
@@ -59,7 +59,7 @@ AND     WARD.BUILDING_NUM = BUILDING.BUILDING_NUM
     const result = await runQuery(query);
 
     const hosp_data = PatientsHosps(result);
-
+    hosp_data.sort((a, b) => a[0] - b[0]);
     res.status(200).json({ success: true, data: hosp_data });
   } catch (err) {
     console.error("Error in API endpoint:", err);

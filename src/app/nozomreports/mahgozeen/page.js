@@ -15,37 +15,11 @@ const DynamicPDFViewer = dynamic(
 );
 export default function Mahgozeen() {
   const [rows, setRows] = useState([]);
-  const itemsPerPage = 10; // Number of items per page
   var dept = "بكل الأقسام";
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
 
   const [selectedOption, setSelectedOption] = useState("0-الكل");
-  const totalPages = Math.ceil(rows.length / itemsPerPage);
 
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, rows.length);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
-  };
-  const headers = [
-    "",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "h7",
-    "h8",
-    "h9",
-    "h10",
-  ];
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
@@ -53,7 +27,8 @@ export default function Mahgozeen() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          console.log(res.data);
+          // res.data[hospital][hosp_data]
+          console.log(res.data[0][1]);
         });
       })
       .catch((err) => {
@@ -63,39 +38,6 @@ export default function Mahgozeen() {
         setLoading(false);
       });
   };
-  const handleSaveAsPDF = async () => {
-    // Dynamically import html2pdf only on the client-side
-    const html2pdf = (await import("html2pdf.js")).default;
-
-    const content = document.getElementById("pdf-container");
-
-    if (!content) {
-      console.error("Could not find PDF container");
-      return;
-    }
-
-    const pdfOptions = {
-      margin: 10,
-      filename: "table.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
-    html2pdf().from(content).set(pdfOptions).save();
-  };
-
-  // React.useEffect(() => {
-  //   let isMounted = true; // Variable to check if the component is still mounted
-  //   if (isMounted) {
-  //     fetchDataTable();
-  //   }
-
-  //   return () => {
-  //     // Cleanup function to set isMounted to false when the component is unmounted
-  //     isMounted = false;
-  //   };
-  // }, []);
-
   return (
     <div
       style={{
@@ -135,7 +77,7 @@ export default function Mahgozeen() {
               اظهر البيانات
             </Button>
           </div>
-          {rows.length <= 0 ? (
+          {rows?.length <= 0 ? (
             <div
               style={{
                 display: "flex",
@@ -148,32 +90,9 @@ export default function Mahgozeen() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
+              <MyDocument data={rows[0][1]} />
             </DynamicPDFViewer>
           )}
-        </div>
-        <div style={{ alignSelf: "center" }}>
-          <Button
-            style={{
-              backgroundColor: "#F0ECE5",
-              color: "#161A30",
-              marginTop: 100,
-              fontWeight: "bold",
-            }}
-            variant="contained"
-            onClick={handleSaveAsPDF}
-          >
-            Save as PDF
-          </Button>
-          <button onClick={handlePrevPage} disabled={currentPage === 0}>
-            Previous
-          </button>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            Next
-          </button>
         </div>
       </div>
     </div>
