@@ -1,4 +1,4 @@
-import formatOracleDate from "@/lib/utils";
+import { formatOracleDate } from "@/lib/utils";
 
 const {
   connectToDatabase,
