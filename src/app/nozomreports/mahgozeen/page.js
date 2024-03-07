@@ -28,7 +28,7 @@ export default function Mahgozeen() {
         response.json().then((res) => {
           setRows(res.data);
           // res.data[hospital][hosp_data]
-          console.log(res.data[0][1]);
+          // console.log(res.data[0][1]);
         });
       })
       .catch((err) => {
