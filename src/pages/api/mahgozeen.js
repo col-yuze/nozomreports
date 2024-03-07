@@ -5,6 +5,30 @@ const {
 } = require("../../lib/db");
 
 import { formatDate } from "@/lib/utils";
+
+// preprocessing data
+const PatientsHosps = (result) => {
+  const hosps = new Map();
+  result.sort((a, b) => {
+    return b[4] - a[4];
+  });
+  const filtered_result = result.map((el, i) => {
+    const id = el[0];
+    const data = [i + 1, el[2], el[3], formatDate(el[4]), el[10], el[8]];
+
+    if (!hosps.has(id)) {
+      hosps.set(id, [
+        ["م", "رقم حاسب", "الاسم", "تاريخ الدخول", "القسم", "الغرفة"],
+      ]);
+    }
+    hosps.get(id).push(data);
+
+    return [i + 1, el[2], el[3], formatDate(el[4]), el[10], el[8]];
+  });
+  //hosps.get(5)
+  return hosps;
+};
+
 export default async function handler(req, res) {
   let connection;
 
@@ -33,18 +57,10 @@ AND     (BUILDING.BUILDING_NUM = ${BU_IN} OR ${BU_IN} = 0)
 AND     WARD.BUILDING_NUM = BUILDING.BUILDING_NUM
     `;
     const result = await runQuery(query);
-    const filtered_result = result.map((el, i) => {
-      return [i + 1, el[2], el[3], formatDate(el[4]), el[10], el[8]];
-    });
-    filtered_result.unshift([
-      "م",
-      "رقم حاسب",
-      "الاسم",
-      "تاريخ الدخول",
-      "القسم",
-      "الغرفة",
-    ]);
-    res.status(200).json({ success: true, data: filtered_result });
+
+    const hosp_data = PatientsHosps(result);
+
+    res.status(200).json({ success: true, data: hosp_data });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
