@@ -4,7 +4,7 @@
 import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import FromTo from "../../../components/FromTo";
 import { Button } from "@mui/material";
 import FromToII from "@/components/FromToII";
@@ -20,7 +20,8 @@ export default function AdweyaDakhly() {
 
   const [startDate, setStartDate] = useState();
   const [loading, setLoading] = useState(false);
-
+  const [startDateStatic, setStartDateStatic] = useState();
+  const [selectedOptionStatic, setSelectedOptionStatic] = useState();
   const [selectedOption, setSelectedOption] = useState("0-القسم");
 
   // api fetching 200540
@@ -32,6 +33,8 @@ export default function AdweyaDakhly() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
+          setSelectedOptionStatic(selectedOption);
+          setStartDateStatic(startDate);
         });
       })
       .catch((err) => {
@@ -65,12 +68,11 @@ export default function AdweyaDakhly() {
               alignItems: "center",
             }}
           >
-            <FromToII setStartDateTwo={setStartDate} wto="1" />
-            <br />
             <FromTo
               selectedOption={selectedOption}
               setSelectedOption={setSelectedOption}
               mode="8"
+              setStartDateTwo={setStartDate}
             />
             <br />
             <Button
@@ -100,7 +102,12 @@ export default function AdweyaDakhly() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} title="الادوية المنصرفة لصالح قسم" />
+              <MyDocument
+                data={rows}
+                title={` الادوية المنصرفة لصالح  ${
+                  selectedOptionStatic.split("-")[1]
+                } عن يوم ${startDateStatic}`}
+              />
             </DynamicPDFViewer>
           )}
         </div>
