@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 28; // Adjusted for the first page which includes the title
-const rowsPerPage = 33; // For subsequent pages
+const rowsPerPageTitled = 24; // Adjusted for the first page which includes the title
+const rowsPerPage = 27; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
@@ -98,26 +98,34 @@ const MyDocument = ({ data, title }) => {
   let index = 0;
   let isFirstPage = true;
 
-  while (index < data.length) {
-    const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
-    pagesData.push(data.slice(index, index + limit));
-    index += limit;
-    isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
-  }
+  const titlePages = [];
 
+  for (let j = 0; j < data.length; j++) {
+    isFirstPage = true;
+    if (data[j][1].length > 0) {
+      while (index < data[j][1].length) {
+        const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
+        pagesData.push(data[j][1].slice(index, index + limit));
+        titlePages.push(pagesData.length - 1);
+        index += limit;
+        isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
+      }
+      index = 0;
+    }
+  }
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
-        <Page
-          size="A4"
-          style={styles.page}
-          key={pageIndex}
-          orientation="landscape"
-        >
+        <Page size="A4" style={styles.page} key={pageIndex}>
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{title}</Text>
+              </View>
+            )}
+            {titlePages.includes(pageIndex) && (
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>KOKI</Text>
               </View>
             )}
             <View style={styles.table}>
@@ -139,34 +147,23 @@ const MyDocument = ({ data, title }) => {
                         {
                           fontSize: "8px",
                           flex:
-                            cellIndex === 1
+                            cellIndex === 2
                               ? "4"
                               : cellIndex === 0
+                              ? "0.25"
+                              : cellIndex === 3
                               ? "2"
                               : "0.5",
-                          paddingTop:
-                            index === 0 && cellIndex === 0 && pageIndex === 0
-                              ? "17px"
-                              : index === 0 &&
-                                cellIndex === 1 &&
-                                pageIndex === 0
-                              ? "17px"
-                              : "auto",
+
                           backgroundColor:
                             index === pageData.length - 1 &&
                             pageIndex === pagesData.length - 1
                               ? "#ffe0e0"
                               : "transparent",
                         },
-                        // pageIndex === 0 &&
-                        // index === 0 &&
-                        // cellIndex !== 1 &&
-                        // cellIndex !== 0
-                        //   ? {
-                        //       transform: "rotate(-90deg)",
-                        //       writingMode: "vertical-lr",
-                        //     }
-                        //   : null,
+                        index === 0 && cellIndex === 0 && pageIndex === 0
+                          ? { paddingTop: "17px" }
+                          : null,
                       ]}
                       key={cellIndex}
                     >

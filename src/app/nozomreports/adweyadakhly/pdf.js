@@ -144,29 +144,18 @@ const MyDocument = ({ data, title }) => {
                               : cellIndex === 0
                               ? "2"
                               : "0.5",
-                          paddingTop:
-                            index === 0 && cellIndex === 0 && pageIndex === 0
-                              ? "17px"
-                              : index === 0 &&
-                                cellIndex === 1 &&
-                                pageIndex === 0
-                              ? "17px"
-                              : "auto",
+
                           backgroundColor:
                             index === pageData.length - 1 &&
                             pageIndex === pagesData.length - 1
                               ? "#ffe0e0"
                               : "transparent",
                         },
-                        // pageIndex === 0 &&
-                        // index === 0 &&
-                        // cellIndex !== 1 &&
-                        // cellIndex !== 0
-                        //   ? {
-                        //       transform: "rotate(-90deg)",
-                        //       writingMode: "vertical-lr",
-                        //     }
-                        //   : null,
+                        index === 0 && cellIndex === 0 && pageIndex === 0
+                          ? { paddingTop: "17px" }
+                          : index === 0 && cellIndex === 1 && pageIndex === 0
+                          ? { paddingTop: "17px" }
+                          : null,
                       ]}
                       key={cellIndex}
                     >

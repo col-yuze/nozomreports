@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 
 import { CircularProgress } from "@mui/material";
 import FromTo from "../../../components/FromTo";
@@ -90,7 +90,7 @@ export default function Mahgozeen() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows[0][1]} />
+              <MyDocument data={rows} />
             </DynamicPDFViewer>
           )}
         </div>

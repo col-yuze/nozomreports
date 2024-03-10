@@ -10,7 +10,7 @@ import { formatDate } from "@/lib/utils";
 const PatientsHosps = (result) => {
   const hosps = new Map();
   result.sort((a, b) => {
-    return b[4] - a[4];
+    return a[0] - b[0];
   });
   const filtered_result = result.map((el, i) => {
     const id = el[0];
