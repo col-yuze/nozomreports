@@ -32,9 +32,9 @@ export default async function handler(req, res) {
     const result = await runQuery(query);
 
     // filter out 1,2,3 columns and add index
-    const filtered_res = result.map((el, i) => [el[0], el[1], el[2]]);
+    const filtered_res = result.map((el, i) => [i + 1, el[0], el[1]]);
 
-    res.status(200).json({ success: true, data: result, filtered_res });
+    res.status(200).json({ success: true, data: filtered_res });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

@@ -39,7 +39,6 @@ export default function EhsaeyaMoratabatten() {
 
   return (
     <>
-      <NavBar></NavBar>
       <div
         style={{
           padding: 65,
