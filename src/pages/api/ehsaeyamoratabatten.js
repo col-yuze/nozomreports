@@ -16,21 +16,25 @@ export default async function handler(req, res) {
     const DATE_IN = formatOracleDate(req.query.datein);
     const CNT_IN = req.query.countin;
     const query = `
-    SELECT COUNT(*),CNT
-FROM   (SELECT PATIENT_NUM,COUNT(*) CNT
-            FROM   PRESCRIPTION_MEDICINE_MON
-            WHERE  EXISTS (SELECT 1
-                                           FROM    PRESCRIPTION
-                                           WHERE  PRESCRIPTION.PATIENT_NUM = PRESCRIPTION_MEDICINE_MON.PATIENT_NUM
-                                           AND      PRESCRIPTION_TYPE IN (3,8)
-                                           AND      (PRESCRIPTION.PRESCRIPTION_DATE >= '${DATE_IN}' OR '${DATE_IN}' IS NULL))
-            HAVING COUNT(*) > ${CNT_IN}
-            GROUP BY PATIENT_NUM) PP
-GROUP BY CNT
-ORDER BY 2 DESC
+      SELECT COUNT(*),CNT
+      FROM   (SELECT PATIENT_NUM,COUNT(*) CNT
+                  FROM   PRESCRIPTION_MEDICINE_MON
+                  WHERE  EXISTS (SELECT 1
+                      FROM    PRESCRIPTION
+                      WHERE  PRESCRIPTION.PATIENT_NUM = PRESCRIPTION_MEDICINE_MON.PATIENT_NUM
+                      AND      PRESCRIPTION_TYPE IN (3,8)
+                      AND      (PRESCRIPTION.PRESCRIPTION_DATE >= '${DATE_IN}' OR '${DATE_IN}' IS NULL))
+                  HAVING COUNT(*) > ${CNT_IN}
+                  GROUP BY PATIENT_NUM) PP
+      GROUP BY CNT
+      ORDER BY 2 DESC
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+
+    // filter out 1,2,3 columns and add index
+    const filtered_res = result.map((el, i) => [el[0], el[1], el[2]]);
+
+    res.status(200).json({ success: true, data: result, filtered_res });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
