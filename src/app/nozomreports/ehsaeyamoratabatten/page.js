@@ -3,12 +3,9 @@ import * as React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
-
-import FromTo from "../../../components/FromTo";
+import MyDocument from "./pdf";
 import FromToII from "@/components/FromToII";
 import { CircularProgress } from "@mui/material";
-import NavBar from "@/components/NavBar";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
