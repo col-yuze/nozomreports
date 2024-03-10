@@ -19,7 +19,7 @@ export default function EhsaeyaMoratabatten() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState();
   const [loading, setLoading] = useState(false);
-  const headers = ["م", "عدد المرضى ", "عدد الادوية "];
+  const headers = ["م", "عدد المرضى ", "عدد الادوية ", "الاجمالي"];
 
   // api fetching
   const fetchDataTable = async () => {

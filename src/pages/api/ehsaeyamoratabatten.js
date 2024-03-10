@@ -32,8 +32,23 @@ export default async function handler(req, res) {
     const result = await runQuery(query);
 
     // filter out 1,2,3 columns and add index
-    const filtered_res = result.map((el, i) => [i + 1, el[0], el[1]]);
-
+    const filtered_res = result.map((el, i) => [
+      i + 1,
+      el[0],
+      el[1],
+      el[0] * el[1],
+    ]);
+    // reduce to a single array with all the values sum
+    const sum = filtered_res.reduce((acc, row) => {
+      row.forEach((el, i) => {
+        acc[i] = (acc[i] || 0) + el;
+      });
+      // add this row to the end of the array
+      // filtered_res.push(acc);
+      return acc;
+    }, []);
+    sum[0] = "الاجمالي";
+    filtered_res.push(sum);
     res.status(200).json({ success: true, data: filtered_res });
   } catch (err) {
     console.error("Error in API endpoint:", err);
