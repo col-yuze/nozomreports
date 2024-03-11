@@ -47,7 +47,9 @@ export default function AdweyaEyadat() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية عيادات</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            احصائية العيادات اليومية
+          </h1>
           <div
             style={{
               display: "grid",

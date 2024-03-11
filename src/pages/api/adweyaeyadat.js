@@ -25,14 +25,14 @@ function countMedicineForPatients(arr) {
   const unique_ranks = ranks.filter(
     (value, index, array) => array.indexOf(value) === index
   );
-
   const result = [];
   for (const clinic in counts) {
     const clinicCounts = counts[clinic];
+
     var sum = 0;
     const clinic_count = [];
     for (const rank_part of unique_ranks) {
-      clinic_count.push(clinicCounts[rank_part] ?? "");
+      clinic_count.push(clinicCounts[rank_part] ?? 0);
       if (typeof clinicCounts[rank_part] === "number") {
         sum += clinicCounts[rank_part];
       }
@@ -40,6 +40,14 @@ function countMedicineForPatients(arr) {
     result.push([clinic, ...clinic_count, sum]);
   }
 
+  // calculate sum
+  const total_sum = result.reduce((acc, row) => {
+    row.forEach((el, i) => {
+      acc[i] = (acc[i] || 0) + el;
+    });
+    return acc;
+  }, []);
+  total_sum[0] = "الاجمالي";
   // append the first row to be headers
   const place_arr_mapped = unique_ranks.map((el) => {
     return el.includes("?EC?")
@@ -51,6 +59,7 @@ function countMedicineForPatients(arr) {
   place_arr_mapped.push("الاجمالي");
   place_arr_mapped.unshift("التخصص");
   result.unshift(place_arr_mapped);
+  result.push(total_sum);
 
   return result;
 }
