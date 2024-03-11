@@ -110,6 +110,7 @@ var yyyy = today.getFullYear();
 today = dd + "-" + mm + "-" + yyyy;
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
+  const [isToday, setIsToday] = React.useState(false);
 
   // Dynamically split data into pages considering different row limits
   const pagesData = [];
@@ -164,7 +165,8 @@ const MyDocument = ({ data, title }) => {
                       backgroundColor:
                         index === 1 && titlePages.includes(pageIndex)
                           ? "#d4d8dd"
-                          : index === 0 && titlePages.includes(pageIndex)
+                          : (index === 0 && titlePages.includes(pageIndex)) ||
+                            rowData[3] === today
                           ? "#e1e1e1"
                           : "white",
                     },
@@ -172,7 +174,7 @@ const MyDocument = ({ data, title }) => {
                   key={index}
                 >
                   {rowData.map((cellData, cellIndex) => (
-                    <View
+                    <Text
                       style={[
                         styles.cell,
                         {
@@ -203,16 +205,11 @@ const MyDocument = ({ data, title }) => {
                                   : "0.875",
                             }
                           : null,
-                        cellData.toString() === today
-                          ? { backgroundColor: "#e1e1e1" }
-                          : null,
                       ]}
                       key={cellIndex}
                     >
-                      <Text style={{ fontSize: "7px" }}>
-                        {cellData.toString()}
-                      </Text>
-                    </View>
+                      {cellData.toString()}
+                    </Text>
                   ))}
                 </View>
               ))}
