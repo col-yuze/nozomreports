@@ -18,8 +18,9 @@ export default function Mahgozeen() {
   var dept = "بكل الأقسام";
   const [loading, setLoading] = useState(false);
 
+  var dept = "بكل الأقسام";
   const [selectedOption, setSelectedOption] = useState("0-الكل");
-
+  const [selectedOptionStatic, setSelectedOptionStatic] = useState();
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
@@ -27,6 +28,7 @@ export default function Mahgozeen() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
+          setSelectedOptionStatic(selectedOption);
           // res.data[hospital][hosp_data]
           // console.log(res.data[0][1]);
         });
@@ -50,7 +52,9 @@ export default function Mahgozeen() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>محجوزيـــن</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            المحجوزيـــن بالمجمع حاليا
+          </h1>
           <div
             style={{
               display: "grid",
@@ -90,7 +94,14 @@ export default function Mahgozeen() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
+              {selectedOptionStatic === "0-الكل"
+                ? (dept = "كل الأقسام")
+                : (dept = selectedOptionStatic.substring(2))}
+              <MyDocument
+                data={rows}
+                title={`بيان بالمحجوزين حاليا بـ${dept} 
+                بالمجمع الطبى ق.م بكوبري القبة`}
+              />
             </DynamicPDFViewer>
           )}
         </div>

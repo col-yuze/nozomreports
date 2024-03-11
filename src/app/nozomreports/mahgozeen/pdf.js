@@ -8,11 +8,23 @@ import {
   Font,
   Image,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/ReadexPro-VariableFont_HEXP,wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
 // Define styles
+const departments = [
+  "الكل",
+  "مستشفى الجراحة",
+  "مستشفى الباطنة",
+  "مستشفى الجهاز التنفسي",
+  "مستشفى الاسنان التخصصي",
+  "الاستقبال و الطوارئ و الحوادث",
+  "مستشفى الكلى",
+  "مستشفى القلب التخصصي",
+  "مستشفى العيون التخصصي",
+  "السموم",
+];
 const styles = StyleSheet.create({
   page: {
     flexDirection: "row-reverse",
@@ -32,7 +44,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffe0e0",
     marginBottom: 15,
     alignSelf: "center",
-    paddingBottom: 15,
+    paddingBottom: 10,
+    paddingTop: 10,
   },
   title: {
     textAlign: "center",
@@ -87,9 +100,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 24; // Adjusted for the first page which includes the title
-const rowsPerPage = 27; // For subsequent pages
+const rowsPerPageTitled = 29; // Adjusted for the first page which includes the title
+const rowsPerPage = 33; // For subsequent pages
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, "0");
+var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+var yyyy = today.getFullYear();
 
+today = dd + "-" + mm + "-" + yyyy;
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
 
@@ -97,22 +115,31 @@ const MyDocument = ({ data, title }) => {
   const pagesData = [];
   let index = 0;
   let isFirstPage = true;
-
+  //console.log(data[0][1].slice(0, 1));
   const titlePages = [];
-
   for (let j = 0; j < data.length; j++) {
     isFirstPage = true;
     if (data[j][1].length > 0) {
+      titlePages.push(pagesData.length);
+      var arrayTop = [
+        [departments[data[j][0]], "العدد", data[j][1].length - 1],
+      ];
       while (index < data[j][1].length) {
         const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
-        pagesData.push(data[j][1].slice(index, index + limit));
-        titlePages.push(pagesData.length - 1);
+        var arr = [];
+        //if (index == 0)
+        arr = arrayTop.concat(data[j][1].slice(index, index + limit));
+        //else arr = data[j][1].slice(index, index + limit);
+        pagesData.push(arr);
+
         index += limit;
         isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
       }
       index = 0;
     }
   }
+  console.log(today);
+  console.log(typeof today);
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
@@ -123,11 +150,11 @@ const MyDocument = ({ data, title }) => {
                 <Text style={styles.title}>{title}</Text>
               </View>
             )}
-            {titlePages.includes(pageIndex) && (
+            {/* {titlePages.includes(pageIndex) && (
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>KOKI</Text>
               </View>
-            )}
+            )} */}
             <View style={styles.table}>
               {pageData.map((rowData, index) => (
                 <View
@@ -135,40 +162,57 @@ const MyDocument = ({ data, title }) => {
                     styles.row,
                     {
                       backgroundColor:
-                        index === 0 && pageIndex === 0 ? "#e1e1e1" : "white",
+                        index === 1 && titlePages.includes(pageIndex)
+                          ? "#d4d8dd"
+                          : index === 0 && titlePages.includes(pageIndex)
+                          ? "#e1e1e1"
+                          : "white",
                     },
                   ]}
                   key={index}
                 >
                   {rowData.map((cellData, cellIndex) => (
-                    <Text
+                    <View
                       style={[
                         styles.cell,
                         {
-                          fontSize: "8px",
+                          fontSize: "7px",
                           flex:
                             cellIndex === 2
-                              ? "4"
+                              ? "2.5"
                               : cellIndex === 0
-                              ? "0.25"
+                              ? "0.15"
+                              : cellIndex === 4
+                              ? "1.2"
                               : cellIndex === 3
-                              ? "2"
-                              : "0.5",
-
-                          backgroundColor:
-                            index === pageData.length - 1 &&
-                            pageIndex === pagesData.length - 1
-                              ? "#ffe0e0"
-                              : "transparent",
+                              ? "0.6"
+                              : cellIndex === 1
+                              ? "0.6"
+                              : "0.9",
                         },
-                        index === 0 && cellIndex === 0 && pageIndex === 0
-                          ? { paddingTop: "17px" }
+                        index === 0 //&& titlePages.includes(pageIndex)
+                          ? {
+                              paddingTop: "15px",
+                              paddingBottom: "15px",
+                              fontSize: "12px",
+                              flex:
+                                cellIndex === 0
+                                  ? "3.425"
+                                  : cellIndex === 1
+                                  ? "1.875"
+                                  : "0.875",
+                            }
+                          : null,
+                        cellData.toString() === today
+                          ? { backgroundColor: "#e1e1e1" }
                           : null,
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString()}
-                    </Text>
+                      <Text style={{ fontSize: "7px" }}>
+                        {cellData.toString()}
+                      </Text>
+                    </View>
                   ))}
                 </View>
               ))}
