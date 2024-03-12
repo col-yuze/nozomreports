@@ -6,7 +6,7 @@ const {
   runQuery,
 } = require("../../lib/db");
 
-function countMedicineForPatients(arr) {
+function countMedicineForPatients(arr, max_res_obj) {
   // add all meds
   const ranks = [];
   const counts = {};
@@ -25,21 +25,29 @@ function countMedicineForPatients(arr) {
   const unique_ranks = ranks.filter(
     (value, index, array) => array.indexOf(value) === index
   );
-
   const result = [];
   for (const clinic in counts) {
     const clinicCounts = counts[clinic];
+
     var sum = 0;
     const clinic_count = [];
     for (const rank_part of unique_ranks) {
-      clinic_count.push(clinicCounts[rank_part] ?? "");
+      clinic_count.push(clinicCounts[rank_part] ?? 0);
       if (typeof clinicCounts[rank_part] === "number") {
         sum += clinicCounts[rank_part];
       }
     }
-    result.push([clinic, ...clinic_count, sum]);
+    result.push([clinic, max_res_obj[clinic], ...clinic_count, sum]);
   }
 
+  // calculate sum
+  const total_sum = result.reduce((acc, row) => {
+    row.forEach((el, i) => {
+      acc[i] = (acc[i] || 0) + el;
+    });
+    return acc;
+  }, []);
+  total_sum[0] = "الاجمالي";
   // append the first row to be headers
   const place_arr_mapped = unique_ranks.map((el) => {
     return el.includes("?EC?")
@@ -49,8 +57,10 @@ function countMedicineForPatients(arr) {
       : el;
   });
   place_arr_mapped.push("الاجمالي");
+  place_arr_mapped.unshift("العدد الاقصي");
   place_arr_mapped.unshift("التخصص");
   result.unshift(place_arr_mapped);
+  result.push(total_sum);
 
   return result;
 }
@@ -60,6 +70,20 @@ export default async function handler(req, res) {
 
   try {
     connection = await connectToDatabase();
+
+    // get maximum aadad motaha lel 3eyadat
+    const max_query = `
+    SELECT  SPECIALISIM.M_SPEC_CODE,CLINIC.SPECIALISIM_CODE,V_CLINIC_NAME.CLINIC_CODE,V_CLINIC_NAME.CLINIC_OUT_NAME,CLINIC.TR_P_NUM
+FROM    V_CLINIC_NAME,CLINIC,SPECIALISIM
+WHERE   V_CLINIC_NAME.CLINIC_CODE = CLINIC.CLINIC_CODE
+AND      CLINIC.SPECIALISIM_CODE = SPECIALISIM.SPECIALISIM_CODE 
+AND       V_CLINIC_NAME.CLINIC_OUT_NAME NOT LIKE '%معطل%'
+AND      CLINIC.TR_P_NUM > 0
+AND       V_CLINIC_NAME.CLINIC_CODE NOT IN (20029110001,20029130001,20029140001,20029150001,20024110001,20078140001,
+20093130001,20093140001,20093150001,20093160001,20093170001,20093180001,
+20093190001,20002120001,10000000000,20044210001)
+ORDER BY SPECIALISIM.M_SPEC_CODE,CLINIC.SPECIALISIM_CODE,CLINIC.TR_P_NUM DESC
+    `;
 
     // Your database queries or operations go here
     const FD = formatOracleDate(req.query.fdate);
@@ -96,8 +120,15 @@ export default async function handler(req, res) {
       AND     RESERVE_CLINIC.RESERVE_DATE >= '${FD}'
       AND     RESERVE_CLINIC.RESERVE_DATE <= '${FD}'
     `;
+    // query to fetch aadad motaha
+    const max_res = await runQuery(max_query);
+    const max_res_obj = {};
+    max_res.forEach((el) => {
+      if (!max_res_obj[el[3]]) max_res_obj[el[3]] = el[4];
+    });
+    // query to preprocess data and filteration
     const result = await runQuery(query);
-    const filtered_result = countMedicineForPatients(result);
+    const filtered_result = countMedicineForPatients(result, max_res_obj);
     res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);

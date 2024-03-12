@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import FromToII from "../../../components/FromToII";
 import { Button, CircularProgress } from "@mui/material";
 
@@ -16,6 +16,7 @@ export default function AdweyaEyadat() {
   const [rows, setRows] = useState([]);
 
   const [startDate, setStartDate] = useState();
+  const [staticStartDate, setStaticStartDate] = useState();
   const [loading, setLoading] = useState(false);
 
   // api fetching
@@ -24,6 +25,7 @@ export default function AdweyaEyadat() {
     fetch(`/api/adweyaeyadat?fdate=${startDate}`)
       .then((response) => {
         response.json().then((res) => {
+          setStaticStartDate(startDate);
           setRows(res.data);
         });
       })
@@ -47,7 +49,9 @@ export default function AdweyaEyadat() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>ادوية عيادات</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            احصائية العيادات اليومية
+          </h1>
           <div
             style={{
               display: "grid",
@@ -75,7 +79,7 @@ export default function AdweyaEyadat() {
             <br />
             {loading ? <CircularProgress /> : null}
           </div>
-          {rows.length <= 0 || !startDate ? (
+          {rows.length <= 0 || !staticStartDate ? (
             <div
               style={{
                 display: "flex",
@@ -88,7 +92,7 @@ export default function AdweyaEyadat() {
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
               <MyDocument
                 data={rows}
-                title={`إحصائية الادوية المنصرفة بالعيادات عن يوم ${startDate}`}
+                title={`إحصائية الادوية المنصرفة بالعيادات عن يوم ${staticStartDate}`}
               />
             </DynamicPDFViewer>
           )}
