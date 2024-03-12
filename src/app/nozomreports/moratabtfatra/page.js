@@ -15,44 +15,29 @@ const DynamicPDFViewer = dynamic(
 );
 export default function MoratabtFatra() {
   const [rows, setRows] = useState([]);
-  const itemsPerPage = 10; // Number of items per page
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  today = dd + "-" + mm + "-" + yyyy;
 
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState("1-1-2000");
+  const [endDate, setEndDate] = useState(today);
+
+  const [staticStartDate, setStaticStartDate] = useState();
+  const [staticEndDate, setStaticEndDate] = useState();
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const totalPages = Math.ceil(rows.length / itemsPerPage);
-
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, rows.length);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
-  };
-  const headers = [
-    "",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "h7",
-    "h8",
-    "h9",
-    "h10",
-  ];
+  const [patientCode, setPatientCode] = useState("1388879");
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch(`/api/moratabtfatra?fdate=${startDate}&tdate=${endDate}`)
+    fetch(
+      `/api/moratabtfatra?fdate=${startDate}&tdate=${endDate}&patientCode=${patientCode}`
+    )
       .then((response) => {
         response.json().then((res) => {
+          setStaticStartDate(startDate);
+          setStaticEndDate(endDate);
           setRows(res.data);
           console.log(res.data);
         });
@@ -64,27 +49,6 @@ export default function MoratabtFatra() {
         setLoading(false);
       });
   };
-  const handleSaveAsPDF = async () => {
-    // Dynamically import html2pdf only on the client-side
-    const html2pdf = (await import("html2pdf.js")).default;
-
-    const content = document.getElementById("pdf-container");
-
-    if (!content) {
-      console.error("Could not find PDF container");
-      return;
-    }
-
-    const pdfOptions = {
-      margin: 10,
-      filename: "table.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
-    html2pdf().from(content).set(pdfOptions).save();
-  };
-
   return (
     <div
       style={{
@@ -141,33 +105,10 @@ export default function MoratabtFatra() {
               <MyDocument
                 data={rows}
                 title={`
-                احصائية من ${startDate} الي ${endDate}`}
+                احصائية من ${staticStartDate} الي ${staticEndDate}`}
               />
             </DynamicPDFViewer>
           )}
-        </div>
-        <div style={{ alignSelf: "center" }}>
-          <Button
-            style={{
-              backgroundColor: "#F0ECE5",
-              color: "#161A30",
-              marginTop: 100,
-              fontWeight: "bold",
-            }}
-            variant="contained"
-            onClick={handleSaveAsPDF}
-          >
-            Save as PDF
-          </Button>
-          <button onClick={handlePrevPage} disabled={currentPage === 0}>
-            Previous
-          </button>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            Next
-          </button>
         </div>
       </div>
     </div>
