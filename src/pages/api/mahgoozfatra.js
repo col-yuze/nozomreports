@@ -5,6 +5,50 @@ const {
   runQuery,
 } = require("../../lib/db");
 
+// preprocessing data
+const PatientsHosps = (result) => {
+  const hosps = new Map();
+  result.sort((a, b) => a[0] - b[0]);
+
+  result.forEach((el, i) => {
+    const id = el[0];
+    const data = [i + 1, el[3], el[4], el[5], el[6], el[7], el[8], el[9]];
+
+    if (!hosps.has(id)) {
+      hosps.set(id, [
+        [
+          "م",
+          "القسم",
+          "ضباط",
+          "صف",
+          "مدنيين",
+          "عائلات ضباط",
+          "عائلات صف",
+          "اجمالي",
+        ],
+      ]);
+    }
+    hosps.get(id).push(data);
+  });
+
+  hosps.forEach((value, key) => {
+    const totalRow = value.reduce((acc, row, index) => {
+      if (index !== 0) {
+        for (let i = 0; i < row.length; i++) {
+          acc[i] = (acc[i] || 0) + row[i];
+        }
+      }
+      return acc;
+    }, []);
+    totalRow[0] = "الاجمالي";
+    totalRow[1] = "-";
+    value.push(totalRow);
+  });
+
+  const grouped_result = Array.from(hosps, ([id, data]) => [id, data]);
+  return grouped_result;
+};
+
 export default async function handler(req, res) {
   let connection;
 
@@ -42,38 +86,9 @@ export default async function handler(req, res) {
             ORDER BY WARD.F_W_CODE
             `;
     const result = await runQuery(query);
-    const filtered_result = result.map((el, i) => [
-      i + 1,
-      el[3],
-      el[4],
-      el[5],
-      el[6],
-      el[7],
-      el[8],
-      el[9],
-    ]);
-    const sum_arr = ["", "الاجمالي", 0, 0, 0, 0, 0, 0];
-    for (const [num, hosp, d, s, m, df, sf, t] of filtered_result) {
-      sum_arr[2] += d;
-      sum_arr[3] += s;
-      sum_arr[4] += m;
-      sum_arr[5] += df;
-      sum_arr[6] += sf;
-      sum_arr[7] += t;
-    }
-    filtered_result.push(sum_arr);
-    filtered_result.unshift([
-      "م",
-      "القسم",
-      "ضباط",
-      "صف",
-      "مدنيين",
-      "عائلات ضباط",
-      "عائلات صف",
-      "اجمالي",
-    ]);
+    const filtered_result = PatientsHosps(result);
     //remove first useless element
-    res.status(200).json({ success: true, data: filtered_result });
+    res.status(200).json({ success: true, data: filtered_result[0][1] });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
