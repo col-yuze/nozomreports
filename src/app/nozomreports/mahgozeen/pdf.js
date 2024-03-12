@@ -165,8 +165,9 @@ const MyDocument = ({ data, title }) => {
                       backgroundColor:
                         index === 1 && titlePages.includes(pageIndex)
                           ? "#d4d8dd"
-                          : (index === 0 && titlePages.includes(pageIndex)) ||
-                            rowData[3] === today
+                          : index === 0
+                          ? "#e1e1e1"
+                          : rowData[3] === today
                           ? "#e1e1e1"
                           : "white",
                     },
