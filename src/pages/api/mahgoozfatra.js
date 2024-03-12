@@ -57,11 +57,34 @@ export default async function handler(req, res) {
 
     // Retrieve parameters from query
     const Options = req.query.Options;
+    const QueryType = 1; //req.query.QueryType;
     const D1 = formatOracleDate(req.query.StartDate); //req.data.param1;
     const D2 = formatOracleDate(req.query.EndDate); //req.data.param2;
-
     // Your database queries or operations go here
-    const query = `
+    const dept_query = `
+    SELECT DEPARTMENT.DEPARTMENT_CODE,DEPARTMENT.DEPARTMENT_NAME,
+            SUM(CASE WHEN PATIENT.RANK IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22) THEN 1 ELSE 0 END) DOBAT,
+            SUM(CASE WHEN PATIENT.RANK IN (12, 13, 14, 15, 16, 17, 18, 19, 23) THEN 1 ELSE 0 END) SAF,
+            SUM(CASE WHEN PATIENT.RANK IN (20,21) AND  PATIENT.KINSHIP_PATIENT_NUM IS NULL THEN 1 ELSE 0 END) MADANY,
+            SUM(CASE WHEN PATIENT.RANK IN (20,21) AND  P2.RANK IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22)  THEN 1 ELSE 0 END) DOBAT_F,
+            SUM(CASE WHEN PATIENT.RANK IN (20,21) AND  P2.RANK IN (12, 13, 14, 15, 16, 17, 18, 19, 23)  THEN 1 ELSE 0 END) SAF_F,
+            COUNT(*) CNT
+FROM   PATIENT,PERSON,PATIENT_IN,PATIENT_GOING_IN_ROOM,ROOM,DEPARTMENT,PATIENT P2
+WHERE PATIENT.ID_CODE = PERSON.ID_CODE
+AND     PATIENT.PATIENT_NUM = PATIENT_IN.PATIENT_NUM
+AND    PATIENT_IN.PATIENT_NUM = PATIENT_GOING_IN_ROOM.PATIENT_NUM
+AND    PATIENT_IN.ARIVAL_SERIAL = PATIENT_GOING_IN_ROOM.ARIVAL_SERIAL
+AND    PATIENT_GOING_IN_ROOM.ROOM_NUM = ROOM.ROOM_NUM
+AND    ROOM.DEPARTMENT_CODE = DEPARTMENT.DEPARTMENT_CODE
+AND    PATIENT.KINSHIP_PATIENT_NUM = P2.PATIENT_NUM(+)
+AND    (DEPARTMENT.DEPARTMENT_CODE = ${Options.split("-")[0]} OR ${
+      Options.split("-")[0]
+    } = 0)
+AND    PATIENT_GOING_IN_ROOM.GOING_IN_DATE >=  '${D1}'
+AND    PATIENT_GOING_IN_ROOM.GOING_IN_DATE  <= '${D2}'
+GROUP BY DEPARTMENT.DEPARTMENT_CODE,DEPARTMENT.DEPARTMENT_NAME
+ORDER BY DEPARTMENT.DEPARTMENT_CODE`;
+    const bul_query = `
     SELECT WARD.BUILDING_NUM,BUILDING.BUILDING_NAME,WARD.F_W_CODE,WARD.F_W_NAME,
             SUM(CASE WHEN PATIENT.RANK IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22) THEN 1 ELSE 0 END) DOBAT,
             SUM(CASE WHEN PATIENT.RANK IN (12, 13, 14, 15, 16, 17, 18, 19, 23) THEN 1 ELSE 0 END) SAF,
@@ -85,10 +108,11 @@ export default async function handler(req, res) {
             GROUP BY WARD.BUILDING_NUM,BUILDING.BUILDING_NAME,WARD.F_W_CODE,WARD.F_W_NAME
             ORDER BY WARD.F_W_CODE
             `;
+    const query = QueryType === 1 ? bul_query : dept_query;
     const result = await runQuery(query);
     const filtered_result = PatientsHosps(result);
     //remove first useless element
-    res.status(200).json({ success: true, data: filtered_result[0][1] });
+    res.status(200).json({ success: true, data: filtered_result[1][1] });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
