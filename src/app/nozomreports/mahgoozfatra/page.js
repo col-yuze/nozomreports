@@ -5,7 +5,7 @@ import FromTo from "../../../components/FromTo";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import { CircularProgress } from "@mui/material";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),

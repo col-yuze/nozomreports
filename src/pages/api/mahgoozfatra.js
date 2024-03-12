@@ -112,7 +112,7 @@ ORDER BY DEPARTMENT.DEPARTMENT_CODE`;
     const result = await runQuery(query);
     const filtered_result = PatientsHosps(result);
     //remove first useless element
-    res.status(200).json({ success: true, data: filtered_result[1][1] });
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
