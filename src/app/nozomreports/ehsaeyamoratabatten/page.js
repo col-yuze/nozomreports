@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import MyDocument from "./pdf";
 import FromToII from "@/components/FromToII";
 import { CircularProgress } from "@mui/material";
+
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -16,11 +17,11 @@ export default function EhsaeyaMoratabatten() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState();
   const [loading, setLoading] = useState(false);
+  const [num, setNum] = React.useState(10);
   const headers = ["م", "عدد المرضى ", "عدد الادوية ", "الاجمالي"];
-
   // api fetching
   const fetchDataTable = async () => {
-    fetch(`/api/ehsaeyamoratabatten?datein=${startDate}&countin=10`)
+    fetch(`/api/ehsaeyamoratabatten?datein=${startDate}&countin=${num}`)
       .then((response) => {
         response.json().then((res) => {
           setRows([headers, ...res.data]);
@@ -59,7 +60,11 @@ export default function EhsaeyaMoratabatten() {
                 alignItems: "center",
               }}
             >
-              <FromToII setStartDateTwo={setStartDate} two="one" />
+              <FromToII
+                setStartDateTwo={setStartDate}
+                two="number"
+                setNumTwo={setNum}
+              />
               <br />
               <Button
                 style={{
