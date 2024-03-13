@@ -4,7 +4,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import DropDown from "../components/DropDown";
 import "react-dropdown/style.css";
 import { format } from "date-fns";
-import ReactTooltip from "react-tooltip";
 
 export default function FromTo({
   setStartDateTwo,
@@ -19,6 +18,7 @@ export default function FromTo({
 }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
+
   // const formattedStartDate = startDate
   //   ? format(startDate, "dd-MM-yyyy")
   //   : "Select a start date";
@@ -44,8 +44,9 @@ export default function FromTo({
             mode={mode}
           />
         </div>
+
         <div className="flex items-center" style={{ justifyContent: "end" }}>
-          {mode === "1" ? (
+          {mode === "1" || mode === "mosts" || mode === "aqsam" ? (
             <>
               <div className="relative">
                 <span style={{ display: "inline-block" }}>
@@ -103,7 +104,9 @@ export default function FromTo({
                   className="text-left border-l-4 border-red-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
                   showIcon
                   placeholderText={
-                    mode === "1" ? "بــدايــة الـفـتـرة" : "اخــتـر"
+                    mode === "1" || mode === "aqsam" || mode === "mosts"
+                      ? "بــدايــة الـفـتـرة"
+                      : "اخــتـر"
                   }
                   selected={startDate}
                   onChange={(date) => {

@@ -32,7 +32,7 @@ const PatientsHosps = (result) => {
   });
 
   hosps.forEach((value, key) => {
-    const totalRow = value.reduce((acc, row, index) => {
+    var totalRow = value.reduce((acc, row, index) => {
       if (index !== 0) {
         for (let i = 0; i < row.length; i++) {
           acc[i] = (acc[i] || 0) + row[i];
@@ -41,7 +41,9 @@ const PatientsHosps = (result) => {
       return acc;
     }, []);
     totalRow[0] = "الاجمالي";
-    totalRow[1] = "-";
+    totalRow[1] = "الاجمالي";
+    totalRow = totalRow.slice(1, totalRow.length);
+
     value.push(totalRow);
   });
 

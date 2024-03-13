@@ -7,6 +7,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
 import MyDocument from "./pdf";
 import { CircularProgress } from "@mui/material";
+
+import ReactTooltip from "react-tooltip";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -23,6 +31,7 @@ export default function Mahgoozfatra() {
   const [selectedOption, setSelectedOption] = useState("0-الكل");
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
+  var modeOfAqsamOrMosts = "mosts";
   var dept = "بكل الأقسام";
   function formatDate(date) {
     const day = date.getDate();
@@ -34,7 +43,10 @@ export default function Mahgoozfatra() {
   }
 
   // api fetching
-
+  function setAqsamOrMosts(AqsamOrMosts) {
+    modeOfAqsamOrMosts = AqsamOrMosts;
+    fetchDataTable();
+  }
   const fetchDataTable = async () => {
     setLoading(true);
     if (startDate && endDate) {
@@ -111,7 +123,7 @@ export default function Mahgoozfatra() {
             setEndDateTwo={setEndDate}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
-            mode="1"
+            mode={modeOfAqsamOrMosts}
           />
           <div
             style={{
@@ -135,6 +147,31 @@ export default function Mahgoozfatra() {
             >
               اظهر البيانات
             </Button>
+          </div>
+          <div>
+            <FormControl>
+              <FormLabel id="demo-radio-buttons-group-label">
+                أقــســام أم مستشفــيــات
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="aqsamOrMosts"
+                name="radio-buttons-group"
+              >
+                <FormControlLabel
+                  value="aqsamOrMosts"
+                  control={<Radio />}
+                  label="مستشفــيــات"
+                  onClick={setAqsamOrMosts("mosts")}
+                />
+                <FormControlLabel
+                  value="8"
+                  control={<Radio />}
+                  label="أقــســام"
+                  onClick={setAqsamOrMosts("aqsam")}
+                />
+              </RadioGroup>
+            </FormControl>
           </div>
           <br></br>
           <br></br>
