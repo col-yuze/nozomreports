@@ -18,6 +18,7 @@ export default async function handler(req, res) {
     const patientCode = req.query.patientCode;
 
     const HospMoratab = (result) => {
+      if (result.length === 0) return [];
       const hosp = new Map();
       hosp.set("info", [[result[0][9], "الاسم", result[0][8], "رقم الحاسب"]]);
       result.sort((a, b) => {
@@ -71,8 +72,7 @@ ORDER BY PRESCRIPTION.PRESCRIPTION_DATE DESC,PRESCRIPTION.CREATION_USER
     `;
     const result = await runQuery(query);
     const filtered_result = HospMoratab(result);
-    console.log(filtered_result);
-    res.status(200).json({ success: true, data: filtered_result[2][1] });
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
