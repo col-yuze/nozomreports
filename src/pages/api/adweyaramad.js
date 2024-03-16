@@ -42,13 +42,24 @@ function countMedicineForPatients(arr) {
     var sum = 0;
     const clinic_count = [];
     for (const rank_part of unique_ranks) {
-      clinic_count.push(clinicCounts[rank_part] ?? "");
+      clinic_count.push(clinicCounts[rank_part] ?? 0);
       if (typeof clinicCounts[rank_part] === "number") {
         sum += clinicCounts[rank_part];
       }
     }
     result.push([clinic, ...clinic_count, sum]);
   }
+
+  // reduce to a single array with all the values total_sum
+  const total_sum = result.reduce((acc, row) => {
+    row.forEach((el, i) => {
+      acc[i] = (acc[i] || 0) + el;
+    });
+    // add this row to the end of the array
+    // filtered_res.push(acc);
+    return acc;
+  }, []);
+  total_sum[0] = "الاجمالي";
 
   // append the first row to be headers
   const place_arr_mapped = unique_ranks.map((el) => {
@@ -61,6 +72,7 @@ function countMedicineForPatients(arr) {
   place_arr_mapped.push("الاجمالي");
   place_arr_mapped.unshift("التخصص");
   result.unshift(place_arr_mapped);
+  result.push(total_sum);
 
   return result;
 }
