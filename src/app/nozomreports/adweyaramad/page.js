@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import { Button, CircularProgress } from "@mui/material";
 
 import FromToII from "../../../components/FromToII";
@@ -16,6 +16,8 @@ export default function AdweyaRamad() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [staticStartDate, setStaticStartDate] = useState();
+  const [staticEndDate, setStaticEndDate] = useState();
   const [loading, setLoading] = useState(false);
   // api fetching
   const fetchDataTable = async () => {
@@ -24,7 +26,8 @@ export default function AdweyaRamad() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          console.log(res.data);
+          setStaticStartDate(startDate);
+          setStaticEndDate(endDate);
         });
       })
       .catch((err) => {
@@ -94,7 +97,7 @@ export default function AdweyaRamad() {
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
               <MyDocument
                 data={rows}
-                title={`احصائية عددية لعيادات الرمد للفترة من ${startDate} الي ${endDate}`}
+                title={`احصائية عددية لعيادات الرمد للفترة من ${staticStartDate} الي ${staticEndDate}`}
               />
             </DynamicPDFViewer>
           )}
