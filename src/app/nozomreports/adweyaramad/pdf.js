@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   section: {
     margin: 5,
-    padding: "20px 10px",
+    padding: "10px 10px",
     flexGrow: 1,
   },
   titleContainer: {
@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
   signatureContainer: {
     display: "flex",
     flexDirection: "row-reverse",
-    justifyContent: "space-around",
+    justifyContent: "flex-end",
     marginTop: 20,
   },
   signature: {
     width: "180px",
     fontSize: 12,
-    marginBottom: 5,
+    marginBottom: 0,
     fontWeight: 800,
   },
   header: {
@@ -126,16 +126,23 @@ const MyDocument = ({ data, title }) => {
     }
   }
 
+  const signatures = [
+    {
+      name: "لواء طبيب / ايهاب فؤاد عبدالرحيم",
+      signature: "مدير علاجى مستشفي العيون التخصصى",
+    },
+  ];
+
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
         <Page size="A4" style={styles.page} key={pageIndex}>
           <View style={styles.section}>
-            {pageIndex === 0 && (
+            {
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{title}</Text>
               </View>
-            )}
+            }
             <View style={styles.subTitleContainer}>
               <Text style={styles.title}>
                 {pageIndex === 0
@@ -185,6 +192,16 @@ const MyDocument = ({ data, title }) => {
                       {cellData.toString()}
                     </Text>
                   ))}
+                </View>
+              ))}
+            </View>
+            <View style={styles.signatureContainer}>
+              {signatures.map(({ name, signature }, index) => (
+                <View key={index} style={styles.signature}>
+                  <Text style={{ textAlign: "right" }}>(                                             )التوقيع</Text>
+                  <Text style={{ textAlign: "right", textAlign:'center' }}>{name}</Text>
+                  <Text style={{ textAlign: "right" }}>{signature}</Text>
+                  {/* prettier-ignore */}
                 </View>
               ))}
             </View>
