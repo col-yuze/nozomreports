@@ -175,8 +175,32 @@ AND     RESERVE_CLINIC.RESERVE_DATE >= '${FD}'
 AND     RESERVE_CLINIC.RESERVE_DATE <= '${TD}'
     `;
     const result = await runQuery(query);
-    const filtered_result = countMedicineForPatients(result);
-    res.status(200).json({ success: true, data: filtered_result });
+
+    let res_khargy = [];
+    let res_dakhly = [];
+
+    result.map((el) => {
+      if (
+        (el[3].includes("صف") ||
+          el[3].includes("عقيد") ||
+          el[3].includes("الخاصة") ||
+          el[3].includes("مقدم")) &&
+        !el[3].includes("ابحاث")
+      ) {
+        res_khargy.push(el);
+      } else {
+        res_dakhly.push(el);
+      }
+    });
+    res_khargy = countMedicineForPatients(res_khargy);
+    res_dakhly = countMedicineForPatients(res_dakhly);
+    res.status(200).json({
+      success: true,
+      data: {
+        khargy: res_khargy,
+        dakhly: res_dakhly,
+      },
+    });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
