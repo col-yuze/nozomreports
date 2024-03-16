@@ -194,13 +194,7 @@ AND     RESERVE_CLINIC.RESERVE_DATE <= '${TD}'
     });
     res_khargy = countMedicineForPatients(res_khargy);
     res_dakhly = countMedicineForPatients(res_dakhly);
-    res.status(200).json({
-      success: true,
-      data: {
-        khargy: res_khargy,
-        dakhly: res_dakhly,
-      },
-    });
+    res.status(200).json({ success: true, data: [res_khargy, res_dakhly] });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

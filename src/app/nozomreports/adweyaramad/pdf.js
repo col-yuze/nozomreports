@@ -91,17 +91,28 @@ const rowsPerPage = 33; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
-
   // Dynamically split data into pages considering different row limits
   const pagesData = [];
   let index = 0;
   let isFirstPage = true;
 
-  while (index < data.length) {
-    const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
-    pagesData.push(data.slice(index, index + limit));
-    index += limit;
-    isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
+  for (let j = 0; j < data.length; j++) {
+    isFirstPage = true;
+    if (data[j].length > 0) {
+      var arrayTop = [];
+      while (index < data[j].length) {
+        const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
+        var arr = [];
+        //if (index == 0)
+        arr = arrayTop.concat(data[j].slice(index, index + limit));
+        //else arr = data[j][1].slice(index, index + limit);
+        pagesData.push(arr);
+
+        index += limit;
+        isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
+      }
+      index = 0;
+    }
   }
 
   return (
@@ -120,8 +131,7 @@ const MyDocument = ({ data, title }) => {
                   style={[
                     styles.row,
                     {
-                      backgroundColor:
-                        index === 0 && pageIndex === 0 ? "#e1e1e1" : "white",
+                      backgroundColor: index === 0 ? "#e1e1e1" : "white",
                     },
                   ]}
                   key={index}
@@ -132,19 +142,18 @@ const MyDocument = ({ data, title }) => {
                         styles.cell,
                         {
                           fontSize:
-                            index === 0 && cellIndex === 0 && pageIndex === 0
+                            index === 0 && cellIndex === 0
                               ? "25px"
-                              : index === 0 && pageIndex === 0
+                              : index === 0
                               ? "10px"
                               : "8px",
                           flex: cellIndex === 0 ? "4" : "0.5",
                           paddingTop:
-                            index === 0 && cellIndex === 0 && pageIndex === 0
-                              ? "17px"
-                              : "auto",
+                            index === 0 && cellIndex === 0 ? "17px" : "auto",
                           backgroundColor:
-                            index === pageData.length - 1 &&
-                            pageIndex === pagesData.length - 1
+                            (index === pageData.length - 1 &&
+                              pageIndex === pagesData.length - 1) ||
+                            (index === 6 && pageIndex === 0)
                               ? "#ffe0e0"
                               : cellIndex === rowData.length - 1
                               ? "#ffe0e0"
