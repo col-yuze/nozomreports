@@ -35,6 +35,8 @@ function countMedicineForPatients(arr) {
   const unique_ranks = ranks.filter(
     (value, index, array) => array.indexOf(value) === index
   );
+  // Sort alphabetically
+  unique_ranks.sort((a, b) => a[0].localeCompare(b[0]));
 
   const result = [];
   for (const clinic in counts) {
@@ -71,6 +73,7 @@ function countMedicineForPatients(arr) {
   });
   place_arr_mapped.push("الاجمالي");
   place_arr_mapped.unshift("التخصص");
+
   result.unshift(place_arr_mapped);
   result.push(total_sum);
 

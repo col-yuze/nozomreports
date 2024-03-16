@@ -38,6 +38,17 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     textDecoration: "underline",
   },
+  subTitle: {
+    textAlign: "end", // Align to the far right
+    fontSize: 14,
+    textDecoration: "underline",
+    textColor: "red",
+  },
+
+  subTitleContainer: {
+    marginBottom: 10,
+    alignSelf: "flex-end", // Align the container to the far right
+  },
   esmElmogm3: {
     fontSize: 10,
     marginBottom: 5,
@@ -125,6 +136,15 @@ const MyDocument = ({ data, title }) => {
                 <Text style={styles.title}>{title}</Text>
               </View>
             )}
+            <View style={styles.subTitleContainer}>
+              <Text style={styles.title}>
+                {pageIndex === 0
+                  ? "العيادات الخارجية لمست الرمد"
+                  : pageIndex === 1
+                  ? "العيادات التخصصية لمست الرمد"
+                  : null}
+              </Text>
+            </View>
             <View style={styles.table}>
               {pageData.map((rowData, index) => (
                 <View
