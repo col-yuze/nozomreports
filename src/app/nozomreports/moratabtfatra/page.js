@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 
 import { CircularProgress } from "@mui/material";
 import FromToII from "../../../components/FromToII";
