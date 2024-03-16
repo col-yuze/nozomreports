@@ -79,16 +79,19 @@ const styles = StyleSheet.create({
     border: "1px solid black",
   },
   signatureContainer: {
-    display: "flex",
+    position: "absolute",
+    bottom: 0,
+    right:200,
     flexDirection: "row-reverse",
-    justifyContent: "flex-end",
-    marginTop: 20,
+    justifyContent: "space-around",
+    width: "100%",
   },
   signature: {
     width: "180px",
     fontSize: 12,
-    marginBottom: 0,
+    marginBottom: 5,
     fontWeight: 800,
+    textAlign: "right",
   },
   header: {
     display: "flex",
@@ -128,8 +131,8 @@ const MyDocument = ({ data, title }) => {
 
   const signatures = [
     {
-      name: "لواء طبيب / ايهاب فؤاد عبدالرحيم",
-      signature: "مدير علاجى مستشفي العيون التخصصى",
+      name: "لواء طبيب / ايــهاب فؤاد عبدالرحيم",
+      signature: "مدير علاجى مستشفــي العيون التخصصى",
     },
   ];
 
@@ -198,8 +201,8 @@ const MyDocument = ({ data, title }) => {
             <View style={styles.signatureContainer}>
               {signatures.map(({ name, signature }, index) => (
                 <View key={index} style={styles.signature}>
-                  <Text style={{ textAlign: "right" }}>(                                             )التوقيع</Text>
-                  <Text style={{ textAlign: "right", textAlign:'center' }}>{name}</Text>
+                  <Text style={{ textAlign: "right" }}>(                                               )التوقيع</Text>
+                  <Text style={{ textAlign: "right" }}>{name}</Text>
                   <Text style={{ textAlign: "right" }}>{signature}</Text>
                   {/* prettier-ignore */}
                 </View>
