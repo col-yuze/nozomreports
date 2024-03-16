@@ -6,6 +6,62 @@ const {
   runQuery,
 } = require("../../lib/db");
 
+
+function PatientsArrivalCounts(arr) {
+  // add all meds
+  const clinics = [];
+  const counts = {};
+  for (const [rank_order, rank, arrival_type, clinic, code] of arr) {
+    clinics.push(clinic);
+    // for each id and medicine insert the quantity
+    if (!counts[rank]) counts[rank] = {};
+
+    // If the medicine doesn't exist at this place, initialize it
+    if (!counts[rank][clinic]) counts[rank][clinic] = 0;
+
+    // Increment the count for this medicine at this place
+    counts[rank][clinic]++;
+  }
+  // remove unique values
+  const unique_clinics = clinics.filter(
+    (value, index, array) => array.indexOf(value) === index
+  );
+  // Sort alphabetically
+  unique_clinics.sort((a, b) => a[0].localeCompare(b[0]));
+
+  const result = [];
+  for (const rank in counts) {
+    const rankCounts = counts[rank];
+    var sum = 0;
+    const rank_count = [];
+    for (const clinic_part of unique_clinics) {
+      rank_count.push(rankCounts[clinic_part] ?? 0);
+      if (typeof rankCounts[clinic_part] === "number") {
+        sum += rankCounts[clinic_part];
+      }
+    }
+    result.push([rank, ...rank_count, sum]);
+  }
+
+  // reduce to a single array with all the values total_sum
+  const total_sum = result.reduce((acc, row) => {
+    row.forEach((el, i) => {
+      acc[i] = (acc[i] || 0) + el;
+    });
+    // add this row to the end of the array
+    // filtered_res.push(acc);
+    return acc;
+  }, []);
+  total_sum[0] = "الاجمالي";
+
+  unique_clinics.push("الاجمالي");
+  unique_clinics.unshift("الرتبة / الدرجة");
+
+  result.unshift(unique_clinics);
+  result.push(total_sum);
+
+  return result;
+}
 export default async function handler(req, res) {
   let connection;
 
@@ -53,7 +109,8 @@ AND     P2.RANK BETWEEN 12 AND 24
 AND     TO_CHAR(ARRIVAL.ARRIVAL_DATE,'DD-MM-YYYY') = '${DATE_IN}'
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    const filtered_result = PatientsArrivalCounts(result)
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
