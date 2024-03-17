@@ -37,7 +37,7 @@ const DropDown = ({
         .catch((err) => console.error(err));
     };
     console.log(mode);
-    if (mode == 8) {
+    if (mode == 8 || mode == "aqsam") {
       fetchData();
     }
   }, []);

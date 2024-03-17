@@ -229,7 +229,7 @@ const MyDocument = ({ data, title }) => {
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString()}
+                      {cellData}
                     </Text>
                   ))}
                 </View>

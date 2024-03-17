@@ -59,7 +59,7 @@ export default async function handler(req, res) {
 
     // Retrieve parameters from query
     const Options = req.query.Options;
-    const QueryType = 1; //req.query.QueryType;
+    const QueryType = req.query.QueryType;
     const D1 = formatOracleDate(req.query.StartDate); //req.data.param1;
     const D2 = formatOracleDate(req.query.EndDate); //req.data.param2;
     // Your database queries or operations go here
@@ -110,7 +110,7 @@ ORDER BY DEPARTMENT.DEPARTMENT_CODE`;
             GROUP BY WARD.BUILDING_NUM,BUILDING.BUILDING_NAME,WARD.F_W_CODE,WARD.F_W_NAME
             ORDER BY WARD.F_W_CODE
             `;
-    const query = QueryType === 1 ? bul_query : dept_query;
+    const query = QueryType === 0 ? bul_query : dept_query;
     const result = await runQuery(query);
     const filtered_result = PatientsHosps(result);
     //remove first useless element

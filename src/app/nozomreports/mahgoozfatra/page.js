@@ -2,7 +2,7 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import FromTo from "../../../components/FromTo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
 import MyDocument from "./pdf";
@@ -29,9 +29,11 @@ export default function Mahgoozfatra() {
 
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState("0-الكل");
+  const [aqsamOrMosts, setAqsamOrMosts] = React.useState("aqsam");
+  const [selectedOptionStatic, setSelectedOptionStatic] = useState("0-الكل");
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
-  var modeOfAqsamOrMosts = "mosts";
+  // var modeOfAqsamOrMosts = "mosts";
   var dept = "بكل الأقسام";
   function formatDate(date) {
     const day = date.getDate();
@@ -43,12 +45,16 @@ export default function Mahgoozfatra() {
   }
 
   // api fetching
-  function setAqsamOrMosts(AqsamOrMosts) {
-    modeOfAqsamOrMosts = AqsamOrMosts;
-    fetchDataTable();
-  }
+  // function setAqsamOrMostsPlusRerender(AqsamOrMosts) {
+  //   if (AqsamOrMosts.length != aqsamOrMosts) setAqsamOrMosts(AqsamOrMosts);
+  //   window.location.reload(false);
+  // }
+  var qt = 0;
   const fetchDataTable = async () => {
+    setSelectedOptionStatic(selectedOption);
+    console.log(selectedOption.split("P")[0]);
     setLoading(true);
+    aqsamOrMosts === "mosts" ? (qt = 1) : (qt = 0);
     if (startDate && endDate) {
       const _startDate = new Date(
         startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
@@ -64,7 +70,9 @@ export default function Mahgoozfatra() {
           "&EndDate=" +
           formattedEndDate +
           "&Options=" +
-          selectedOption[0]
+          selectedOption.split("-")[0] +
+          "&QueryType=" +
+          qt
       )
         .then((response) => {
           response.json().then((res) => {
@@ -76,7 +84,7 @@ export default function Mahgoozfatra() {
           console.error(err);
         });
     } else {
-      console.log("shit");
+      console.log(selectedOption.split("-")[0]);
     }
   };
 
@@ -123,8 +131,41 @@ export default function Mahgoozfatra() {
             setEndDateTwo={setEndDate}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
-            mode={modeOfAqsamOrMosts}
+            mode={aqsamOrMosts}
           />
+          <div
+            style={{
+              zIndex: 1,
+              position: "absolute",
+              top: 0,
+              marginTop: "11%",
+              marginLeft: "20%",
+            }}
+          >
+            <FormControl>
+              <FormLabel id="demo-radio-buttons-group-label">
+                أقــســام أم مستشفــيــات
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="aqsam"
+                name="radio-buttons-group"
+              >
+                <FormControlLabel
+                  value="mosts"
+                  control={<Radio />}
+                  label="مستشفــيــات"
+                  onClick={() => setAqsamOrMosts("mosts")}
+                />
+                <FormControlLabel
+                  value="aqsam"
+                  control={<Radio />}
+                  label="أقــــــســــــام"
+                  onClick={() => setAqsamOrMosts("aqsam")}
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
           <div
             style={{
               alignSelf: "center",
@@ -148,31 +189,7 @@ export default function Mahgoozfatra() {
               اظهر البيانات
             </Button>
           </div>
-          <div>
-            <FormControl>
-              <FormLabel id="demo-radio-buttons-group-label">
-                أقــســام أم مستشفــيــات
-              </FormLabel>
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="aqsamOrMosts"
-                name="radio-buttons-group"
-              >
-                <FormControlLabel
-                  value="aqsamOrMosts"
-                  control={<Radio />}
-                  label="مستشفــيــات"
-                  onClick={setAqsamOrMosts("mosts")}
-                />
-                <FormControlLabel
-                  value="8"
-                  control={<Radio />}
-                  label="أقــســام"
-                  onClick={setAqsamOrMosts("aqsam")}
-                />
-              </RadioGroup>
-            </FormControl>
-          </div>
+
           <br></br>
           <br></br>
           <br></br>
@@ -182,7 +199,7 @@ export default function Mahgoozfatra() {
               <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
                 {selectedOption === "0-الكل"
                   ? (dept = "كل الأقسام")
-                  : (dept = selectedOption.substring(2))}
+                  : (dept = selectedOptionStatic.split("-")[1])}
 
                 <MyDocument
                   data={rows}
