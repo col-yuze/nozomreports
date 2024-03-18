@@ -3,10 +3,9 @@ import * as React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import { CircularProgress } from "@mui/material";
 import FromToII from "../../../components/FromToII";
-import NavBar from "./../../../components/NavBar.js";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -16,6 +15,7 @@ const DynamicPDFViewer = dynamic(
 export default function EhsaeyaEyadat() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState();
+  const [staticStartDate, setStaticStartDate] = useState();
   const [loading, setLoading] = useState(false);
   // api fetching
   const fetchDataTable = async () => {
@@ -24,6 +24,7 @@ export default function EhsaeyaEyadat() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
+          setStaticStartDate(startDate)
         });
       })
       .catch((err) => {
@@ -36,7 +37,6 @@ export default function EhsaeyaEyadat() {
 
   return (
     <>
-      <NavBar></NavBar>
       <div
         style={{
           padding: 65,
@@ -94,7 +94,7 @@ export default function EhsaeyaEyadat() {
               <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
                 <MyDocument
                   data={rows}
-                  title={`احصائية عددية للعيادات عن ${startDate} `}
+                  title={`احصائية عددية للعيادات عن ${staticStartDate} `}
                 />
               </DynamicPDFViewer>
             )}

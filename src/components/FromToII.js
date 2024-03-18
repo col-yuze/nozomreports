@@ -3,11 +3,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-dropdown/style.css";
 import { format } from "date-fns";
+import ReactTooltip from "react-tooltip";
+import { Unstable_NumberInput as NumberInput } from "@mui/base/Unstable_NumberInput";
 import { TextField } from "@mui/material";
 
-export default function FromToII({ setStartDateTwo, setEndDateTwo, two,isText,setText }) {
+export default function FromToII({ setStartDateTwo, setEndDateTwo, two,setNumTwo,isText,setText }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
+  const [num, setNum] = React.useState(null);
   // const formattedStartDate = startDate
   //   ? format(startDate, "dd-MM-yyyy")
   //   : "Select a start date";
@@ -72,7 +75,7 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two,isText,se
                         ? format(date, "dd-MM-yyyy")
                         : null;
                       setEndDateTwo(formattedEndDate);
-                      console.log(formattedEndDate);
+                      //console.log(formattedEndDate);
                     }}
                     minDate={startDate}
                     dateFormat="dd/MM/YYYY"
@@ -84,9 +87,21 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two,isText,se
               </div>
               <span className="mx-4 text-white text-2xl">إلى</span>
             </>
+          ) : two === "number" ? (
+            <NumberInput
+              aria-label="Demo number input"
+              placeholder="...عدد ادوية اكثر من"
+              value={num}
+              min={10}
+              onChange={(event, val) => {
+                setNum(val);
+                setNumTwo(val);
+              }}
+            />
           ) : (
-            " "
+            ""
           )}
+
           <div className="relative">
             <span style={{ display: "inline-block" }}>
               <DatePicker
