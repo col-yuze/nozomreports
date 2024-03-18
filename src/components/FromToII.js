@@ -1,21 +1,15 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import DropDown from "../components/DropDown";
 import "react-dropdown/style.css";
 import { format } from "date-fns";
 import ReactTooltip from "react-tooltip";
 import { Unstable_NumberInput as NumberInput } from "@mui/base/Unstable_NumberInput";
+import { TextField } from "@mui/material";
 
-export default function FromToII({
-  setStartDateTwo,
-  setEndDateTwo,
-  two,
-  setNumTwo,
-}) {
+export default function FromToII({ setStartDateTwo, setEndDateTwo, two,setNumTwo,isText,setText }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
-
   const [num, setNum] = React.useState(null);
   // const formattedStartDate = startDate
   //   ? format(startDate, "dd-MM-yyyy")
@@ -36,6 +30,26 @@ export default function FromToII({
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
         <div className="flex items-center" style={{ justifyContent: "end" }}>
+          {isText ? (
+            <div>
+              
+              <TextField
+                helperText='ادخل رقم الحاسب'
+                size="small"
+                style={{
+                  width: "100%",
+                  borderRadius: "5px",
+                  paddingRight: 15,
+                  marginTop:'24px'
+                }}
+                type="number"
+                placeholder="رقم الحاسب"
+                onChange={() => {
+                  setText(event.target.value);
+                }}
+              />
+            </div>
+          ) : null}
           {two === "true" ? (
             <>
               <div className="relative">
