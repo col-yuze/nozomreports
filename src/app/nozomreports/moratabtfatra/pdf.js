@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     backgroundColor: "#ffffff",
     fontFamily: "NotoNaskh",
-    padding: "20px 10px",
+    padding: "10px 10px",
     orientation: "landscape",
   },
   section: {
     margin: 5,
-    padding: "20px 10px",
+    padding: "10px 10px",
     flexGrow: 1,
   },
   titleContainer: {
@@ -33,11 +33,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     alignSelf: "center",
     paddingBottom: 10,
-    paddingTop: 10,
   },
   title: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 14,
     textDecoration: "underline",
   },
   esmElmogm3: {
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
   },
   table: {
     width: "100%",
-    marginBottom: 5,
+    marginBottom: 30,
     fontSize: 10,
     border: "1px solid black",
   },
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 29; // Adjusted for the first page which includes the title
+const rowsPerPageTitled = 30; // Adjusted for the first page which includes the title
 const rowsPerPage = 33; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
@@ -107,7 +106,6 @@ const MyDocument = ({ data, title }) => {
         var arr = [];
         arr = arrayTop.concat(data[j][1].slice(index, index + limit));
         pagesData.push(arr);
-
         index += limit;
         isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
       }
@@ -117,16 +115,13 @@ const MyDocument = ({ data, title }) => {
 
   return (
     <Document>
-      {pagesData.map((pageData, pageIndex) => (
-        <Page size="A4" style={styles.page} key={pageIndex}>
-          <View style={styles.section}>
-            {pageIndex === 0 && (
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
-              </View>
-            )}
-            {}
-            <View style={styles.table}>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{title}</Text>
+          </View>
+          {pagesData.map((pageData, pageIndex) => (
+            <View style={styles.table} key={pageIndex}>
               {pageData.map((rowData, index) => (
                 <View
                   style={[
@@ -167,9 +162,9 @@ const MyDocument = ({ data, title }) => {
                 </View>
               ))}
             </View>
-          </View>
-        </Page>
-      ))}
+          ))}
+        </View>
+      </Page>
     </Document>
   );
 };

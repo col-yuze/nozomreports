@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     const HospMoratab = (result) => {
       if (result.length === 0) return [];
       const hosp = new Map();
-      hosp.set("info", [[result[0][9], "الاسم", result[0][8], "رقم الحاسب"]]);
+      hosp.set("info", [["الاسم", result[0][9],  "رقم الحاسب",result[0][8]]]);
       result.sort((a, b) => {
         return a[0] - b[0];
       });
@@ -32,12 +32,12 @@ export default async function handler(req, res) {
           j++;
           hosp.set(id, [
             [
-              el[7],
               "الصيدلية",
-              el[3],
+              el[7],
               "اسم المستخدم",
-              formatDate(el[0]),
+              el[3],
               "التاريخ",
+              formatDate(el[0]),
               "تذكرة خارجي",
               j,
             ],

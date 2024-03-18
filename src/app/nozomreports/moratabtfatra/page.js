@@ -16,19 +16,13 @@ const DynamicPDFViewer = dynamic(
 export default function MoratabtFatra() {
   const [rows, setRows] = useState([]);
 
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-  today = dd + "-" + mm + "-" + yyyy;
-
-  const [startDate, setStartDate] = useState("1-1-2000");
-  const [endDate, setEndDate] = useState(today);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const [staticStartDate, setStaticStartDate] = useState();
   const [staticEndDate, setStaticEndDate] = useState();
   const [loading, setLoading] = useState(false);
-  const [patientCode, setPatientCode] = useState("1388879");
+  const [patientCode, setPatientCode] = useState(-1);
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
@@ -74,6 +68,8 @@ export default function MoratabtFatra() {
               setStartDateTwo={setStartDate}
               setEndDateTwo={setEndDate}
               two="true"
+              isText={true}
+              setText={setPatientCode}
             />
             <br />
             <Button
@@ -85,6 +81,7 @@ export default function MoratabtFatra() {
               }}
               onClick={fetchDataTable}
               variant="contained"
+              disabled={!(startDate&&endDate&& patientCode!==-1)}
             >
               اظهر البيانات
             </Button>
