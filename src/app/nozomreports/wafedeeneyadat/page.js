@@ -17,6 +17,8 @@ export default function WafedeenEyadat() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [staticStartDate, setStaticStartDate] = useState();
+  const [staticEndDate, setStaticEndDate] = useState();
   const [loading, setLoading] = useState(false);
   // api fetching
   const fetchDataTable = async () => {
@@ -25,7 +27,8 @@ export default function WafedeenEyadat() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          console.log(res.data);
+          setStaticStartDate(startDate)
+          setStaticEndDate(endDate)
         });
       })
       .catch((err) => {
@@ -92,7 +95,7 @@ export default function WafedeenEyadat() {
               <MyDocument
                 data={rows}
                 title={`
-                بيانات الوافدين الاجانب الذين قاموا بالكشف بالمجمع خلال الفترة من ${startDate} الي ${endDate}`}
+                بيانات الوافدين الاجانب الذين قاموا بالكشف بالمجمع خلال الفترة من ${staticStartDate} الي ${staticEndDate}`}
               />
             </DynamicPDFViewer>
           )}
