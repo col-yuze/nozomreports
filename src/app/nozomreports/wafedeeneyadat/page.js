@@ -92,7 +92,7 @@ export default function WafedeenEyadat() {
               <MyDocument
                 data={rows}
                 title={`
-                الوافدين الى العيادات خلال فترة من ${startDate} الي ${endDate}`}
+                بيانات الوافدين الاجانب الذين قاموا بالكشف بالمجمع خلال الفترة من ${startDate} الي ${endDate}`}
               />
             </DynamicPDFViewer>
           )}
