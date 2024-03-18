@@ -155,7 +155,7 @@ const MyDocument = ({ data, title }) => {
                           ? { paddingTop: "17px" }
                           : index === 0 && cellIndex === 1 && pageIndex === 0
                           ? { paddingTop: "17px" }
-                          : null,
+                          : {},
                       ]}
                       key={cellIndex}
                     >

@@ -2,11 +2,19 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import FromTo from "../../../components/FromTo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import { CircularProgress } from "@mui/material";
+
+import ReactTooltip from "react-tooltip";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -21,8 +29,11 @@ export default function Mahgoozfatra() {
 
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState("0-الكل");
+  const [aqsamOrMosts, setAqsamOrMosts] = useState("aqsam");
+  const [selectedOptionStatic, setSelectedOptionStatic] = useState("0-الكل");
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
+  // var modeOfAqsamOrMosts = "mosts";
   var dept = "بكل الأقسام";
   function formatDate(date) {
     const day = date.getDate();
@@ -32,8 +43,6 @@ export default function Mahgoozfatra() {
     const formattedMonth = month < 10 ? "0" + month : month;
     return formattedDay + "-" + formattedMonth + "-" + year;
   }
-
-  // api fetching
 
   const fetchDataTable = async () => {
     setLoading(true);
@@ -52,19 +61,22 @@ export default function Mahgoozfatra() {
           "&EndDate=" +
           formattedEndDate +
           "&Options=" +
-          selectedOption[0]
+          selectedOption +
+          "&QueryType=" +
+          (aqsamOrMosts === "mosts" ? 1 : 0)
       )
         .then((response) => {
           response.json().then((res) => {
             setRows(res.data);
-            console.log(res.data);
+            setSelectedOptionStatic(selectedOption);
+            //console.log(res.data);
           });
         })
         .catch((err) => {
           console.error(err);
         });
     } else {
-      console.log("shit");
+      // console.log(selectedOption.split("-")[0]);
     }
   };
 
@@ -111,8 +123,41 @@ export default function Mahgoozfatra() {
             setEndDateTwo={setEndDate}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
-            mode="1"
+            mode={aqsamOrMosts}
           />
+          <div
+            style={{
+              zIndex: 1,
+              position: "absolute",
+              top: 0,
+              marginTop: "11%",
+              marginLeft: "20%",
+            }}
+          >
+            <FormControl>
+              <FormLabel id="demo-radio-buttons-group-label">
+                أقــســام أم مستشفــيــات
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="aqsam"
+                name="radio-buttons-group"
+              >
+                <FormControlLabel
+                  value="mosts"
+                  control={<Radio />}
+                  label="مستشفــيــات"
+                  onClick={() => setAqsamOrMosts("mosts")}
+                />
+                <FormControlLabel
+                  value="aqsam"
+                  control={<Radio />}
+                  label="أقــــــســــــام"
+                  onClick={() => setAqsamOrMosts("aqsam")}
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
           <div
             style={{
               alignSelf: "center",
@@ -136,6 +181,7 @@ export default function Mahgoozfatra() {
               اظهر البيانات
             </Button>
           </div>
+
           <br></br>
           <br></br>
           <br></br>
@@ -143,10 +189,9 @@ export default function Mahgoozfatra() {
           {rows.length > 0 ? (
             <div>
               <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-                {selectedOption === "0-الكل"
+                {selectedOptionStatic === "0-الكل"
                   ? (dept = "كل الأقسام")
-                  : (dept = selectedOption.substring(2))}
-
+                  : (dept = selectedOptionStatic.split("-")[1])}
                 <MyDocument
                   data={rows}
                   title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}

@@ -36,8 +36,10 @@ const DropDown = ({
         })
         .catch((err) => console.error(err));
     };
-    //console.log(mode);
-    if (mode == 8) {
+
+    console.log(mode);
+    if (mode == 8 || mode == "aqsam") {
+
       fetchData();
     }
   }, []);
@@ -103,7 +105,7 @@ const DropDown = ({
         "8-مستشفى العيون التخصصي",
         "9-السموم",
       ])
-    : mode === "8"
+    : mode === "8" || mode === "aqsam"
     ? (options = opts.map((el) => `${el[0]}-${el[1]}`))
     : (options = [
         "0-الكل",

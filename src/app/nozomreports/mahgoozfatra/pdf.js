@@ -102,45 +102,66 @@ const styles = StyleSheet.create({
 
 const rowsPerPageTitled = 29; // Adjusted for the first page which includes the title
 const rowsPerPage = 33; // For subsequent pages
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, "0");
-var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-var yyyy = today.getFullYear();
-
-today = dd + "-" + mm + "-" + yyyy;
+//egmali lines√
+// egmali 3am√
+// query 1 or 2
+var totalOfficers = 0;
+var totalRanker = 0;
+var totalOfficerFamilies = 0;
+var totalRankFamilies = 0;
+var totalCivilians = 0;
+var totalTotals = 0;
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
   const [isToday, setIsToday] = React.useState(false);
-
   // Dynamically split data into pages considering different row limits
   const pagesData = [];
   let index = 0;
   let isFirstPage = true;
-  //console.log(data[0][1].slice(0, 1));
   const titlePages = [];
   for (let j = 0; j < data.length; j++) {
     isFirstPage = true;
     if (data[j][1].length > 0) {
       titlePages.push(pagesData.length);
-      var arrayTop = [
-        [departments[data[j][0]], "العدد", data[j][1].length - 1],
-      ];
+      var arrayTop = [[departments[data[j][0]]]];
       while (index < data[j][1].length) {
         const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
         var arr = [];
-        //if (index == 0)
         arr = arrayTop.concat(data[j][1].slice(index, index + limit));
-        //else arr = data[j][1].slice(index, index + limit);
         pagesData.push(arr);
 
         index += limit;
         isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
+        if (index >= data[j][1].length) {
+          totalOfficers += data[j][1][data[j][1].length - 1][1];
+          totalRanker += data[j][1][data[j][1].length - 1][2];
+          totalCivilians += data[j][1][data[j][1].length - 1][3];
+          totalOfficerFamilies += data[j][1][data[j][1].length - 1][4];
+          totalRankFamilies += data[j][1][data[j][1].length - 1][5];
+          totalTotals += data[j][1][data[j][1].length - 1][6];
+        }
       }
       index = 0;
     }
   }
-  console.log(today);
-  console.log(typeof today);
+  arr = [
+    [
+      "الاجمالي",
+      totalOfficers,
+      totalRanker,
+      totalCivilians,
+      totalOfficerFamilies,
+      totalRankFamilies,
+      totalTotals,
+    ],
+  ];
+  pagesData.push(arr);
+  totalOfficers = 0;
+  totalRanker = 0;
+  totalOfficerFamilies = 0;
+  totalRankFamilies = 0;
+  totalCivilians = 0;
+  totalTotals = 0;
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
@@ -167,8 +188,6 @@ const MyDocument = ({ data, title }) => {
                           ? "#d4d8dd"
                           : index === 0
                           ? "#e1e1e1"
-                          : rowData[3] === today
-                          ? "#e1e1e1"
                           : "white",
                     },
                   ]}
@@ -181,17 +200,11 @@ const MyDocument = ({ data, title }) => {
                         {
                           fontSize: "7px",
                           flex:
-                            cellIndex === 2
-                              ? "2.5"
-                              : cellIndex === 0
-                              ? "0.15"
-                              : cellIndex === 4
-                              ? "1.2"
-                              : cellIndex === 3
-                              ? "0.6"
+                            cellIndex === 0
+                              ? "1"
                               : cellIndex === 1
-                              ? "0.6"
-                              : "0.9",
+                              ? "3.5"
+                              : "0.8",
                         },
                         index === 0 //&& titlePages.includes(pageIndex)
                           ? {
@@ -206,10 +219,16 @@ const MyDocument = ({ data, title }) => {
                                   : "0.875",
                             }
                           : {},
+                        index === pageData.length - 1 //&& titlePages.includes(pageIndex)
+                          ? {
+                              flex: cellIndex === 0 ? "5.25" : "0.88",
+                              backgroundColor: "#e1e1e1",
+                            }
+                          : {},
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString()}
+                      {cellData}
                     </Text>
                   ))}
                 </View>
