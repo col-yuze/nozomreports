@@ -41,18 +41,18 @@ function countMedicineForPatients(arr) {
     result.push([clinic, counts[clinic].max_bed, ...clinic_count, sum]);
   }
 
-  const sum_arr = ["", "الاجمالي", 0, 0, 0, 0, 0, 0, 0, 0];
-  for (const [num, hosp, df, d, l, g, s, sf, m, t] of result) {
-    sum_arr[2] += df;
-    sum_arr[3] += d;
-    sum_arr[4] += l;
-    sum_arr[5] += g;
-    sum_arr[6] += s;
-    sum_arr[7] += sf;
-    sum_arr[8] += m;
-    sum_arr[9] += t;
-  }
-  result.push(sum_arr);
+  // reduce to a single array with all the values total_sum
+  const total_sum = result.reduce((acc, row) => {
+    row.forEach((el, i) => {
+      acc[i] = (acc[i] || 0) + el;
+    });
+    // add this row to the end of the array
+    // filtered_res.push(acc);
+    return acc;
+  }, []);
+  total_sum[0] = "الاجمالي";
+
+  result.push(total_sum);
   // append the first row to be headers
   unique_clinics.unshift("السعة القصوي");
   unique_clinics.unshift("التخصص");

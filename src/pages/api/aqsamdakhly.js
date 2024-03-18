@@ -15,7 +15,6 @@ export default async function handler(req, res) {
     const query = `SELECT  department.department_code,
          department.department_name
          FROM department
-
          `;
     const result = await runQuery(query);
     res.status(200).json({ success: true, data: result });
