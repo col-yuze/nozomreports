@@ -1,4 +1,4 @@
-import { formatOracleDate } from "@/lib/utils";
+import { formatOracleDate,formatDate } from "@/lib/utils";
 
 const {
   connectToDatabase,
@@ -27,7 +27,15 @@ AND    RESERVE_CLINIC.RESERVE_DATE <= '${TO_DATE}'
 ORDER BY RESERVE_DATE DESC
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    const filtered_result = result.map((el, i) => [
+      i + 1,
+      el[0],
+      el[1],
+      formatDate(el[2]),
+      el[4],
+    ]);
+    filtered_result.unshift(["م", "رقم الحاسب", "الاسم", "التاريخ", "العيادة"]);
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
