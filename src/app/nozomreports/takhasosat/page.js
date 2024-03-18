@@ -4,7 +4,7 @@ import * as React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import FromToII from "../../../components/FromToII";
 import { CircularProgress } from "@mui/material";
 const DynamicPDFViewer = dynamic(

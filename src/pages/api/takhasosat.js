@@ -38,7 +38,8 @@ export default async function handler(req, res) {
       .reduce((acc, curr) => acc + curr[2], 0);
 
     // Add a row to the table for displaying the sum
-    const sumRow = ["", "الاجمالي", sumOfColumn];
+    const sumRow = [ 
+    "الاجمالي", sumOfColumn];
     filtered_res.push(sumRow);
 
     res.status(200).json({ success: true, data: filtered_res });
