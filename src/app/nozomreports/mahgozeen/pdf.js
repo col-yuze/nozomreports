@@ -205,7 +205,7 @@ const MyDocument = ({ data, title }) => {
                                   ? "1.875"
                                   : "0.875",
                             }
-                          : null,
+                          : {},
                       ]}
                       key={cellIndex}
                     >

@@ -114,7 +114,6 @@ var totalTotals = 0;
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
   const [isToday, setIsToday] = React.useState(false);
-
   // Dynamically split data into pages considering different row limits
   const pagesData = [];
   let index = 0;
@@ -219,13 +218,13 @@ const MyDocument = ({ data, title }) => {
                                   ? "1.875"
                                   : "0.875",
                             }
-                          : null,
+                          : {},
                         index === pageData.length - 1 //&& titlePages.includes(pageIndex)
                           ? {
                               flex: cellIndex === 0 ? "5.25" : "0.88",
                               backgroundColor: "#e1e1e1",
                             }
-                          : null,
+                          : {},
                       ]}
                       key={cellIndex}
                     >

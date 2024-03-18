@@ -29,7 +29,7 @@ export default function Mahgoozfatra() {
 
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState("0-الكل");
-  const [aqsamOrMosts, setAqsamOrMosts] = React.useState("aqsam");
+  const [aqsamOrMosts, setAqsamOrMosts] = useState("aqsam");
   const [selectedOptionStatic, setSelectedOptionStatic] = useState("0-الكل");
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
@@ -44,17 +44,8 @@ export default function Mahgoozfatra() {
     return formattedDay + "-" + formattedMonth + "-" + year;
   }
 
-  // api fetching
-  // function setAqsamOrMostsPlusRerender(AqsamOrMosts) {
-  //   if (AqsamOrMosts.length != aqsamOrMosts) setAqsamOrMosts(AqsamOrMosts);
-  //   window.location.reload(false);
-  // }
-  var qt = 0;
   const fetchDataTable = async () => {
-    setSelectedOptionStatic(selectedOption);
-    console.log(selectedOption.split("P")[0]);
     setLoading(true);
-    aqsamOrMosts === "mosts" ? (qt = 1) : (qt = 0);
     if (startDate && endDate) {
       const _startDate = new Date(
         startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
@@ -70,21 +61,22 @@ export default function Mahgoozfatra() {
           "&EndDate=" +
           formattedEndDate +
           "&Options=" +
-          selectedOption.split("-")[0] +
+          selectedOption +
           "&QueryType=" +
-          qt
+          (aqsamOrMosts === "mosts" ? 1 : 0)
       )
         .then((response) => {
           response.json().then((res) => {
             setRows(res.data);
-            console.log(res.data);
+            setSelectedOptionStatic(selectedOption);
+            //console.log(res.data);
           });
         })
         .catch((err) => {
           console.error(err);
         });
     } else {
-      console.log(selectedOption.split("-")[0]);
+      // console.log(selectedOption.split("-")[0]);
     }
   };
 
@@ -197,10 +189,9 @@ export default function Mahgoozfatra() {
           {rows.length > 0 ? (
             <div>
               <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-                {selectedOption === "0-الكل"
+                {selectedOptionStatic === "0-الكل"
                   ? (dept = "كل الأقسام")
                   : (dept = selectedOptionStatic.split("-")[1])}
-
                 <MyDocument
                   data={rows}
                   title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}

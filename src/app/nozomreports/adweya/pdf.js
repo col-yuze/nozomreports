@@ -149,7 +149,7 @@ const MyDocument = ({ data, title }) => {
                         },
                         index === 0 && cellIndex === 0 && pageIndex === 0
                           ? { paddingTop: "17px" }
-                          : null,
+                          : {},
                       ]}
                       key={cellIndex}
                     >

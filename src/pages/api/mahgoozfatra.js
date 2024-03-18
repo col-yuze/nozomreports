@@ -6,14 +6,16 @@ const {
 } = require("../../lib/db");
 
 // preprocessing data
-const PatientsHosps = (result) => {
+const PatientsHosps = (result, QueryType) => {
   const hosps = new Map();
   result.sort((a, b) => a[0] - b[0]);
 
   result.forEach((el, i) => {
     const id = el[0];
-    const data = [i + 1, el[3], el[4], el[5], el[6], el[7], el[8], el[9]];
-
+    var data = [i + 1, el[1], el[2], el[3], el[4], el[5], el[6], el[7]];
+    if (QueryType == 1) {
+      data = [i + 1, el[3], el[4], el[5], el[6], el[7], el[8], el[9]];
+    }
     if (!hosps.has(id)) {
       hosps.set(id, [
         [
@@ -30,7 +32,6 @@ const PatientsHosps = (result) => {
     }
     hosps.get(id).push(data);
   });
-
   hosps.forEach((value, key) => {
     var totalRow = value.reduce((acc, row, index) => {
       if (index !== 0) {
@@ -58,7 +59,7 @@ export default async function handler(req, res) {
     connection = await connectToDatabase();
 
     // Retrieve parameters from query
-    const Options = req.query.Options;
+    const Options = req.query.Options.split("-")[0];
     const QueryType = req.query.QueryType;
     const D1 = formatOracleDate(req.query.StartDate); //req.data.param1;
     const D2 = formatOracleDate(req.query.EndDate); //req.data.param2;
@@ -79,9 +80,7 @@ AND    PATIENT_IN.ARIVAL_SERIAL = PATIENT_GOING_IN_ROOM.ARIVAL_SERIAL
 AND    PATIENT_GOING_IN_ROOM.ROOM_NUM = ROOM.ROOM_NUM
 AND    ROOM.DEPARTMENT_CODE = DEPARTMENT.DEPARTMENT_CODE
 AND    PATIENT.KINSHIP_PATIENT_NUM = P2.PATIENT_NUM(+)
-AND    (DEPARTMENT.DEPARTMENT_CODE = ${Options.split("-")[0]} OR ${
-      Options.split("-")[0]
-    } = 0)
+AND    (DEPARTMENT.DEPARTMENT_CODE = ${Options} OR ${Options} = 0)
 AND    PATIENT_GOING_IN_ROOM.GOING_IN_DATE >=  '${D1}'
 AND    PATIENT_GOING_IN_ROOM.GOING_IN_DATE  <= '${D2}'
 GROUP BY DEPARTMENT.DEPARTMENT_CODE,DEPARTMENT.DEPARTMENT_NAME
@@ -110,9 +109,14 @@ ORDER BY DEPARTMENT.DEPARTMENT_CODE`;
             GROUP BY WARD.BUILDING_NUM,BUILDING.BUILDING_NAME,WARD.F_W_CODE,WARD.F_W_NAME
             ORDER BY WARD.F_W_CODE
             `;
-    const query = QueryType === 0 ? bul_query : dept_query;
+    var query = "";
+    if (QueryType == 1) {
+      query = bul_query;
+    } else {
+      query = dept_query;
+    }
     const result = await runQuery(query);
-    const filtered_result = PatientsHosps(result);
+    const filtered_result = PatientsHosps(result, QueryType);
     //remove first useless element
     res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
