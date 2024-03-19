@@ -6,6 +6,95 @@ const {
   runQuery,
 } = require("../../lib/db");
 
+function PatientsMoratabCount(arr) {
+  // add all meds
+  const counts = {};
+  const ranks = [];
+  for (const [patient_num, type, rank] of arr) {
+    var type_name = "غير معروف";
+    var rank_name = "غير معروف";
+    if (type === 3) {
+      type_name = "عادي";
+    } else if (type === 8) {
+      type_name = "صدر";
+    }
+
+    switch (rank) {
+      case "?EC?":
+        rank_name = "ضباط";
+        break;
+      case "ضباط  صف":
+        rank_name = "ضباط صف";
+        break;
+      case "?EC? ??":
+        rank_name = "ضباط صف";
+        break;
+      case "?C??CE ?EC? ??":
+        rank_name = "عائلات ضباط صف";
+        break;
+      case "?C??CE ?EC?":
+        rank_name = "عائلات ضباط";
+        break;
+      default:
+        rank_name = rank;
+        break;
+    }
+
+    ranks.push(rank_name);
+    // for each id and medicine insert the quantity
+    if (!counts[type_name]) counts[type_name] = {};
+
+    // If the medicine doesn't exist at this place, initialize it
+    if (!counts[type_name][rank_name]) counts[type_name][rank_name] = 0;
+
+    // Increment the count for this medicine at this place
+    counts[type_name][rank_name]++;
+  }
+
+  // remove unique values
+  const unique_ranks = ranks.filter(
+    (value, index, array) => array.indexOf(value) === index
+  );
+  unique_ranks.sort((a, b) => a[0].localeCompare(b[0]));
+    console.log(unique_ranks)
+  const result = [];
+  for (const type in counts) {
+    const typeCounts = counts[type];
+    var sum = 0;
+    const type_count = [];
+    for (const rank_part of unique_ranks) {
+      type_count.push(typeCounts[rank_part] ?? 0);
+      if (typeof typeCounts[rank_part] === "number") {
+        sum += typeCounts[rank_part];
+      }
+    }
+    result.push([type, ...type_count, sum]);
+  }
+  result.sort((a, b) => a[0].localeCompare(b[0]));
+  // reduce to a single array with all the values total_sum
+  const total_sum = result.reduce((acc, row) => {
+    row.forEach((el, i) => {
+      acc[i] = (acc[i] || 0) + el;
+    });
+    // add this row to the end of the array
+    // filtered_res.push(acc);
+    return acc;
+  }, []);
+  total_sum[0] = "الاجمالي";
+
+  unique_ranks.unshift("النوع");
+  unique_ranks.push("الاجمالي");
+  result.unshift(unique_ranks);
+  result.push(total_sum);
+
+  // convert rows to columns
+  const transposedArray = result[0].map((col, i) =>
+    result.map((row) => row[i])
+  );
+
+  return transposedArray;
+}
+
 export default async function handler(req, res) {
   let connection;
 
@@ -170,7 +259,8 @@ AND     EXISTS (SELECT 1
                         AND      CLINIC1.SPECIALISIM_CODE IN (8,90) )
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    const filtered_result = PatientsMoratabCount(result);
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });
