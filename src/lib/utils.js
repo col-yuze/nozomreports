@@ -1,4 +1,8 @@
 function formatOracleDate(old_date) {
+  // null check
+  if (old_date === null || old_date === undefined) {
+    return "";
+  }
   // date in the format of MM-DD-YYYY
   old_date = old_date.split("-");
   // Date function takes YYYY-MM-DD
@@ -24,6 +28,10 @@ function formatOracleDate(old_date) {
 }
 
 function formatDate(date) {
+  // null check
+  if (date === null || date === undefined) {
+    return ''
+  }
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();

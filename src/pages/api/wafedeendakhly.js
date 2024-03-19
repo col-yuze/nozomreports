@@ -28,12 +28,12 @@ ORDER BY GOING_IN_DATE DESC
     `;
     const result = await runQuery(query);
     const filtered_result = result.map((el, i) => [
-      // i + 1,
-      // el[0],
-      // el[1],
-      // formatDate(el[2]),
-      // formatDate(el[3]),
-      // el[4],
+      i + 1,
+      el[0],
+      el[1],
+      formatDate(el[2]),
+      formatDate(el[3]),
+      el[4],
     ]);
     filtered_result.unshift(["م", "رقم الحاسب", "الاسم", "ت الدخول","ت الخروج", "العيادة"]);
     res.status(200).json({ success: true, data: filtered_result });
