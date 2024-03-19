@@ -136,7 +136,7 @@ const MyDocument = ({ data, title }) => {
                                index === 0 && pageIndex === 0
                               ? "10px"
                               : "8px",
-                          flex: cellIndex === 2 || cellIndex===4 ? "2.5":cellIndex===0?'0.5' : "1",
+                          flex: cellIndex === 2 ? "2.5":cellIndex===0?'0.5' : "1",
                         },
                     
                       ]}
