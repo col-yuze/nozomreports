@@ -4,9 +4,8 @@ import * as React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
-import FromTo from "../../../components/FromTo";
-import { CircularProgress } from "@mui/material";
+import MyDocument from "./pdf";
+import FromToII from "@/components/FromToII";
 
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
@@ -16,89 +15,32 @@ const DynamicPDFViewer = dynamic(
 );
 export default function Mahgozeen() {
   const [rows, setRows] = useState([]);
-  const itemsPerPage = 10; // Number of items per page
 
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState();
-  const [currentPage, setCurrentPage] = useState(0);
+  const [staticStartDate, setStaticStartDate] = useState();
 
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedOptionII, setSelectedOptionII] = useState("");
-  const [selectedOptionIII, setSelectedOptionIII] = useState("");
-  const totalPages = Math.ceil(rows.length / itemsPerPage);
+  const [num, setNum] = useState(10);
+  const [staticNum, setStaticNum] = useState(10);
 
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, rows.length);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
-  };
-  const headers = [
-    "",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "h7",
-    "h8",
-    "h9",
-    "h10",
-  ];
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
     //taree5 3adad rotba ta5asos
     fetch(
-      `/api/sarfmoratabatten?datein=${startDate}&rank=${selectedOptionIII}&spec=3&count=10`
+      `/api/sarfmoratabatten?datein=${startDate}&count=${num}`
     )
       .then((response) => {
         response.json().then((res) => {
+          setStaticStartDate(startDate)
           setRows(res.data);
-          console.log(res.data);
+          setStaticNum(num)
         });
       })
       .catch((err) => {
         console.error(err);
       });
   };
-  const handleSaveAsPDF = async () => {
-    // Dynamically import html2pdf only on the client-side
-    const html2pdf = (await import("html2pdf.js")).default;
-
-    const content = document.getElementById("pdf-container");
-
-    if (!content) {
-      console.error("Could not find PDF container");
-      return;
-    }
-
-    const pdfOptions = {
-      margin: 10,
-      filename: "table.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
-    html2pdf().from(content).set(pdfOptions).save();
-  };
-
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
-
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
 
   return (
     <div
@@ -113,8 +55,7 @@ export default function Mahgozeen() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
-            {" "}
-            تقرير بصارفي مرتبات اكثر من ١٠
+            {`تقرير بصارفي مرتبات اكثر من ${staticNum}`}
           </h1>
           <div
             style={{
@@ -123,15 +64,10 @@ export default function Mahgozeen() {
               alignItems: "center",
             }}
           >
-            <FromTo
+            <FromToII
               setStartDateTwo={setStartDate}
-              selectedOption={selectedOption}
-              setSelectedOption={setSelectedOption}
-              selectedOptionII={selectedOptionII}
-              setSelectedOptionII={setSelectedOptionII}
-              selectedOptionIII={selectedOptionIII}
-              setSelectedOptionIII={setSelectedOptionIII}
-              mode="4"
+              two="number"
+              setNumTwo={setNum}
             />
             <br />
             <Button
@@ -142,6 +78,8 @@ export default function Mahgozeen() {
                 fontWeight: "bold",
               }}
               variant="contained"
+              onClick={fetchDataTable}
+              disabled={!(startDate&&num)}
             >
               اظهر البيانات
             </Button>
@@ -159,32 +97,12 @@ export default function Mahgozeen() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument data={rows} />
+              <MyDocument
+                data={rows}
+                title={` ${staticStartDate}بيانات المرضي صارفي المرتبات العلاجية اكثر من ${staticNum} دواء منذ `}
+              />
             </DynamicPDFViewer>
           )}
-        </div>
-        <div style={{ alignSelf: "center" }}>
-          <Button
-            style={{
-              backgroundColor: "#F0ECE5",
-              color: "#161A30",
-              marginTop: 100,
-              fontWeight: "bold",
-            }}
-            variant="contained"
-            onClick={handleSaveAsPDF}
-          >
-            Save as PDF
-          </Button>
-          <button onClick={handlePrevPage} disabled={currentPage === 0}>
-            Previous
-          </button>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            Next
-          </button>
         </div>
       </div>
     </div>

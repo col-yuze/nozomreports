@@ -13,17 +13,13 @@ export default async function handler(req, res) {
     connection = await connectToDatabase();
 
     // Your database queries or operations go here
-    const RANK_IN = req.query.rank;
-    const SPEC_IN = req.query.spec;
     const CNT_IN = req.query.count;
     const DATE_IN = formatOracleDate(req.query.datein);
     const query = `
     SELECT PRESCRIPTION_MEDICINE_MON.PATIENT_NUM,GET_PAT_RANK_NAME_FULL(PRESCRIPTION_MEDICINE_MON.PATIENT_NUM) RANK_NAME,COUNT(*) CNT
 FROM   PRESCRIPTION_MEDICINE_MON,PATIENT,CLINIC
 WHERE PATIENT.PATIENT_NUM = PRESCRIPTION_MEDICINE_MON.PATIENT_NUM
-AND       (PATIENT.RANK = ${RANK_IN}OR ${RANK_IN} = 0)
 AND      CLINIC.CLINIC_CODE = PRESCRIPTION_MEDICINE_MON.CLINIC_CODE
- AND     (CLINIC.SPECIALISIM_CODE = ${SPEC_IN} OR ${SPEC_IN} = 0)
 AND     EXISTS (SELECT 1
                         FROM PRESCRIPTION_MEDICINE_MON PM2
                         WHERE PM2.PATIENT_NUM = PRESCRIPTION_MEDICINE_MON.PATIENT_NUM
@@ -38,7 +34,13 @@ GROUP BY PRESCRIPTION_MEDICINE_MON.PATIENT_NUM
 ORDER BY 3 DESC,2
     `;
     const result = await runQuery(query);
-    res.status(200).json({ success: true, data: result });
+    const filtered_result = result.map((el, i) => {
+      return [
+        i+1,...el
+      ]
+    })
+    filtered_result.unshift(['م','رقم الحاسب','رتبة / اسم','عدد الادوية'])
+    res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
     res.status(500).json({ success: false, error: "Internal Server Error" });

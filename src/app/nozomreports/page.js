@@ -16,14 +16,14 @@ const items = [
   { title: "احصائية الادوية المنصرفة بقسم الرمد عن يوم", route: "adweyaramad" }, //done input skeleton
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" }, //done input skeleton
   { title: " احصائية العيادات اليومية", route: "ehsaeyaeyadat" }, //done input skeleton
-  { title: "احصائيةالمرتبات لاكثر من عشر ادوية", route: "ehsaeyamoratabatten" }, //done input skeleton
+  { title: "احصائيةالمرتبات لاكثر من 10 ادوية", route: "ehsaeyamoratabatten" }, //done input skeleton
   { title: "احصائية القدوم اليومية", route: "ehsaeyaqodoom" }, //done input skeleton
-  { title: "محجوزين", route: "mahgozeen" }, //done input skeleton
+  { title: "تقرير بالمحجوزين حاليا بالمجمع", route: "mahgozeen" }, //done input skeleton
   { title: "تقرير مرضي لم يتم تسجيل خروجهم", route: "mardanotout" }, //done input skeleton
   { title: "مرتبات علاجية منصرفة لمريض خلال فترة", route: "moratabtfatra" }, //done input skeleton
   { title: "احصائية المرتبات العلاجية", route: "moratbat" }, //done input skeleton
   {
-    title: "تقرير صرف مرتبات اكثر من عشر ادوية",
+    title: "تقرير صرف مرتبات اكثر من 10 ادوية",
     route: "sarfmoratabatten",
   },
   { title: "تخصصات", route: "takhasosat" }, //done input skeleton

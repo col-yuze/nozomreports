@@ -18,6 +18,8 @@ export default function EhsaeyaMoratabatten() {
   const [startDate, setStartDate] = useState();
   const [loading, setLoading] = useState(false);
   const [num, setNum] = React.useState(10);
+  const [staticNum, setStaticNum] = useState(10);
+
   const headers = ["م", "عدد المرضى ", "عدد الادوية ", "الاجمالي"];
   // api fetching
   const fetchDataTable = async () => {
@@ -25,6 +27,7 @@ export default function EhsaeyaMoratabatten() {
       .then((response) => {
         response.json().then((res) => {
           setRows([headers, ...res.data]);
+          setStaticNum(num)
         });
       })
       .catch((err) => {
@@ -50,7 +53,7 @@ export default function EhsaeyaMoratabatten() {
           <div id="pdf-container">
             <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
               {" "}
-              {`احصائيه اكثر من 10`}
+              {`احصائيه اكثر من ${staticNum}`}
             </h1>
             <br />
             <div
@@ -98,7 +101,8 @@ export default function EhsaeyaMoratabatten() {
               <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
                 <MyDocument
                   data={rows}
-                  title={`احصائية المرتبات العلاجية لاكثر من 10 أدوية ${startDate} `}
+                    title={`احصائية المرتبات العلاجية لاكثر من ${startDate} 
+                   ${staticNum} أدوية`}
                 />
               </DynamicPDFViewer>
             )}
