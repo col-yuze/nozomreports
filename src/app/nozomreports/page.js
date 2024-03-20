@@ -1,7 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Link from "next/link";
 import CustomBox from "./CustomBox.js";
 import NavBar from "./../../components/NavBar.js";
 
@@ -30,9 +28,11 @@ const items = [
   { title: "تقرير وافدين (دخلي)", route: "wafedeendakhly" }, //done input skeleton
   { title: "تقرير الوافدين (عيادات)", route: "wafedeeneyadat" }, //done input skeleton
   { title: "احصائية بالاعداد المتاحة في العيادات", route: "aadadmotaha" }, // no need for input skeleton
+  { title: "تقرير الادوية المنصرفة لصالح قسم دخلي", route: "taqreeradweya" }, //done input skeleton
+  { title: "احصائية العياادات تخصصات", route: "takhasosateyadat" }, //done input skeleton
+  { title: "احصائية الادوية المنصرفة مرتبات علاجية", route: "adweyamoratabat" }, // no need for input skeleton
 ];
 
-const elements = ["Page1", "Page2"];
 export default function nozomreports() {
   return (
     <div
