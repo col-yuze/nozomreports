@@ -33,18 +33,6 @@ export default function AadadMotaha() {
       });
   };
 
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
-
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
-
   return (
     <div
       style={{
