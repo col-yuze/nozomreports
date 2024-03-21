@@ -94,6 +94,22 @@ export default function FromTo({
                 mode="6"
               />
             </>
+          ) : mode === "11" ? (
+            <>
+              <br />
+              <DropDown
+                selectedOption={selectedOptionII}
+                setSelectedOption={setSelectedOptionII}
+                mode="aqsamSpecific"
+                placeholderText="اختر الــقــسم"
+              />
+              <DropDown
+                selectedOption={selectedOptionIII}
+                setSelectedOption={setSelectedOptionIII}
+                placeholderText="اختر الغرفة"
+                mode="ghorfa"
+              />
+            </>
           ) : (
             ""
           )}
