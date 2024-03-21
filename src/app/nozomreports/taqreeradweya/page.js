@@ -2,6 +2,7 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
+import MyDocument2 from "./pdf";
 import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 
@@ -16,20 +17,26 @@ const DynamicPDFViewer = dynamic(
 export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [queryType, setQueryType] = React.useState(1);
   const [startDate, setStartDate] = React.useState(null);
   const [staticStartDate, setStaticStartDate] = React.useState(null);
   const [hosp, setHosp] = React.useState(0);
   const [dept, setDept] = React.useState(0);
   const [deptStatic, setDeptStatic] = React.useState(0);
-  const [room, setRoom] = React.useState(null);
+  const [room, setRoom] = React.useState(0);
   const [roomStatic, setRoomStatic] = React.useState(0);
-  var visibleTitle = "قسم";
-  var qt = 0;
   // api fetching
   const fetchDataTable = async () => {
+    // fetch(`/api/rooms?deptin=200534`).then((response) =>
+    //   response.json().then((res) => {
+    //   })
+    // );
+    // fetch(`/api/departments?hospin=1`).then((response) =>
+    //   response.json().then((res) => {})
+    // );
     setLoading(true);
     fetch(
-      `/api/taqreeradweya?fdate=${startDate}&op1=${hosp}&op2=${dept}&op3=${room}&QueryType=${qt}`
+      `/api/taqreeradweya?datein=${startDate}&deptin=${dept}&roomin=${room}&querytype=${queryType}`
     )
       .then((response) => {
         response.json().then((res) => {
@@ -85,11 +92,13 @@ export default function AadadMotaha() {
                 fontWeight: "bold",
                 width: "100%",
               }}
-              onClick={fetchDataTable}
+              onClick={() => {
+                fetchDataTable();
+                setQueryType(1);
+              }}
               variant="contained"
               disabled={!(startDate && room)}
             >
-              {(qt = 0)}
               طباعة تقــريـر اجمــالـــي
             </Button>
             <br />
@@ -101,12 +110,14 @@ export default function AadadMotaha() {
                 fontWeight: "bold",
                 width: "100%",
               }}
-              onClick={fetchDataTable}
+              onClick={() => {
+                fetchDataTable();
+                setQueryType(2);
+              }}
               variant="contained"
               disabled={!(startDate && room)}
             >
               طباعة تقــريـر تـفـصـيـلـي
-              {(qt = 1)}
             </Button>
             <br />
             <br />
@@ -124,10 +135,17 @@ export default function AadadMotaha() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument
-                data={rows}
-                title={`الادويةالمنصرفة لصالح قسم ${dept} ${room}`}
-              />
+              {queryType == 1 ? (
+                <MyDocument
+                  data={rows}
+                  title={`الادويةالمنصرفة لصالح قسم ${deptStatic} ${roomStatic} في ${staticStartDate}`}
+                />
+              ) : (
+                <MyDocument2
+                  data={rows}
+                  title={`الادويةالمنصرفة لصالح قسم ${deptStatic} ${roomStatic} في ${staticStartDate}`}
+                />
+              )}
             </DynamicPDFViewer>
           )}
         </div>
