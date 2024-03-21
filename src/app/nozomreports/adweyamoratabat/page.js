@@ -1,8 +1,10 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import { CircularProgress } from "@mui/material";
+import FromTo from "../../../components/FromTo";
+import Button from "@mui/material/Button";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -12,17 +14,21 @@ const DynamicPDFViewer = dynamic(
 
 export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
-  const [startDate, setStartDate] = React.useState(null)
-  const [staticStartDate, setStaticStartDate] = React.useState(null)
+  const [startDate, setStartDate] = React.useState();
+  const [staticStartDate, setStaticStartDate] = React.useState();
+  const [selectedOption, setSelectedOption] = useState("3-عادى");
+  const [selectedOptionStatic, setSelectedOptionStatic] = useState();
   const [loading, setLoading] = React.useState(false);
+  var showString = "الأدوية";
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch("/api/adweyamoratabat")
+    fetch(`/api/adweyamoratabat?fdate=${startDate}&typein=${selectedOption}`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          setStaticStartDate(startDate)
+          setStaticStartDate(startDate);
+          setSelectedOptionStatic(selectedOption);
         });
       })
       .catch((err) => {
@@ -48,6 +54,37 @@ export default function AadadMotaha() {
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
             احصائية الادوية المنصرفة مرتبات علاجية
           </h1>
+          <div
+            style={{
+              display: "grid",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FromTo
+              setStartDateTwo={setStartDate}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              mode="10"
+            />
+            <br />
+            <Button
+              style={{
+                backgroundColor: "#F0ECE5",
+                color: "#161A30",
+                marginTop: 50,
+                fontWeight: "bold",
+                width: "100%",
+              }}
+              onClick={fetchDataTable}
+              variant="contained"
+              disabled={!startDate}
+            >
+              اظهر البيانات
+            </Button>
+            <br />
+            <br />
+          </div>
           {rows.length <= 0 ? (
             <div
               style={{
@@ -61,9 +98,12 @@ export default function AadadMotaha() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+              {selectedOptionStatic === "3-عادى"
+                ? (showString = "الأدوية")
+                : (showString = "أدوية الصدر")}
               <MyDocument
                 data={rows}
-                title={`احصائية بالأدوية المنصرفة كمرتبات علاجية اعتبارا من ${staticStartDate}`}
+                title={`احصائية ب${showString} المنصرفة كمرتبات علاجية اعتبارا من ${staticStartDate}`}
               />
             </DynamicPDFViewer>
           )}

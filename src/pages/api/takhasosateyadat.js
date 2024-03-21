@@ -11,7 +11,6 @@ export default async function handler(req, res) {
 
   try {
     connection = await connectToDatabase();
-
     // Your database queries or operations go here
     const FD = formatOracleDate(req.query.fdate);
     const TD = formatOracleDate(req.query.tdate);
