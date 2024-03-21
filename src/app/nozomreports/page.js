@@ -10,8 +10,8 @@ const items = [
     title: "احصائية الادوية المنصرفة بالقسم الداخلي عن يوم",
     route: "adweyadakhly",
   }, //done input skeleton
-  { title: "احصائية الادوية المنصرفة بالعيادات عن يوم", route: "adweyaeyadat" }, //done input skeleton
-  { title: "احصائية الادوية المنصرفة بقسم الرمد عن يوم", route: "adweyaramad" }, //done input skeleton
+  { title: "بالعيادات", route: "adweyaeyadat" }, //done input skeleton
+  { title: "الرمد", route: "adweyaramad" }, //done input skeleton
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" }, //done input skeleton
   { title: " احصائية العيادات اليومية", route: "ehsaeyaeyadat" }, //done input skeleton
   { title: "احصائيةالمرتبات لاكثر من 10 ادوية", route: "ehsaeyamoratabatten" }, //done input skeleton
