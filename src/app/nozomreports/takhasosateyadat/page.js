@@ -1,8 +1,7 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
-import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import { CircularProgress } from "@mui/material";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
@@ -11,19 +10,19 @@ const DynamicPDFViewer = dynamic(
   }
 );
 
-export default function AadadMotaha() {
+export default function TakhasosatEyadat() {
   const [rows, setRows] = React.useState([]);
 
   const [loading, setLoading] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(null);
-  const [endDate, setEndDate] = React.useState(null);
+  const [startDate, setStartDate] = React.useState("18-3-2024");
+  const [endDate, setEndDate] = React.useState("20-3-2024");
   const [staticStartDate, setStaticStartDate] = React.useState(null);
   const [staticEndDate, setStaticEndDate] = React.useState(null);
 
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch("/api/takhasosateyadat")
+    fetch(`/api/takhasosateyadat?fdate=01-3-2024&tdate=20-3-2024`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
