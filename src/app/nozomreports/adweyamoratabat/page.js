@@ -23,7 +23,7 @@ export default function AadadMotaha() {
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch(`/api/adweyamoratabat?fdate=${startDate}&typein=${selectedOption}`)
+    fetch(`/api/adweyamoratabat?fdate=${startDate}&typein=${selectedOption.split('-')[0]}`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
