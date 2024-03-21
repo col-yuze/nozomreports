@@ -95,6 +95,10 @@ const DropDown = ({
       ])
     : mode === "8" || mode === "aqsam"
     ? (options = opts.map((el) => `${el[0]}-${el[1]}`))
+    : mode === "ghorfa"
+    ? (options = opts.map((el) => `${el[0]}-${el[1]}`))
+    : mode === "aqsamSpecific"
+    ? (options = opts.map((el) => `${el[0]}-${el[1]}`))
     : (options = [
         "0-الكل",
         "1-مستشفى الجراحة",
