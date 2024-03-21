@@ -16,8 +16,8 @@ export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
   const [startDate, setStartDate] = React.useState();
   const [staticStartDate, setStaticStartDate] = React.useState();
-  const [selectedOption, setSelectedOption] = useState("3-عادى");
-  const [selectedOptionStatic, setSelectedOptionStatic] = useState();
+  const [selectedOption, setSelectedOption] = React.useState("3-عادى");
+  const [selectedOptionStatic, setSelectedOptionStatic] = React.useState();
   const [loading, setLoading] = React.useState(false);
   var showString = "الأدوية";
   // api fetching
