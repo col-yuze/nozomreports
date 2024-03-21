@@ -17,15 +17,18 @@ export default function AdweyaEyadat() {
 
   const [startDate, setStartDate] = useState();
   const [staticStartDate, setStaticStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [staticEndDate, setStaticEndDate] = useState();
   const [loading, setLoading] = useState(false);
 
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch(`/api/adweyaeyadat?fdate=${startDate}`)
+    fetch(`/api/adweyaeyadat?fdate=${startDate}&tdate=${endDate}`)
       .then((response) => {
         response.json().then((res) => {
           setStaticStartDate(startDate);
+          setStaticEndDate(endDate);
           setRows(res.data);
         });
       })
@@ -59,7 +62,11 @@ export default function AdweyaEyadat() {
               alignItems: "center",
             }}
           >
-            <FromToII setStartDateTwo={setStartDate} two="1" />
+            <FromToII
+              setStartDateTwo={setStartDate}
+              setEndDateTwo={setEndDate}
+              two="true"
+            />
             <br />
             <Button
               style={{
@@ -92,7 +99,7 @@ export default function AdweyaEyadat() {
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
               <MyDocument
                 data={rows}
-                title={`إحصائية الادوية المنصرفة بالعيادات عن يوم ${staticStartDate}`}
+                title={`إحصائية الادوية المنصرفة بالعيادات من ${staticStartDate} الي ${staticEndDate}`}
               />
             </DynamicPDFViewer>
           )}

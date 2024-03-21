@@ -6,9 +6,8 @@ import {
   Text,
   StyleSheet,
   Font,
-  Image,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/ReadexPro-VariableFont_HEXP,wght.otf";
+import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
   },
   table: {
     width: "100%",
-    marginBottom: 30,
+    marginBottom: 5,
     fontSize: 10,
     border: "1px solid black",
   },
@@ -87,52 +86,42 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 30; // Adjusted for the first page which includes the title
+const rowsPerPageTitled = 28; // Adjusted for the first page which includes the title
 const rowsPerPage = 33; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
+  // Your helper functions and logic remain unchanged
+
   // Dynamically split data into pages considering different row limits
   const pagesData = [];
   let index = 0;
   let isFirstPage = true;
-  const titlePages = [];
-  for (let j = 0; j < data.length; j++) {
-    isFirstPage = true;
-    if (data[j][1].length > 0) {
-      titlePages.push(pagesData.length);
-      var arrayTop = [[]];
-      while (index < data[j][1].length) {
-        const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
-        var arr = [];
-        arr = arrayTop.concat(data[j][1].slice(index, index + limit));
-        pagesData.push(arr);
-        index += limit;
-        isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
-      }
-      index = 0;
-    }
+
+  while (index < data.length) {
+    const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
+    pagesData.push(data.slice(index, index + limit));
+    index += limit;
+    isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
   }
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{title}</Text>
-          </View>
-          {pagesData.map((pageData, pageIndex) => (
-            <View style={styles.table} key={pageIndex}>
+      {pagesData.map((pageData, pageIndex) => (
+        <Page size="A4" style={styles.page} key={pageIndex}>
+          <View style={styles.section}>
+            {pageIndex === 0 && (
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>{title}</Text>
+              </View>
+            )}
+            <View style={styles.table}>
               {pageData.map((rowData, index) => (
                 <View
                   style={[
                     styles.row,
                     {
                       backgroundColor:
-                        index === 1 && titlePages.includes(pageIndex)
-                          ? "#e1e1e1"
-                          : index === 2
-                          ? "#ffe0e0"
-                          : "white",
+                        index === 0 && pageIndex === 0 ? "#e1e1e1" : "white",
                     },
                   ]}
                   key={index}
@@ -142,29 +131,37 @@ const MyDocument = ({ data, title }) => {
                       style={[
                         styles.cell,
                         {
-                          fontSize: "7px",
-                          alignSelf: "center",
+                          fontSize:
+                            index === 0 && cellIndex === 0 && pageIndex === 0
+                              ? "25px"
+                              : index === 0 && pageIndex === 0
+                              ? "10px"
+                              : "8px",
+                          flex: cellIndex === 0 ? "4" : "0.5",
+                          paddingTop:
+                            index === 0 && cellIndex === 0 && pageIndex === 0
+                              ? "17px"
+                              : "auto",
+                          backgroundColor:
+                            index === pageData.length - 1 &&
+                            pageIndex === pagesData.length - 1
+                              ? "#ffe0e0"
+                              : cellIndex === rowData.length - 1
+                              ? "#ffe0e0"
+                              : "transparent",
                         },
-                        index === 0
-                          ? {
-                              paddingTop: "15px",
-                              paddingBottom: "15px",
-                              fontSize: "12px",
-                              alignSelf: "center",
-                            }
-                          : null,
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString()}
+                      {cellData}
                     </Text>
                   ))}
                 </View>
               ))}
             </View>
-          ))}
-        </View>
-      </Page>
+          </View>
+        </Page>
+      ))}
     </Document>
   );
 };

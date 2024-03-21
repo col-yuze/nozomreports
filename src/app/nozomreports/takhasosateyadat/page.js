@@ -1,9 +1,9 @@
 "use client"; // this part for handle click and error for client/server issues
 import * as React from "react";
-import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
-import MyDocument from "../../../components/pdf";
+import MyDocument from "./pdf";
 import { CircularProgress } from "@mui/material";
+import FromToII from "../../../components/FromToII";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -11,19 +11,19 @@ const DynamicPDFViewer = dynamic(
   }
 );
 
-export default function AadadMotaha() {
+export default function TakhasosatEyadat() {
   const [rows, setRows] = React.useState([]);
 
   const [loading, setLoading] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(null);
-  const [endDate, setEndDate] = React.useState(null);
+  const [startDate, setStartDate] = React.useState("18-3-2024");
+  const [endDate, setEndDate] = React.useState("20-3-2024");
   const [staticStartDate, setStaticStartDate] = React.useState(null);
   const [staticEndDate, setStaticEndDate] = React.useState(null);
 
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch("/api/takhasosateyadat")
+    fetch(`/api/takhasosateyadat?fdate=${startDate}&tdate=${endDate}`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
@@ -38,18 +38,6 @@ export default function AadadMotaha() {
         setLoading(false);
       });
   };
-
-  React.useEffect(() => {
-    let isMounted = true; // Variable to check if the component is still mounted
-    if (isMounted) {
-      fetchDataTable();
-    }
-
-    return () => {
-      // Cleanup function to set isMounted to false when the component is unmounted
-      isMounted = false;
-    };
-  }, []);
 
   return (
     <div
@@ -66,6 +54,36 @@ export default function AadadMotaha() {
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
             احصائية العيادات تخصصات
           </h1>
+          <div
+            style={{
+              display: "grid",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FromToII
+              setStartDateTwo={setStartDate}
+              setEndDateTwo={setEndDate}
+              two="true"
+            />
+            <br />
+            <Button
+              style={{
+                backgroundColor: "#F0ECE5",
+                color: "#161A30",
+                marginTop: 50,
+                fontWeight: "bold",
+                width: "100%",
+              }}
+              onClick={fetchDataTable}
+              variant="contained"
+              disabled={!(startDate && endDate)}
+            >
+              اظهر البيانات
+            </Button>
+            <br />
+            <br />
+          </div>
           {rows.length <= 0 ? (
             <div
               style={{
