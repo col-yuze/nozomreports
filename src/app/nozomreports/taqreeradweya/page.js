@@ -17,8 +17,7 @@ const DynamicPDFViewer = dynamic(
 export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-
-    const [queryType, setQueryType] = React.useState(1);
+  const [queryType, setQueryType] = React.useState(1);
   const [startDate, setStartDate] = React.useState(null);
   const [staticStartDate, setStaticStartDate] = React.useState(null);
   const [hosp, setHosp] = React.useState(0);
@@ -26,7 +25,6 @@ export default function AadadMotaha() {
   const [deptStatic, setDeptStatic] = React.useState(0);
   const [room, setRoom] = React.useState(0);
   const [roomStatic, setRoomStatic] = React.useState(0);
-  var visibleTitle = "قسم";
   // api fetching
   const fetchDataTable = async () => {
     // fetch(`/api/rooms?deptin=200534`).then((response) =>
