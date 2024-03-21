@@ -2,6 +2,7 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
 import MyDocument from "../../../components/pdf";
+import MyDocument2 from "./pdf";
 import { CircularProgress } from "@mui/material";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
@@ -13,18 +14,29 @@ const DynamicPDFViewer = dynamic(
 export default function AadadMotaha() {
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(null)
-  const [staticStartDate, setStaticStartDate] = React.useState(null)
-  const [hosp, setHosp] = React.useState(0)
-  const [dept, setDept] = React.useState(0)
-  const [room,setRoom]= React.useState(0)
+  const [startDate, setStartDate] = React.useState("20-03-2024");
+  const [staticStartDate, setStaticStartDate] = React.useState(startDate);
+  const [hosp, setHosp] = React.useState(0);
+  const [queryType, setQueryType] = React.useState(1);
+  const [dept, setDept] = React.useState(200534);
+  const [room, setRoom] = React.useState("جر 106");
   // api fetching
   const fetchDataTable = async () => {
+    // fetch(`/api/rooms?deptin=200534`).then((response) =>
+    //   response.json().then((res) => {
+    //   })
+    // );
+    // fetch(`/api/departments?hospin=1`).then((response) =>
+    //   response.json().then((res) => {})
+    // );
     setLoading(true);
-    fetch("/api/taqreeradweya")
+    fetch(
+      `/api/taqreeradweya?datein=${startDate}&deptin=${dept}&roomin=${room}&querytype=${queryType}`
+    )
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
+          setStaticStartDate(startDate);
         });
       })
       .catch((err) => {
@@ -75,10 +87,17 @@ export default function AadadMotaha() {
             </div>
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-              <MyDocument
-                data={rows}
-                title={`الادويةالمنصرفة لصالح قسم ${dept} ${room}`}
-              />
+              {queryType == 1 ? (
+                <MyDocument
+                  data={rows}
+                  title={`الادويةالمنصرفة لصالح قسم ${dept} ${room}`}
+                />
+              ) : (
+                <MyDocument2
+                  data={rows}
+                  title={`الادويةالمنصرفة لصالح قسم ${dept} ${room}`}
+                />
+              )}
             </DynamicPDFViewer>
           )}
         </div>
