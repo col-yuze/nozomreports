@@ -12,18 +12,22 @@ const DynamicPDFViewer = dynamic(
   }
 );
 
-export default function AadadMotaha() {
+export default function AdweyaMoratabat() {
   const [rows, setRows] = React.useState([]);
   const [startDate, setStartDate] = React.useState();
   const [staticStartDate, setStaticStartDate] = React.useState();
-  const [selectedOption, setSelectedOption] = React.useState("3-عادى");
+  const [selectedOption, setSelectedOption] = React.useState();
   const [selectedOptionStatic, setSelectedOptionStatic] = React.useState();
   const [loading, setLoading] = React.useState(false);
   var showString = "الأدوية";
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch(`/api/adweyamoratabat?fdate=${startDate}&typein=${selectedOption.split('-')[0]}`)
+    fetch(
+      `/api/adweyamoratabat?fdate=${startDate}&typein=${
+        selectedOption.split("-")[0]
+      }`
+    )
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);

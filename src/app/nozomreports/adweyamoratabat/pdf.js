@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 28; // Adjusted for the first page which includes the title
-const rowsPerPage = 33; // For subsequent pages
+const rowsPerPageTitled = 27; // Adjusted for the first page which includes the title
+const rowsPerPage = 29; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
@@ -132,23 +132,12 @@ const MyDocument = ({ data, title }) => {
                         styles.cell,
                         {
                           fontSize:
-                            index === 0 && cellIndex === 0 && pageIndex === 0
-                              ? "25px"
-                              : index === 0 && pageIndex === 0
-                              ? "10px"
-                              : "8px",
-                          flex: cellIndex === 0 ? "4" : "0.5",
-                          paddingTop:
-                            index === 0 && cellIndex === 0 && pageIndex === 0
-                              ? "17px"
-                              : "auto",
-                          backgroundColor:
-                            index === pageData.length - 1 &&
-                            pageIndex === pagesData.length - 1
-                              ? "#ffe0e0"
-                              : cellIndex === rowData.length - 1
-                              ? "#ffe0e0"
-                              : "transparent",
+                           index === 0 && pageIndex === 0
+                              ? "12px"
+                              : "10px",
+                          flex: cellIndex === 1 ? "2" : "0.5",
+                          
+                      
                         },
                       ]}
                       key={cellIndex}
