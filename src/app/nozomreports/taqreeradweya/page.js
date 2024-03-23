@@ -5,6 +5,7 @@ import MyDocument from "../../../components/pdf";
 import MyDocument2 from "./pdf";
 import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
+import Dropdown from "react-dropdown";
 
 import FromTo from "../../../components/FromTo";
 const DynamicPDFViewer = dynamic(
@@ -25,6 +26,45 @@ export default function AadadMotaha() {
   const [deptStatic, setDeptStatic] = React.useState(0);
   const [room, setRoom] = React.useState(0);
   const [roomStatic, setRoomStatic] = React.useState(0);
+
+  ///testing
+  const [hospArr, setHospArr] = React.useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  const [qesmArr, setQesmArr] = React.useState([]);
+  const [ghorfaArr, setGhorfaArr] = React.useState([]);
+  //
+  const fetchDataAqsamInHosp = async (hosp) => {
+    await fetch(`/api/departments?hospin=${hosp}`)
+      .then((response) => {
+        response.json().then((res) => {
+          setQesmArr(res.data);
+        });
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const fetchDataGhorafInQesm = async (dept) => {
+    await fetch(`/api/rooms?deptin=${dept}`)
+      .then((response) => {
+        response.json().then((res) => {
+          setGhorfaArr(res.data);
+        });
+      })
+      .catch((err) => console.error(err));
+  };
+  //
+  const onSelectHosp = (selectedValue) => {
+    fetchDataAqsamInHosp(selectedValue.value);
+    setHosp(selectedValue.value);
+  };
+  const onSelectQesm = (selectedValue) => {
+    fetchDataGhorafInQesm(selectedValue.value[1]);
+    setDept(selectedValue.value[1]);
+  };
+  const onSelectGhorfa = (selectedValue) => {
+    setRoom(selectedValue.value[1]);
+  };
+
+  ///
   // api fetching
   const fetchDataTable = async () => {
     // fetch(`/api/rooms?deptin=200534`).then((response) =>
@@ -81,9 +121,19 @@ export default function AadadMotaha() {
               setSelectedOption={setHosp}
               setSelectedOptionII={setDept}
               setSelectedOptionIII={setRoom}
-              two="11"
+              mode="11"
+              hospOptions={hospArr}
+              onHospChange={onSelectHosp}
+              hospValue={hosp}
+              qesmOptions={qesmArr}
+              onQesmChange={onSelectQesm}
+              qesmValue={dept}
+              ghorfaOptions={ghorfaArr}
+              onGhorfaChange={onSelectGhorfa}
+              ghorfaValue={room}
             />
             <br />
+
             <Button
               style={{
                 backgroundColor: "#F0ECE5",
@@ -93,7 +143,7 @@ export default function AadadMotaha() {
                 width: "100%",
               }}
               onClick={() => {
-                fetchDataTable();
+                // fetchDataTable();
                 setQueryType(1);
               }}
               variant="contained"

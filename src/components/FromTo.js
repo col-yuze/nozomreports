@@ -2,6 +2,7 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DropDown from "../components/DropDown";
+import ReactDropDown from "react-dropdown";
 import "react-dropdown/style.css";
 import { format } from "date-fns";
 
@@ -15,10 +16,22 @@ export default function FromTo({
   selectedOptionIII,
   setSelectedOptionIII,
   mode,
+
+  hospOptions,
+  onHospChange,
+  hospValue,
+  qesmOptions,
+  onQesmChange,
+  qesmValue,
+  ghorfaOptions,
+  onGhorfaChange,
+  ghorfaValue,
 }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
 
+  const [selectedHosp, setSelectedHosp] = React.useState(null);
+  const [selectedQesm, setSelectedQesm] = React.useState(null);
   // const formattedStartDate = startDate
   //   ? format(startDate, "dd-MM-yyyy")
   //   : "Select a start date";
@@ -27,8 +40,6 @@ export default function FromTo({
   // const formattedEndDate = endDate
   //   ? format(endDate, "dd-MM-yyyy")
   //   : "Select an end date";
-  // console.log(formattedStartDate);
-  // console.log(formattedEndDate);
   // setStartDate(formattedStartDate);
   // setEndDate(formattedEndDate);
   return (
@@ -37,13 +48,62 @@ export default function FromTo({
         className="flex items-center"
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
-        <div className="relative" style={{ maxwidth: "100%" }}>
-          <DropDown
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
-            mode={mode}
-          />
-        </div>
+        {mode === "11" ? (
+          <>
+            <br />
+
+            <div className="fixed-width-dropdown">
+              <DropDown
+                dynamicOptions={ghorfaOptions}
+                dynamicOnChange={onGhorfaChange}
+                dynamicValue={ghorfaValue}
+                style={{ width: "200px" }}
+                mode="ghorfa"
+                placeholderText="اختر الــغرفــة"
+              />
+            </div>
+            <br />
+
+            <div className="fixed-width-dropdown">
+              <DropDown
+                dynamicOptions={qesmOptions}
+                dynamicOnChange={onQesmChange}
+                dynamicValue={qesmValue}
+                style={{ width: "200px" }}
+                mode="aqsamSpecific"
+                placeholderText="اختر الــقــسم"
+              />
+            </div>
+            <br />
+            <div className="fixed-width-dropdown">
+              <DropDown
+                dynamicOptions={hospOptions}
+                dynamicOnChange={onHospChange}
+                dynamicValue={hospValue}
+                style={{ width: "200px" }}
+                mode="hosps"
+                placeholderText="اختر الـمـستشـفى"
+              />
+            </div>
+          </>
+        ) : (
+          ""
+        )}
+        {mode !== "11" ? (
+          <div className="relative" style={{ maxwidth: "100%" }}>
+            <DropDown
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              mode={mode}
+              setSelectedHosp={setSelectedHosp}
+              placeholderText={
+                mode === "11" ? "اخـتـر المســتـشـفـى" : "اخــتــر"
+              }
+            />
+          </div>
+        ) : (
+          ""
+        )}
 
         <div className="flex items-center" style={{ justifyContent: "end" }}>
           {mode === "1" || mode === "mosts" || mode === "aqsam" ? (
@@ -92,22 +152,6 @@ export default function FromTo({
                 setSelectedOption={setSelectedOptionIII}
                 placeholderText="اختر الرتبة"
                 mode="6"
-              />
-            </>
-          ) : mode === "11" ? (
-            <>
-              <br />
-              <DropDown
-                selectedOption={selectedOptionII}
-                setSelectedOption={setSelectedOptionII}
-                mode="aqsamSpecific"
-                placeholderText="اختر الــقــسم"
-              />
-              <DropDown
-                selectedOption={selectedOptionIII}
-                setSelectedOption={setSelectedOptionIII}
-                placeholderText="اختر الغرفة"
-                mode="ghorfa"
               />
             </>
           ) : (
