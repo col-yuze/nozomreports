@@ -41,6 +41,11 @@ export default async function handler(req, res) {
     const ROOM_IN = req.query.roomin;
     const DATE_IN = formatOracleDate(req.query.datein);
     const QueryType = req.query.querytype;
+    var all=''
+    if (ROOM_IN != 0)
+    {  all = `AND     (PATIENT_GOING_IN_ROOM.ROOM_NUM = '${ROOM_IN}' OR '${ROOM_IN}' IS NULL)`;
+    console.log('not all')
+    }
     const query_tafseely = `
     SELECT DISTINCT PRESCRIPTION.PATIENT_NUM,ROOM.ROOM_NUM,HOSP.F_GET_PAT_NAME_RANK_FULL(PRESCRIPTION.PATIENT_NUM) PATIENT_NAME,PRESCRIPTION_MEDICINE.MEDICINE_CODE,MEDICINE_USED.MEDICINE_NAME_A,PRESCRIPTION_MEDICINE.REQUEST_QUANTITY
 FROM PRESCRIPTION,PRESCRIPTION_MEDICINE,MEDICINE_USED,PATIENT_GOING_IN_ROOM,ROOM ,DEPARTMENT
@@ -55,7 +60,7 @@ AND     PATIENT_GOING_IN_ROOM.GOING_IN_DATE = (SELECT MAX(GOING_IN_DATE)
                                                                                  FROM PATIENT_GOING_IN_ROOM
                                                                                  WHERE PATIENT_NUM = PRESCRIPTION.PATIENT_NUM) 
 AND     ROOM.DEPARTMENT_CODE = ${DEPT_IN}
-AND     (PATIENT_GOING_IN_ROOM.ROOM_NUM = '${ROOM_IN}' OR '${ROOM_IN}' IS NULL)
+${all}
 AND     PRESCRIPTION.PRESCRIPTION_TYPE = 4
 AND     PRESCRIPTION.PRESCRIPTION_DATE =  '${DATE_IN}'
     `;
@@ -74,7 +79,7 @@ AND     PATIENT_GOING_IN_ROOM.GOING_IN_DATE = (SELECT MAX(GOING_IN_DATE)
                                                                                  FROM PATIENT_GOING_IN_ROOM
                                                                                  WHERE PATIENT_NUM = PRESCRIPTION.PATIENT_NUM) 
 AND     ROOM.DEPARTMENT_CODE =  ${DEPT_IN}
-AND     (PATIENT_GOING_IN_ROOM.ROOM_NUM = '${ROOM_IN}' OR '${ROOM_IN}' IS NULL)
+${all}
 AND     PRESCRIPTION.PRESCRIPTION_TYPE = 4
 AND     PRESCRIPTION.PRESCRIPTION_DATE =  '${DATE_IN}'
 GROUP BY PRESCRIPTION_MEDICINE.MEDICINE_CODE,MEDICINE_USED.MEDICINE_NAME_A
