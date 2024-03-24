@@ -5,6 +5,7 @@ import MyDocument from "../../../components/pdf";
 import MyDocument2 from "./pdf";
 import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
+import Dropdown from "react-dropdown";
 
 import FromTo from "../../../components/FromTo";
 const DynamicPDFViewer = dynamic(
@@ -25,8 +26,62 @@ export default function AadadMotaha() {
   const [deptStatic, setDeptStatic] = React.useState(0);
   const [room, setRoom] = React.useState(0);
   const [roomStatic, setRoomStatic] = React.useState(0);
+
+  ///testing
+  const [hospArr, setHospArr] = React.useState([
+    "1-مستشفى الجراحة",
+    "2-مستشفى الباطنة",
+    "3-مستشفى الجهاز التنفسي",
+    "4-مستشفى الاسنان التخصصي",
+    "5-الاستقبال و الطوارئ و الحوادث",
+    "6-مستشفى الكلى",
+    "7-مستشفى القلب التخصصي",
+    "8-مستشفى العيون التخصصي",
+    "9-السموم",
+  ]);
+  const [qesmArr, setQesmArr] = React.useState([]);
+  const [ghorfaArr, setGhorfaArr] = React.useState([]);
+  //
+  const fetchDataAqsamInHosp = async (hosp) => {
+    await fetch(`/api/departments?hospin=${hosp.split("-")[0]}`)
+      .then((response) => {
+        response.json().then((res) => {
+          setQesmArr(res.data);
+        });
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const fetchDataGhorafInQesm = async (dept) => {
+    await fetch(`/api/rooms?deptin=${dept}`)
+      .then((response) => {
+        response.json().then((res) => {
+          setGhorfaArr(res.data);
+        });
+      })
+      .catch((err) => console.error(err));
+  };
+  //
+  const onSelectHosp = (selectedValue) => {
+    fetchDataAqsamInHosp(selectedValue.value);
+    setHosp(selectedValue.value);
+    setRoom(0);
+    setDept(null);
+  };
+  const onSelectQesm = (selectedValue) => {
+    setDept(selectedValue);
+    setRoom(0);
+    fetchDataGhorafInQesm(selectedValue.value[1]);
+  };
+  const onSelectGhorfa = (selectedValue) => {
+    setRoom(selectedValue);
+  };
+  const handleOnLoad = () => {
+    setLoading(false);
+  };
+  ///
   // api fetching
-  const fetchDataTable = async () => {
+  const fetchDataTable = async (qt) => {
     // fetch(`/api/rooms?deptin=200534`).then((response) =>
     //   response.json().then((res) => {
     //   })
@@ -36,14 +91,17 @@ export default function AadadMotaha() {
     // );
     setLoading(true);
     fetch(
-      `/api/taqreeradweya?datein=${startDate}&deptin=${dept}&roomin=${room}&querytype=${queryType}`
+      `/api/taqreeradweya?datein=${startDate}&deptin=${dept.value[1]}&roomin=${
+        room == 0 ? 0 : room.value[1]
+      }&querytype=${qt}`
     )
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
           setStaticStartDate(startDate);
-          setDeptStatic(dept);
-          setRoomStatic(room);
+          setDeptStatic(dept.value[0]);
+          setRoomStatic(room == 0 ? "كل الغرف" : room.value[1]);
+          setQueryType(qt);
         });
       })
       .catch((err) => {
@@ -81,9 +139,19 @@ export default function AadadMotaha() {
               setSelectedOption={setHosp}
               setSelectedOptionII={setDept}
               setSelectedOptionIII={setRoom}
-              two="11"
+              mode="11"
+              hospOptions={hospArr}
+              onHospChange={onSelectHosp}
+              hospValue={hosp}
+              qesmOptions={qesmArr}
+              onQesmChange={onSelectQesm}
+              qesmValue={dept}
+              ghorfaOptions={ghorfaArr}
+              onGhorfaChange={onSelectGhorfa}
+              ghorfaValue={room}
             />
             <br />
+
             <Button
               style={{
                 backgroundColor: "#F0ECE5",
@@ -93,11 +161,10 @@ export default function AadadMotaha() {
                 width: "100%",
               }}
               onClick={() => {
-                fetchDataTable();
-                setQueryType(1);
+                fetchDataTable(1);
               }}
               variant="contained"
-              disabled={!(startDate && room)}
+              disabled={!(startDate && hosp && dept) || loading}
             >
               طباعة تقــريـر اجمــالـــي
             </Button>
@@ -111,11 +178,10 @@ export default function AadadMotaha() {
                 width: "100%",
               }}
               onClick={() => {
-                fetchDataTable();
-                setQueryType(2);
+                fetchDataTable(2);
               }}
               variant="contained"
-              disabled={!(startDate && room)}
+              disabled={!(startDate && hosp && dept) || loading}
             >
               طباعة تقــريـر تـفـصـيـلـي
             </Button>
@@ -131,21 +197,26 @@ export default function AadadMotaha() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا يوجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               {queryType == 1 ? (
                 <MyDocument
                   data={rows}
                   title={`الادويةالمنصرفة لصالح قسم ${deptStatic} ${roomStatic} في ${staticStartDate}`}
                 />
-              ) : (
+              ) : queryType == 2 ? (
                 <MyDocument2
                   data={rows}
                   title={`الادويةالمنصرفة لصالح قسم ${deptStatic} ${roomStatic} في ${staticStartDate}`}
                 />
-              )}
+              ) : null}
             </DynamicPDFViewer>
           )}
         </div>

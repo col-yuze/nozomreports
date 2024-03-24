@@ -2,6 +2,7 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DropDown from "../components/DropDown";
+import ReactDropDown from "react-dropdown";
 import "react-dropdown/style.css";
 import { format } from "date-fns";
 
@@ -15,10 +16,22 @@ export default function FromTo({
   selectedOptionIII,
   setSelectedOptionIII,
   mode,
+
+  hospOptions,
+  onHospChange,
+  hospValue,
+  qesmOptions,
+  onQesmChange,
+  qesmValue,
+  ghorfaOptions,
+  onGhorfaChange,
+  ghorfaValue,
 }) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
 
+  const [selectedHosp, setSelectedHosp] = React.useState(null);
+  const [selectedQesm, setSelectedQesm] = React.useState(null);
   // const formattedStartDate = startDate
   //   ? format(startDate, "dd-MM-yyyy")
   //   : "Select a start date";
@@ -27,23 +40,57 @@ export default function FromTo({
   // const formattedEndDate = endDate
   //   ? format(endDate, "dd-MM-yyyy")
   //   : "Select an end date";
-  // console.log(formattedStartDate);
-  // console.log(formattedEndDate);
   // setStartDate(formattedStartDate);
   // setEndDate(formattedEndDate);
   return (
     <>
-      <div
-        className="flex items-center"
-        style={{ justifyContent: "end", justifyContent: "space-evenly" }}
-      >
-        <div className="relative" style={{ maxwidth: "100%" }}>
+      <div className="flex items-center" style={{ justifyContent: "end" }}>
+        {mode === "11" ? (
+          <>
+            <br />
+
+            <DropDown
+              dynamicOptions={ghorfaOptions}
+              dynamicOnChange={onGhorfaChange}
+              setSelectedOption={onGhorfaChange}
+              selectedOption={ghorfaValue}
+              mode="ghorfa"
+              placeholderText="اختر الــغرفــة"
+            />
+            <br />
+
+            <DropDown
+              dynamicOptions={qesmOptions}
+              dynamicOnChange={onQesmChange}
+              setSelectedOption={onQesmChange}
+              selectedOption={qesmValue}
+              mode="aqsamSpecific"
+              placeholderText="اختر الــقــسم"
+            />
+            <br />
+            <DropDown
+              dynamicOptions={hospOptions}
+              setSelectedOption={onHospChange}
+              dynamicOnChange={onHospChange}
+              selectedOption={hospValue}
+              mode="hosps"
+              placeholderText="اختر الـمـستشـفى"
+            />
+          </>
+        ) : (
+          ""
+        )}
+        {mode !== "11" ? (
           <DropDown
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
             mode={mode}
+            setSelectedHosp={setSelectedHosp}
+            placeholderText="اخــتــر"
           />
-        </div>
+        ) : (
+          ""
+        )}
 
         <div className="flex items-center" style={{ justifyContent: "end" }}>
           {mode === "1" || mode === "mosts" || mode === "aqsam" ? (
@@ -92,22 +139,6 @@ export default function FromTo({
                 setSelectedOption={setSelectedOptionIII}
                 placeholderText="اختر الرتبة"
                 mode="6"
-              />
-            </>
-          ) : mode === "11" ? (
-            <>
-              <br />
-              <DropDown
-                selectedOption={selectedOptionII}
-                setSelectedOption={setSelectedOptionII}
-                mode="aqsamSpecific"
-                placeholderText="اختر الــقــسم"
-              />
-              <DropDown
-                selectedOption={selectedOptionIII}
-                setSelectedOption={setSelectedOptionIII}
-                placeholderText="اختر الغرفة"
-                mode="ghorfa"
               />
             </>
           ) : (

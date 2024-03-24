@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
+import Tooltip from "@mui/material/Tooltip";
+
 var options = [
   "0-الكل",
   "1-مستشفى الجراحة",
@@ -16,16 +18,18 @@ var options = [
   "9-السموم",
 ];
 
-const defaultOption = "اختـــــــر";
-
+var tooltip = "اختــر المــستشــفى اولا";
 const DropDown = ({
   selectedOption,
   setSelectedOption,
   mode,
   placeholderText,
+  disabled,
+  dynamicOptions,
 }) => {
   const [opts, setOpts] = React.useState([]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
+
   React.useEffect(() => {
     const fetchData = async () => {
       await fetch("/api/aqsamdakhly")
@@ -43,9 +47,6 @@ const DropDown = ({
     }
   }, []);
 
-  const onSelect = (selectedOption) => {
-    setSelectedOption(selectedOption.value);
-  };
   mode === "2"
     ? (options = ["asdasd", "dasd"])
     : mode === "3"
@@ -96,9 +97,11 @@ const DropDown = ({
     : mode === "8" || mode === "aqsam"
     ? (options = opts.map((el) => `${el[0]}-${el[1]}`))
     : mode === "ghorfa"
-    ? (options = opts.map((el) => `${el[0]}-${el[1]}`))
+    ? (options = dynamicOptions)
+    : mode === "hosps"
+    ? (options = dynamicOptions)
     : mode === "aqsamSpecific"
-    ? (options = opts.map((el) => `${el[0]}-${el[1]}`))
+    ? (options = dynamicOptions)
     : (options = [
         "0-الكل",
         "1-مستشفى الجراحة",
@@ -111,16 +114,58 @@ const DropDown = ({
         "8-مستشفى العيون التخصصي",
         "9-السموم",
       ]);
+  tooltip =
+    mode === "ghorfa" ? "اختــر الـقـسـم اولا" : "اختــر المــستشــفى اولا";
+
+  const handleClick = () => {
+    if (disabled) {
+      ReactTooltip.show("dropdown-tooltip");
+    } else {
+      // Handle click event
+    }
+  };
+
+  const handleHover = () => {
+    if (disabled) {
+      ReactTooltip.show("dropdown-tooltip");
+    } else {
+      // Handle hover event
+    }
+  };
   return (
-    <div className="fixed-width-dropdown">
-      <Dropdown
-        options={options}
-        onChange={onSelect}
-        value={selectedOption}
-        placeholder={placeholderText}
-        style={{ width: "200px" }}
-      />
-    </div>
+    <>
+      {/* {selectedOption ? (
+        <Tooltip title={tooltip}>
+          <div className="fixed-width-dropdown">
+            <Dropdown
+              options={options}
+              onChange={onSelect}
+              value={selectedOption}
+              placeholder={placeholderText}
+              style={{ width: "200px" }}
+              disabled={disabled}
+              onClick={handleClick}
+              onMouseEnter={handleHover}
+              onMouseLeave={() => ReactTooltip.hide()}
+            />
+          </div>
+        </Tooltip>
+      ) : ( */}
+      <div className="fixed-width-dropdown">
+        <Dropdown
+          options={options}
+          onChange={setSelectedOption}
+          value={selectedOption}
+          placeholder={placeholderText}
+          style={{ width: "200px" }}
+          disabled={disabled}
+          onClick={handleClick}
+          onMouseEnter={handleHover}
+          onMouseLeave={() => ReactTooltip.hide()}
+        />
+      </div>
+      {/* )} */}
+    </>
   );
 };
 
