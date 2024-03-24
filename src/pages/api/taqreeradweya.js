@@ -16,7 +16,7 @@ const HospMoratabHagz = (result) => {
   var j = 0;
   result.forEach((el, i) => {
     const id = el[0];
-    const data = [ el[4], el[5]];
+    const data = [el[4], el[5]];
     if (!hosp.has(id)) {
       j++;
       hosp.set(id, [
@@ -25,7 +25,6 @@ const HospMoratabHagz = (result) => {
       ]);
     }
     hosp.get(id).push(data);
-
   });
   const grouped_result = Array.from(hosp, ([id, data]) => [id, data]);
   return grouped_result;
@@ -79,12 +78,11 @@ AND     PRESCRIPTION.PRESCRIPTION_TYPE = 4
 AND     PRESCRIPTION.PRESCRIPTION_DATE =  '${DATE_IN}'
 GROUP BY PRESCRIPTION_MEDICINE.MEDICINE_CODE,MEDICINE_USED.MEDICINE_NAME_A
     `;
-    var query = "";
-    var final_result=[]
+    var final_result = [];
     if (QueryType == 1) {
       const result = await runQuery(query_egmaly);
       final_result = result.map((el, i) => [i + 1, el[1], el[2]]);
-      final_result.unshift(['م','اسم الدواء','الكمية'])
+      final_result.unshift(["م", "اسم الدواء", "الكمية"]);
     } else {
       const result = await runQuery(query_tafseely);
       final_result = HospMoratabHagz(result);

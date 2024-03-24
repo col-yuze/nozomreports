@@ -44,63 +44,50 @@ export default function FromTo({
   // setEndDate(formattedEndDate);
   return (
     <>
-      <div
-        className="flex items-center"
-        style={{ justifyContent: "end", justifyContent: "space-evenly" }}
-      >
+      <div className="flex items-center" style={{ justifyContent: "end" }}>
         {mode === "11" ? (
           <>
             <br />
 
-            <div className="fixed-width-dropdown">
-              <DropDown
-                dynamicOptions={ghorfaOptions}
-                dynamicOnChange={onGhorfaChange}
-                dynamicValue={ghorfaValue}
-                style={{ width: "200px" }}
-                mode="ghorfa"
-                placeholderText="اختر الــغرفــة"
-              />
-            </div>
+            <DropDown
+              dynamicOptions={ghorfaOptions}
+              dynamicOnChange={onGhorfaChange}
+              setSelectedOption={onGhorfaChange}
+              selectedOption={ghorfaValue}
+              mode="ghorfa"
+              placeholderText="اختر الــغرفــة"
+            />
             <br />
 
-            <div className="fixed-width-dropdown">
-              <DropDown
-                dynamicOptions={qesmOptions}
-                dynamicOnChange={onQesmChange}
-                dynamicValue={qesmValue}
-                style={{ width: "200px" }}
-                mode="aqsamSpecific"
-                placeholderText="اختر الــقــسم"
-              />
-            </div>
+            <DropDown
+              dynamicOptions={qesmOptions}
+              dynamicOnChange={onQesmChange}
+              setSelectedOption={onQesmChange}
+              selectedOption={qesmValue}
+              mode="aqsamSpecific"
+              placeholderText="اختر الــقــسم"
+            />
             <br />
-            <div className="fixed-width-dropdown">
-              <DropDown
-                dynamicOptions={hospOptions}
-                dynamicOnChange={onHospChange}
-                dynamicValue={hospValue}
-                style={{ width: "200px" }}
-                mode="hosps"
-                placeholderText="اختر الـمـستشـفى"
-              />
-            </div>
+            <DropDown
+              dynamicOptions={hospOptions}
+              setSelectedOption={onHospChange}
+              dynamicOnChange={onHospChange}
+              selectedOption={hospValue}
+              mode="hosps"
+              placeholderText="اختر الـمـستشـفى"
+            />
           </>
         ) : (
           ""
         )}
         {mode !== "11" ? (
-          <div className="relative" style={{ maxwidth: "100%" }}>
-            <DropDown
-              selectedOption={selectedOption}
-              setSelectedOption={setSelectedOption}
-              mode={mode}
-              setSelectedHosp={setSelectedHosp}
-              placeholderText={
-                mode === "11" ? "اخـتـر المســتـشـفـى" : "اخــتــر"
-              }
-            />
-          </div>
+          <DropDown
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+            mode={mode}
+            setSelectedHosp={setSelectedHosp}
+            placeholderText="اخــتــر"
+          />
         ) : (
           ""
         )}

@@ -18,7 +18,6 @@ var options = [
   "9-السموم",
 ];
 
-const defaultOption = "اختـــــــر";
 var tooltip = "اختــر المــستشــفى اولا";
 const DropDown = ({
   selectedOption,
@@ -26,8 +25,6 @@ const DropDown = ({
   mode,
   placeholderText,
   disabled,
-  dynamicValue,
-  dynamicOnChange,
   dynamicOptions,
 }) => {
   const [opts, setOpts] = React.useState([]);
@@ -50,16 +47,6 @@ const DropDown = ({
     }
   }, []);
 
-  const onSelect = (selectedOption) => {
-    setSelectedOption(selectedOption.value);
-    if (mode == "11") {
-      setSelectedHosp(selectedOption.value);
-      0;
-    }
-    if (mode == "aqsamSpecific") {
-      setSelectedQesm(selectedOption.value);
-    }
-  };
   mode === "2"
     ? (options = ["asdasd", "dasd"])
     : mode === "3"
@@ -167,16 +154,8 @@ const DropDown = ({
       <div className="fixed-width-dropdown">
         <Dropdown
           options={options}
-          onChange={
-            mode === "hosps" || mode === "aqsamSpecific" || mode === "ghorfa"
-              ? dynamicOnChange
-              : onSelect
-          }
-          value={
-            mode === "hosps" || mode === "aqsamSpecific" || mode === "ghorfa"
-              ? dynamicValue
-              : selectedOption
-          }
+          onChange={setSelectedOption}
+          value={selectedOption}
           placeholder={placeholderText}
           style={{ width: "200px" }}
           disabled={disabled}
