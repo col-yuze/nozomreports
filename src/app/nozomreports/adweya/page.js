@@ -36,7 +36,9 @@ export default function Adweya() {
         setLoading(false);
       });
   };
-
+  const handleOnLoad = () => {
+    setLoading(false);
+  };
   return (
     <div
       style={{
@@ -76,7 +78,7 @@ export default function Adweya() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate && endDate)}
+              disabled={!(startDate && endDate) || loading}
             >
               اظهر البيانات
             </Button>
@@ -93,7 +95,12 @@ export default function Adweya() {
               {loading ? <CircularProgress /> : null}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`
