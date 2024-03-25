@@ -28,12 +28,14 @@ export default function AdweyaDakhly() {
   const fetchDataTable = async () => {
     setLoading(true);
     fetch(
-      `/api/adweyadakhly?dept=${selectedOption.split("-")[0]}&date=${startDate}`
+      `/api/adweyadakhly?dept=${
+        selectedOption.value.split("-")[0]
+      }&date=${startDate}`
     )
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          setSelectedOptionStatic(selectedOption);
+          setSelectedOptionStatic(selectedOption.value);
           setStartDateStatic(startDate);
         });
       })

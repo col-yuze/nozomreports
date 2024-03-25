@@ -128,39 +128,35 @@ const MyDocument = ({ data, title }) => {
                     {
                       backgroundColor:
                         index === 0 && pageIndex === 0 ? "#e1e1e1" : "white",
+                      transform: [{ rotate: "-90deg" }],
                     },
                   ]}
                   key={index}
                 >
                   {rowData.map((cellData, cellIndex) => (
-                    <Text
+                    <View
+                      key={cellIndex}
                       style={[
                         styles.cell,
                         {
-                          fontSize: "8px",
-                          flex:
-                            cellIndex === 1
-                              ? "4"
-                              : cellIndex === 0
-                              ? "2"
-                              : "0.5",
-
+                          fontSize: 8,
+                          flex: cellIndex === 1 ? 4 : cellIndex === 0 ? 2 : 0.5,
                           backgroundColor:
                             index === pageData.length - 1 &&
                             pageIndex === pagesData.length - 1
                               ? "#ffe0e0"
                               : "transparent",
+                          transform: [{ rotate: "-90deg" }], // Rotate the text inside each cell
                         },
                         index === 0 && cellIndex === 0 && pageIndex === 0
-                          ? { paddingTop: "17px" }
+                          ? { paddingTop: 17 }
                           : index === 0 && cellIndex === 1 && pageIndex === 0
-                          ? { paddingTop: "17px" }
+                          ? { paddingTop: 17 }
                           : {},
                       ]}
-                      key={cellIndex}
                     >
-                      {cellData.toString()}
-                    </Text>
+                      <Text>{cellData.toString()}</Text>
+                    </View>
                   ))}
                 </View>
               ))}
