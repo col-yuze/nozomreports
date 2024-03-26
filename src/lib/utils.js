@@ -40,4 +40,35 @@ function formatDate(date) {
   return formattedDay + "-" + formattedMonth + "-" + year;
 }
 
-export { formatOracleDate, formatDate };
+ function findMaxMinTimes(times) {
+   // Convert time strings to minutes since midnight
+   const minutesSinceMidnight = times.map((time) => {
+     const [hours, minutes] = time.split(":").map(Number);
+     return hours * 60 + minutes;
+   });
+
+   // Find maximum and minimum times
+   const maxTime = Math.max(...minutesSinceMidnight);
+   const minTime = Math.min(...minutesSinceMidnight);
+
+   // Function to format time from minutes since midnight to HH:mm format
+   const formatTime = (minutes) => {
+     const hours = Math.floor(minutes / 60);
+     const mins = minutes % 60;
+     return `${hours.toString().padStart(2, "0")}:${mins
+       .toString()
+       .padStart(2, "0")}`;
+   };
+
+   // Format maximum and minimum times
+   const maxTimeString = formatTime(maxTime);
+   const minTimeString = formatTime(minTime);
+
+   // Return object containing maximum and minimum times
+   return {
+     maxTime: maxTimeString,
+     minTime: minTimeString,
+   };
+ }
+
+export { formatOracleDate, formatDate, findMaxMinTimes };

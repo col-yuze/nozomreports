@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import CustomBox from "./CustomBox.js";
+import CustomBox from "../../components/CustomBox.js";
 import NavBar from "./../../components/NavBar.js";
 
 const items = [
@@ -10,7 +10,7 @@ const items = [
     title: "احصائية الادوية المنصرفة بالقسم الداخلي عن يوم",
     route: "adweyadakhly",
   }, //done input skeleton
-  { title: "بالعيادات", route: "adweyaeyadat" }, //done input skeleton
+  { title: "العيادات", route: "adweyaeyadat" }, //done input skeleton
   { title: "الرمد", route: "adweyaramad" }, //done input skeleton
   { title: "تقرير المحجوزين بالمجمع خلال فترة", route: "mahgoozfatra" }, //done input skeleton
   { title: " احصائية العيادات اليومية", route: "ehsaeyaeyadat" }, //done input skeleton
@@ -60,7 +60,7 @@ export default function nozomreports() {
         }}
       >
         {items.map((el) => (
-          <CustomBox key={el.title} el={el} />
+          <CustomBox key={el.title} el={el} routePage={'nozomreports'}/>
         ))}
       </Box>
     </div>
