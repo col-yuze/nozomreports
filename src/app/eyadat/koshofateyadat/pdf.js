@@ -132,21 +132,19 @@ const MyDocument = ({ data, title }) => {
                         styles.cell,
                         {
                           fontSize:
-                            index === 0 && cellIndex === 0 && pageIndex === 0
-                              ? "25px"
-                              : index === 0 && pageIndex === 0
-                              ? "10px"
-                              : "8px",
-                          flex: cellIndex === 0 ? "4" : "0.5",
+                            index === 0 && pageIndex === 0 ? "13px" : "10px",
+                          flex:
+                            cellIndex === 2
+                              ? "2"
+                              : cellIndex === 1
+                              ? "2"
+                              : cellIndex === 0
+                              ? "0.5"
+                              : "1",
 
                           backgroundColor:
-                            index === pageData.length - 1 &&
-                            pageIndex === pagesData.length - 1
+                            cellIndex === rowData.length - 1 || cellIndex === 0
                               ? "#ffe0e0"
-                              : cellIndex === rowData.length - 1
-                              ? "#ffe0e0"
-                              : cellIndex === 1 
-                              ? "#f7e38f"
                               : "transparent",
                         },
                         index === 0 && cellIndex === 0 && pageIndex === 0
@@ -155,11 +153,7 @@ const MyDocument = ({ data, title }) => {
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString().includes("عقيد")
-                        ? "صيدلية عقيد / مقدم / رائد"
-                        : cellData.toString().includes("ملازم")
-                        ? "صيدلية ملازم / ملازم أول / نقيب"
-                        : cellData.toString()}
+                      {cellData}
                     </Text>
                   ))}
                 </View>

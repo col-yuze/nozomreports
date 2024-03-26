@@ -26,6 +26,7 @@ function ClinicStart(arr) {
   var i = 1;
   for (const clinic in data) {
     const clinic_data = data[clinic];
+    console.log(data[clinic].time)
     const { maxTime, minTime } = findMaxMinTimes(data[clinic].time);
 
     result.push([
@@ -71,7 +72,6 @@ AND       V_CLINIC_NAME.CLINIC_CODE NOT IN (20029110001,20029130001,20029140001,
 20093190001,20002120001,10000000000,20044210001)
     `;
     const result = await runQuery(query);
-
     const filtered_res = ClinicStart(result);
     res.status(200).json({ success: true, data: filtered_res });
   } catch (err) {

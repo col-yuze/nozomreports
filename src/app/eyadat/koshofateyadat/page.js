@@ -54,7 +54,7 @@ export default function KoshofatEyadat() {
           <div id="pdf-container">
             <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
               {" "}
-              {`مواعيد بدايات الكشوفات فى العيادات عن يوم ${staticStartDate}`}
+              {`مواعيد بدايات الكشوفات فى العيادات عن يوم `}
             </h1>
             <br />
             <div

@@ -30,7 +30,7 @@ function formatOracleDate(old_date) {
 function formatDate(date) {
   // null check
   if (date === null || date === undefined) {
-    return ''
+    return "";
   }
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -40,35 +40,42 @@ function formatDate(date) {
   return formattedDay + "-" + formattedMonth + "-" + year;
 }
 
- function findMaxMinTimes(times) {
-   // Convert time strings to minutes since midnight
-   const minutesSinceMidnight = times.map((time) => {
-     const [hours, minutes] = time.split(":").map(Number);
-     return hours * 60 + minutes;
-   });
+function findMaxMinTimes(times) {
+  // Convert time strings to minutes since midnight
+  const minutesSinceMidnight = times.map((time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    // Adjust for 12-hour format
+    const totalMinutes = (hours % 12) * 60 + minutes + (hours >= 12 ? 720 : 0);
+    return totalMinutes;
+  });
 
-   // Find maximum and minimum times
-   const maxTime = Math.max(...minutesSinceMidnight);
-   const minTime = Math.min(...minutesSinceMidnight);
+  // Find maximum and minimum times
+  const maxTime = Math.max(...minutesSinceMidnight);
+  const minTime = Math.min(...minutesSinceMidnight);
 
-   // Function to format time from minutes since midnight to HH:mm format
-   const formatTime = (minutes) => {
-     const hours = Math.floor(minutes / 60);
-     const mins = minutes % 60;
-     return `${hours.toString().padStart(2, "0")}:${mins
-       .toString()
-       .padStart(2, "0")}`;
-   };
+  // Function to format time from minutes since midnight to hh:mm format
+  const formatTime = (minutes) => {
+    let hours = Math.floor(minutes / 60) % 12;
+    hours = hours === 0 ? 12 : hours; // Convert 0 to 12
+    const mins = minutes % 60;
+    let period = "AM"; // Default to AM
+    // Determine if time is between 01:00 and 04:00
+    if ((hours >= 1 && hours <= 4) || (hours === 12 && mins !== 0)) {
+      period = "PM";
+    }
+    return `${hours.toString().padStart(2, "0")}:${mins
+      .toString()
+      .padStart(2, "0")} ${period}`;
+  };
 
-   // Format maximum and minimum times
-   const maxTimeString = formatTime(maxTime);
-   const minTimeString = formatTime(minTime);
+  // Format maximum and minimum times
+  const maxTimeString = formatTime(maxTime);
+  const minTimeString = formatTime(minTime);
 
-   // Return object containing maximum and minimum times
-   return {
-     maxTime: maxTimeString,
-     minTime: minTimeString,
-   };
- }
-
+  // Return object containing maximum and minimum times
+  return {
+    maxTime: maxTimeString,
+    minTime: minTimeString,
+  };
+}
 export { formatOracleDate, formatDate, findMaxMinTimes };
