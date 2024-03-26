@@ -13,6 +13,10 @@ const DynamicPDFViewer = dynamic(
     ssr: false, // Disable server-side rendering for this component
   }
 );
+const handleOnLoad = () => {
+  setLoading(false);
+  rows.length = 0;
+};
 export default function WafedeenDakhly() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState();
@@ -75,7 +79,7 @@ export default function WafedeenDakhly() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate && endDate)}
+              disabled={!(startDate && endDate) || loading}
             >
               اظهر البيانات
             </Button>
@@ -89,10 +93,15 @@ export default function WafedeenDakhly() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`

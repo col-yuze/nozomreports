@@ -22,12 +22,17 @@ export default function EhsaeyaMoratabatten() {
 
   const headers = ["م", "عدد المرضى ", "عدد الادوية ", "الاجمالي"];
   // api fetching
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   const fetchDataTable = async () => {
+    setLoading(true);
     fetch(`/api/ehsaeyamoratabatten?datein=${startDate}&countin=${num}`)
       .then((response) => {
         response.json().then((res) => {
           setRows([headers, ...res.data]);
-          setStaticNum(num)
+          setStaticNum(num);
         });
       })
       .catch((err) => {
@@ -79,7 +84,7 @@ export default function EhsaeyaMoratabatten() {
                 }}
                 onClick={fetchDataTable}
                 variant="contained"
-                disabled={!startDate}
+                disabled={!startDate || loading}
               >
                 اظهر البيانات
               </Button>
@@ -95,13 +100,14 @@ export default function EhsaeyaMoratabatten() {
                   minHeight: 500,
                 }}
               >
-                {loading ? <CircularProgress /> : null}
+                {loading ? <CircularProgress /> : "لا توجد احصائية"}
               </div>
             ) : (
               <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
                 <MyDocument
                   data={rows}
-                    title={`احصائية المرتبات العلاجية لاكثر من ${startDate} 
+                  onLoad={handleOnLoad}
+                  title={`احصائية المرتبات العلاجية لاكثر من ${startDate} 
                    ${staticNum} أدوية`}
                 />
               </DynamicPDFViewer>

@@ -22,6 +22,10 @@ export default function Mahgozeen() {
   const [selectedOption, setSelectedOption] = useState("0-الكل");
   const [selectedOptionStatic, setSelectedOptionStatic] = useState();
   // api fetching
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   const fetchDataTable = async () => {
     setLoading(true);
     fetch(`/api/mahgozeen?buildnumber=${selectedOption[0]}`)
@@ -77,6 +81,7 @@ export default function Mahgozeen() {
               }}
               onClick={fetchDataTable}
               variant="contained"
+              disabled={loading}
             >
               اظهر البيانات
             </Button>
@@ -90,10 +95,15 @@ export default function Mahgozeen() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               {selectedOptionStatic === "0-الكل"
                 ? (dept = "كل الأقسام")
                 : (dept = selectedOptionStatic.substring(2))}

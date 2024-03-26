@@ -45,6 +45,11 @@ export default function FromTo({
   return (
     <>
       <div className="flex items-center" style={{ justifyContent: "end" }}>
+        <span className="mx-4 text-white text-2xl"></span>
+        <span className="mx-4 text-white text-2xl"></span>
+
+        <span className="mx-4 text-white text-2xl"></span>
+        <span className="mx-4 text-white text-2xl"></span>
         {mode === "11" ? (
           <>
             <br />
@@ -96,6 +101,13 @@ export default function FromTo({
           {mode === "1" || mode === "mosts" || mode === "aqsam" ? (
             <>
               <div className="relative">
+                <span className="mx-4 text-white text-2xl"></span>
+                <span className="mx-4 text-white text-2xl"></span>
+                <span className="mx-4 text-white text-2xl"></span>
+                <span className="mx-4 text-white text-2xl"></span>
+                <span className="mx-4 text-white text-2xl"></span>
+                <span className="mx-4 text-white text-2xl"></span>
+                <span className="mx-4 text-white text-2xl"></span>
                 <span style={{ display: "inline-block" }}>
                   <DatePicker
                     className="text-left border-l-4 border-green-500  w-full p-3 rounded text-lg    outline-none  focus:ring-0 bg-white"
@@ -123,6 +135,11 @@ export default function FromTo({
                 </span>
               </div>
 
+              <span className="mx-4 text-white text-2xl"></span>
+              <span className="mx-4 text-white text-2xl"></span>
+
+              <span className="mx-4 text-white text-2xl"></span>
+              <span className="mx-4 text-white text-2xl"></span>
               <span className="mx-4 text-white text-2xl">إلى</span>
             </>
           ) : mode === "4" ? (
@@ -168,6 +185,17 @@ export default function FromTo({
                   isClearable
                 />
               </span>
+
+              <span className="mx-4 text-white text-2xl"></span>
+              <span className="mx-4 text-white text-2xl"></span>
+
+              <span className="mx-4 text-white text-2xl"></span>
+              <span className="mx-4 text-white text-2xl"></span>
+
+              <span className="mx-4 text-white text-2xl"></span>
+              <span className="mx-4 text-white text-2xl"></span>
+              <span className="mx-4 text-white text-2xl"></span>
+              <span className="mx-4 text-white text-2xl"></span>
             </div>
           ) : (
             ""

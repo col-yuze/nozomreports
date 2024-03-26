@@ -19,6 +19,7 @@ export default function Adweya() {
   const [endDateStatic, setEndDateStatic] = useState();
   const [loading, setLoading] = useState(false);
   // api fetching
+
   const fetchDataTable = async () => {
     setLoading(true);
     fetch(`/api/adweya?param1=${startDate}&param2=${endDate}`)
@@ -35,6 +36,10 @@ export default function Adweya() {
       .finally(() => {
         setLoading(false);
       });
+  };
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
   };
 
   return (
@@ -76,7 +81,7 @@ export default function Adweya() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate && endDate)}
+              disabled={!(startDate && endDate) || loading}
             >
               اظهر البيانات
             </Button>
@@ -93,7 +98,12 @@ export default function Adweya() {
               {loading ? <CircularProgress /> : null}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`

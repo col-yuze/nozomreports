@@ -43,7 +43,10 @@ export default function Mahgoozfatra() {
     const formattedMonth = month < 10 ? "0" + month : month;
     return formattedDay + "-" + formattedMonth + "-" + year;
   }
-
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   const fetchDataTable = async () => {
     setLoading(true);
     if (startDate && endDate) {
@@ -176,7 +179,7 @@ export default function Mahgoozfatra() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate && endDate)}
+              disabled={!(startDate && endDate) || loading}
             >
               اظهر البيانات
             </Button>
@@ -188,7 +191,12 @@ export default function Mahgoozfatra() {
 
           {rows.length > 0 ? (
             <div>
-              <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+              <DynamicPDFViewer
+                showToolbar={true}
+                width="100%"
+                height="720px"
+                onLoad={handleOnLoad}
+              >
                 {selectedOptionStatic === "0-الكل"
                   ? (dept = "كل الأقسام")
                   : (dept = selectedOptionStatic.split("-")[1])}
@@ -199,7 +207,7 @@ export default function Mahgoozfatra() {
               </DynamicPDFViewer>
             </div>
           ) : (
-            <div>{loading ? <CircularProgress /> : null}</div>
+            <div>{loading ? <CircularProgress /> : "لا توجد احصائية"}</div>
           )}
         </div>
       </div>

@@ -19,13 +19,18 @@ export default function MardaNotOut() {
   const [staticStartDate, setStaticStartDate] = useState();
   const [loading, setLoading] = useState(false);
   // api fetching
+
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   const fetchDataTable = async () => {
     setLoading(true);
     fetch(`/api/mardanotout?datein=${startDate}`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          setStaticStartDate(startDate)
+          setStaticStartDate(startDate);
         });
       })
       .catch((err) => {
@@ -69,7 +74,7 @@ export default function MardaNotOut() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate}
+              disabled={!startDate || loading}
             >
               اظهر البيانات
             </Button>
@@ -83,10 +88,15 @@ export default function MardaNotOut() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`

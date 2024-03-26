@@ -24,6 +24,10 @@ export default function MoratabtFatra() {
   const [loading, setLoading] = useState(false);
   const [patientCode, setPatientCode] = useState(-1);
   // api fetching
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   const fetchDataTable = async () => {
     setLoading(true);
     fetch(
@@ -81,7 +85,9 @@ export default function MoratabtFatra() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate&&endDate&& patientCode!==-1)}
+              disabled={
+                !(startDate && endDate && patientCode !== -1) || loading
+              }
             >
               اظهر البيانات
             </Button>
@@ -95,10 +101,15 @@ export default function MoratabtFatra() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`

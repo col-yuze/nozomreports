@@ -78,6 +78,7 @@ export default function AadadMotaha() {
   };
   const handleOnLoad = () => {
     setLoading(false);
+    rows.length = 0;
   };
   ///
   // api fetching
