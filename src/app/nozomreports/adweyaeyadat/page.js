@@ -21,6 +21,10 @@ export default function AdweyaEyadat() {
   const [staticEndDate, setStaticEndDate] = useState();
   const [loading, setLoading] = useState(false);
 
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
@@ -78,13 +82,12 @@ export default function AdweyaEyadat() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate}
+              disabled={!startDate || loading}
             >
               اظهر البيانات
             </Button>
             <br />
             <br />
-            {loading ? <CircularProgress /> : null}
           </div>
           {rows.length <= 0 || !staticStartDate ? (
             <div
@@ -94,9 +97,16 @@ export default function AdweyaEyadat() {
                 alignItems: "center",
                 minHeight: 500,
               }}
-            ></div>
+            >
+              {loading ? <CircularProgress /> : "لا يوجد احصائية"}
+            </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`إحصائية الادوية المنصرفة بالعيادات من ${staticStartDate} الي ${staticEndDate}`}

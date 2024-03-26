@@ -21,7 +21,10 @@ export default function Moratbat() {
   const [staticEndDate, setStaticEndDate] = useState();
   const [loading, setLoading] = useState(false);
 
- 
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
@@ -29,8 +32,8 @@ export default function Moratbat() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          setStaticEndDate(endDate)
-          setStaticStartDate(startDate)
+          setStaticEndDate(endDate);
+          setStaticStartDate(startDate);
         });
       })
       .catch((err) => {
@@ -53,7 +56,10 @@ export default function Moratbat() {
     >
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
-          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}> احصائية المرتابات العلاجية</h1>
+          <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
+            {" "}
+            احصائية المرتابات العلاجية
+          </h1>
           <div
             style={{
               display: "grid",
@@ -76,7 +82,7 @@ export default function Moratbat() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate && endDate)}
+              disabled={!(startDate && endDate) || loading}
             >
               اظهر البيانات
             </Button>
@@ -90,10 +96,15 @@ export default function Moratbat() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`

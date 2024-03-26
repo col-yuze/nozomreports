@@ -19,7 +19,10 @@ export default function EhsaeyaQodoom() {
   const [staticStartDate, setStaticStartDate] = useState();
   const [loading, setLoading] = useState(false);
 
-
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
 
   // api fetching
   const fetchDataTable = async () => {
@@ -28,7 +31,8 @@ export default function EhsaeyaQodoom() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-setStaticStartDate(startDate)        });
+          setStaticStartDate(startDate);
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -71,7 +75,7 @@ setStaticStartDate(startDate)        });
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate}
+              disabled={!startDate || loading}
             >
               اظهر البيانات
             </Button>
@@ -85,11 +89,19 @@ setStaticStartDate(startDate)        });
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-                <MyDocument data={rows} title={`احصائية بالقادمين للمجمع الطبي بكوبرى القبة عن يوم ${staticStartDate}`} />
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
+              <MyDocument
+                data={rows}
+                title={`احصائية بالقادمين للمجمع الطبي بكوبرى القبة عن يوم ${staticStartDate}`}
+              />
             </DynamicPDFViewer>
           )}
         </div>

@@ -21,6 +21,10 @@ export default function TakhasosatEyadat() {
   const [staticStartDate, setStaticStartDate] = React.useState(null);
   const [staticEndDate, setStaticEndDate] = React.useState(null);
 
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
@@ -78,7 +82,7 @@ export default function TakhasosatEyadat() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate && endDate)}
+              disabled={!(startDate && endDate) || loading}
             >
               اظهر البيانات
             </Button>
@@ -94,10 +98,15 @@ export default function TakhasosatEyadat() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`احصائية عددية للفترة من ${staticStartDate} الي ${staticEndDate}`}

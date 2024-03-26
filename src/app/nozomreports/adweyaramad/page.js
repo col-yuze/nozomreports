@@ -19,6 +19,11 @@ export default function AdweyaRamad() {
   const [staticStartDate, setStaticStartDate] = useState();
   const [staticEndDate, setStaticEndDate] = useState();
   const [loading, setLoading] = useState(false);
+
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
@@ -77,7 +82,7 @@ export default function AdweyaRamad() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate && endDate)}
+              disabled={!(startDate && endDate) || loading}
             >
               اظهر البيانات
             </Button>
@@ -91,10 +96,15 @@ export default function AdweyaRamad() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`احصائية عددية لعيادات الرمد للفترة من ${staticStartDate} الي ${staticEndDate}`}

@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 import MyDocument from "./pdf";
 import FromToII from "@/components/FromToII";
+import { CircularProgress } from "@mui/material";
 
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
@@ -22,23 +23,27 @@ export default function Mahgozeen() {
 
   const [num, setNum] = useState(10);
   const [staticNum, setStaticNum] = useState(10);
-
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
     //taree5 3adad rotba ta5asos
-    fetch(
-      `/api/sarfmoratabatten?datein=${startDate}&count=${num}`
-    )
+    fetch(`/api/sarfmoratabatten?datein=${startDate}&count=${num}`)
       .then((response) => {
         response.json().then((res) => {
-          setStaticStartDate(startDate)
+          setStaticStartDate(startDate);
           setRows(res.data);
-          setStaticNum(num)
+          setStaticNum(num);
         });
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -79,7 +84,7 @@ export default function Mahgozeen() {
               }}
               variant="contained"
               onClick={fetchDataTable}
-              disabled={!(startDate&&num)}
+              disabled={!(startDate && num) || loading}
             >
               اظهر البيانات
             </Button>
@@ -93,10 +98,15 @@ export default function Mahgozeen() {
                 minHeight: 500,
               }}
             >
-              {" "}
+              {loading ? <CircularProgress /> : "لا يوجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={` ${staticStartDate}بيانات المرضي صارفي المرتبات العلاجية اكثر من ${staticNum} دواء منذ `}

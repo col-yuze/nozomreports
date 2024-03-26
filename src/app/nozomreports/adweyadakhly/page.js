@@ -7,7 +7,8 @@ import dynamic from "next/dynamic";
 import MyDocument from "./pdf";
 import FromTo from "../../../components/FromTo";
 import { Button } from "@mui/material";
-import FromToII from "@/components/FromToII";
+
+import { CircularProgress } from "@mui/material";
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
@@ -24,6 +25,10 @@ export default function AdweyaDakhly() {
   const [selectedOptionStatic, setSelectedOptionStatic] = useState();
   const [selectedOption, setSelectedOption] = useState("0-القسم");
 
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   // api fetching 200540
   const fetchDataTable = async () => {
     setLoading(true);
@@ -86,7 +91,7 @@ export default function AdweyaDakhly() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate}
+              disabled={!startDate || loading}
             >
               اظهر البيانات
             </Button>
@@ -100,10 +105,15 @@ export default function AdweyaDakhly() {
                 minHeight: 500,
               }}
             >
-              {" "}
+              {loading ? <CircularProgress /> : "لا يوجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={` الادوية المنصرفة لصالح  ${

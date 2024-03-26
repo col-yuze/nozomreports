@@ -18,6 +18,10 @@ export default function Takhasosat() {
   const [startDate, setStartDate] = useState();
   const [loading, setLoading] = useState(false);
 
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   // api fetching
   const fetchDataTable = async () => {
     setLoading(true);
@@ -71,13 +75,12 @@ export default function Takhasosat() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate}
+              disabled={!startDate || loading}
             >
               اظهر البيانات
             </Button>
             <br />
             <br />
-            {loading ? <CircularProgress /> : null}
           </div>
           {rows.length <= 0 || !startDate ? (
             <div
@@ -88,10 +91,15 @@ export default function Takhasosat() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               <MyDocument
                 data={rows}
                 title={`

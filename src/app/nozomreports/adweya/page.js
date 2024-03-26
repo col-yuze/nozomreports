@@ -19,6 +19,7 @@ export default function Adweya() {
   const [endDateStatic, setEndDateStatic] = useState();
   const [loading, setLoading] = useState(false);
   // api fetching
+
   const fetchDataTable = async () => {
     setLoading(true);
     fetch(`/api/adweya?param1=${startDate}&param2=${endDate}`)
@@ -38,7 +39,9 @@ export default function Adweya() {
   };
   const handleOnLoad = () => {
     setLoading(false);
+    rows.length = 0;
   };
+
   return (
     <div
       style={{

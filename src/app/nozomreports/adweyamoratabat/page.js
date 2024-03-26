@@ -21,6 +21,10 @@ export default function AdweyaMoratabat() {
   const [loading, setLoading] = React.useState(false);
   var showString = "الأدوية";
   // api fetching
+  const handleOnLoad = () => {
+    setLoading(false);
+    rows.length = 0;
+  };
   const fetchDataTable = async () => {
     setLoading(true);
     fetch(
@@ -82,7 +86,7 @@ export default function AdweyaMoratabat() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate}
+              disabled={!startDate || loading}
             >
               اظهر البيانات
             </Button>
@@ -98,10 +102,15 @@ export default function AdweyaMoratabat() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
-            <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
+            <DynamicPDFViewer
+              showToolbar={true}
+              width="100%"
+              height="720px"
+              onLoad={handleOnLoad}
+            >
               {selectedOptionStatic === "3-عادى"
                 ? (showString = "الأدوية")
                 : (showString = "أدوية الصدر")}
