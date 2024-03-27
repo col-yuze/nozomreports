@@ -54,7 +54,7 @@ const NavBar = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/eyadat"
                   className="text-lavender dark:text-white hover:underline"
                 >
                   عيادات
