@@ -43,7 +43,14 @@ function formatDate(date) {
 function findMaxMinTimes(times) {
   // Convert time strings to minutes since midnight
   const minutesSinceMidnight = times.map((time) => {
-    const [hours, minutes] = time.split(":").map(Number);
+    const allowedTime= [1,2,3,4,5,6,7]
+    const afterTwelve = parseInt(time.split(':')[0])
+    const isPM = allowedTime.includes(afterTwelve);
+
+    let [hours, minutes] = time.split(":").map(Number);
+    if (isPM) {
+      hours+=12
+    }
     // Adjust for 12-hour format
     const totalMinutes = (hours % 12) * 60 + minutes + (hours >= 12 ? 720 : 0);
     return totalMinutes;
@@ -59,8 +66,8 @@ function findMaxMinTimes(times) {
     hours = hours === 0 ? 12 : hours; // Convert 0 to 12
     const mins = minutes % 60;
     let period = "AM"; // Default to AM
-    // Determine if time is between 01:00 and 04:00
-    if ((hours >= 1 && hours <= 4) || (hours === 12 && mins !== 0)) {
+    // Determine if time is between 01:00 and 08:00
+    if ((hours >= 1 && hours <= 7) || (hours === 12 && mins !== 0)) {
       period = "PM";
     }
     return `${hours.toString().padStart(2, "0")}:${mins

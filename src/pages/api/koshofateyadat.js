@@ -9,10 +9,16 @@ const {
 function ClinicStart(arr) {
   // add all meds
   const data = {};
-  for (const [code, building, t_date, t_time, clinic_name] of arr) {
+  for (const [
+    code,
+    building,
+    t_date,
+    t_time,
+    clinic_name,
+  ] of arr) {
     data[clinic_name] = data[clinic_name] || {};
     // Initialize properties if they don't exist
-    const { time, bul, date } = data[clinic_name];
+    const { time, arrival, bul, date } = data[clinic_name];
     data[clinic_name] = {
       ...data[clinic_name],
       time: time || [],
@@ -22,11 +28,11 @@ function ClinicStart(arr) {
 
     data[clinic_name]["time"].push(t_time);
   }
+  console.log(data)
   const result = [];
   var i = 1;
   for (const clinic in data) {
     const clinic_data = data[clinic];
-    console.log(data[clinic].time)
     const { maxTime, minTime } = findMaxMinTimes(data[clinic].time);
 
     result.push([
