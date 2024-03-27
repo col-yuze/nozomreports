@@ -4,15 +4,35 @@ import CustomBox from "../../components/CustomBox.js";
 import NavBar from "../../components/NavBar.js";
 
 const items = [
-  { title: "كشوفات العيادات", route: "koshofateyadat" }, //done input skeleton
-  { title: "نسبة الاشغال", route: "nesbetashghal" }, //done input skeleton
-  { title: "العيادات", route: "adweyaeyadat" }, //done input skeleton
-  { title: "الرمد", route: "adweyaramad" }, //done input skeleton
-  { title: " احصائية العيادات اليومية", route: "ehsaeyaeyadat" }, //done input skeleton
-  { title: "تخصصات", route: "takhasosat" }, //done input skeleton
-  { title: "تقرير الوافدين (عيادات)", route: "wafedeeneyadat" }, //done input skeleton
-  { title: "احصائية بالاعداد المتاحة في العيادات", route: "aadadmotaha" }, // no need for input skeleton
-  { title: "احصائية العياادات تخصصات", route: "takhasosateyadat" }, //done input skeleton
+  { title: "كشوفات العيادات", route: "koshofateyadat", parentRoute: "eyadat" }, //done input skeleton
+  {
+    title: "نسبة الاشغال",
+    route: "nesbetashghal",
+    parentRoute: "nozomreports",
+  }, //done input skeleton
+  { title: "العيادات", route: "adweyaeyadat", parentRoute: "nozomreports" }, //done input skeleton
+  { title: "الرمد", route: "adweyaramad", parentRoute: "nozomreports" }, //done input skeleton
+  {
+    title: " احصائية العيادات اليومية",
+    route: "ehsaeyaeyadat",
+    parentRoute: "nozomreports",
+  }, //done input skeleton
+  { title: "تخصصات", route: "takhasosat", parentRoute: "nozomreports" }, //done input skeleton
+  {
+    title: "تقرير الوافدين (عيادات)",
+    route: "wafedeeneyadat",
+    parentRoute: "nozomreports",
+  }, //done input skeleton
+  {
+    title: "احصائية بالاعداد المتاحة في العيادات",
+    route: "aadadmotaha",
+    parentRoute: "nozomreports",
+  }, // no need for input skeleton
+  {
+    title: "احصائية العياادات تخصصات",
+    route: "takhasosateyadat",
+    parentRoute: "nozomreports",
+  }, //done input skeleton
 ];
 
 export default function eyadat() {
@@ -42,7 +62,7 @@ export default function eyadat() {
         }}
       >
         {items.map((el) => (
-          <CustomBox key={el.title} el={el} routePage={'eyadat'}/>
+          <CustomBox key={el.title} el={el} routePage={el.parentRoute} />
         ))}
       </Box>
     </div>
