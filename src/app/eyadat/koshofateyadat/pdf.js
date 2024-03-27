@@ -9,9 +9,12 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import NotoNaskh from "../../../styles/ReadexPro-VariableFont_HEXP,wght.otf";
+import CamelFont from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+
 
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
+Font.register({ family: "CamelFont", src: CamelFont });
 
 // Define styles
 const styles = StyleSheet.create({
@@ -38,6 +41,8 @@ const styles = StyleSheet.create({
     textAlign: "right",
     fontSize: 12,
     marginBottom: 5,
+    fontFamily: "CamelFont",
+    paddingBottom:5
   },
   title: {
     textAlign: "center",
@@ -93,9 +98,6 @@ const styles = StyleSheet.create({
 });
 
 const currentDate = new Date();
-  const formattedDate = `${currentDate.getDate()}/${
-    currentDate.getMonth() + 1
-  }/${currentDate.getFullYear()}`; // dd/mm/yyyy format
   let hours = currentDate.getHours();
   let minutes = currentDate.getMinutes();
   const ampm = hours >= 12 ? "مساءً" : "صباحًا";
@@ -122,19 +124,36 @@ const MyDocument = ({ data, title }) => {
   }
 
   // if its not the first page then add the title again
-  pagesData.forEach((pageData,i) => {
-    if (i!==0) {
+  pagesData.forEach((pageData, i) => {
+    if (i !== 0) {
       return pageData.unshift(pagesData[0][0]);
     }
   });
+  // changes from english to arabic
+  String.prototype.toIndiaDigits = function () {
+    var id = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "۷", "۸", "۹"];
+    return this.replace(/[0-9]/g, function (w) {
+      return id[+w];
+    });
+  };
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
         <Page size="A4" style={styles.page} key={pageIndex}>
           <View style={styles.section}>
-            <Text style={styles.timestamp}>
-              توقيت الطباعة : {formattedTime.toIndiaDigits()}
-            </Text>
+            <div style={{flexDirection:'row',justifyContent:'space-between'}}>
+              <Text style={styles.timestamp}>
+                توقيت الطباعة : {formattedTime.toIndiaDigits()}
+              </Text>
+              <Text
+                style={
+                  styles.timestamp
+                }
+              >
+                فرع نظم المعلومات
+              </Text>
+            </div>
+
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{title}</Text>
