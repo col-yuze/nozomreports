@@ -9,6 +9,17 @@ const {
 function ClinicStart(arr) {
   // add all meds
   const data = {};
+  // sort by building
+  arr.sort((a, b) => {
+    // if 3eyadat then sort to the top
+    if (a[1] === "مبنى العيادات الخارجية") {
+    return -1; // a comes before b
+  } else if (b[1] === "مبنى العيادات الخارجية") {
+    return 1; // b comes before a
+  }
+    const buildingA = a[1] === null ? "اخري" : a[1];
+    const buildingB = b[1] === null ? "اخري" : b[1];
+  return buildingA.localeCompare(buildingB);})
   for (const [
     code,
     building,
@@ -22,13 +33,11 @@ function ClinicStart(arr) {
     data[clinic_name] = {
       ...data[clinic_name],
       time: time || [],
-      bul: bul || building,
+      bul: bul || (building === null ? clinic_name.split("-")[1] : building),
       date: date || t_date,
     };
-
     data[clinic_name]["time"].push(t_time);
   }
-  console.log(data)
   const result = [];
   var i = 1;
   for (const clinic in data) {

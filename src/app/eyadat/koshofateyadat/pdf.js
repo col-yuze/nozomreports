@@ -8,7 +8,8 @@ import {
   Font,
   Image,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/ReadexPro-VariableFont_HEXP,wght.otf";
+
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
@@ -32,6 +33,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     alignSelf: "center",
     paddingBottom: 5,
+  },
+  timestamp: {
+    textAlign: "right",
+    fontSize: 12,
+    marginBottom: 5,
   },
   title: {
     textAlign: "center",
@@ -86,8 +92,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 23; // Adjusted for the first page which includes the title
-const rowsPerPage = 25; // For subsequent pages
+const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()}/${
+    currentDate.getMonth() + 1
+  }/${currentDate.getFullYear()}`; // dd/mm/yyyy format
+  let hours = currentDate.getHours();
+  let minutes = currentDate.getMinutes();
+  const ampm = hours >= 12 ? "مساءً" : "صباحًا";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // Handle midnight (12 AM)
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  const formattedTime = `${hours}:${minutes} ${ampm}`; // hh:mm AM/PM format
+const rowsPerPageTitled = 20; // Adjusted for the first page which includes the title
+const rowsPerPage = 22; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
@@ -104,11 +121,20 @@ const MyDocument = ({ data, title }) => {
     isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
   }
 
+  // if its not the first page then add the title again
+  pagesData.forEach((pageData,i) => {
+    if (i!==0) {
+      return pageData.unshift(pagesData[0][0]);
+    }
+  });
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
         <Page size="A4" style={styles.page} key={pageIndex}>
           <View style={styles.section}>
+            <Text style={styles.timestamp}>
+              توقيت الطباعة : {formattedTime.toIndiaDigits()}
+            </Text>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{title}</Text>
@@ -120,8 +146,7 @@ const MyDocument = ({ data, title }) => {
                   style={[
                     styles.row,
                     {
-                      backgroundColor:
-                        index === 0 && pageIndex === 0 ? "#e1e1e1" : "white",
+                      backgroundColor: index === 0 ? "#e1e1e1" : "white",
                     },
                   ]}
                   key={index}
@@ -131,8 +156,7 @@ const MyDocument = ({ data, title }) => {
                       style={[
                         styles.cell,
                         {
-                          fontSize:
-                            index === 0 && pageIndex === 0 ? "13px" : "10px",
+                          fontSize: index === 0 ? "12px" : "9px",
                           flex:
                             cellIndex === 2
                               ? "2"
@@ -147,9 +171,6 @@ const MyDocument = ({ data, title }) => {
                               ? "#ffe0e0"
                               : "transparent",
                         },
-                        index === 0 && cellIndex === 0 && pageIndex === 0
-                          ? { paddingTop: "17px" }
-                          : null,
                       ]}
                       key={cellIndex}
                     >
