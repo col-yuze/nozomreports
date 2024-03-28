@@ -67,7 +67,7 @@ function findMaxMinTimes(times) {
     const mins = minutes % 60;
     let period = "AM"; // Default to AM
     // Determine if time is between 01:00 and 08:00
-    if ((hours >= 1 && hours <= 7) || (hours === 12 && mins !== 0)) {
+    if ((hours >= 1 && hours <= 7) || (hours === 12)) {
       period = "PM";
     }
     return `${hours.toString().padStart(2, "0")}:${mins

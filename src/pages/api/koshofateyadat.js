@@ -74,6 +74,7 @@ export default async function handler(req, res) {
     const DATE_IN = formatOracleDate(req.query.datein);
 
     // Your database queries or operations go here
+    // removed استقبال وطوارئ because it works 24/7 code(clinic_code in query) = 20044190001
     const query = `
       select clinic.clinic_code , clinic.clinic_room, patient_out.treatment_date, patient_out.treatment_time,V_CLINIC_NAME.CLINIC_OUT_NAME
 from clinic
@@ -84,7 +85,7 @@ on v_clinic_name.clinic_code = clinic.clinic_code
 where patient_out.treatment_date ='${DATE_IN}'
 AND       V_CLINIC_NAME.CLINIC_CODE NOT IN (20029110001,20029130001,20029140001,20029150001,20024110001,20078140001,
 20093130001,20093140001,20093150001,20093160001,20093170001,20093180001,
-20093190001,20002120001,10000000000,20044210001)
+20093190001,20002120001,10000000000,20044210001, 20044190001)
     `;
     const result = await runQuery(query);
     const filtered_res = ClinicStart(result);
