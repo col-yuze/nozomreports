@@ -5,6 +5,7 @@ import NavBar from "../../components/NavBar.js";
 
 const items = [
   { title: "كشوفات العيادات", route: "koshofateyadat", parentRoute: "eyadat" }, //done input skeleton
+  { title: "التحكم في العيادات", route: "eyadattahkom", parentRoute: "eyadat" }, //done input skeleton
   {
     title: "نسبة الاشغال",
     route: "nesbetashghal",

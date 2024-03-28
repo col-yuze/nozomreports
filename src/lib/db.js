@@ -41,6 +41,16 @@ async function runQuery(query) {
     throw err;
   }
 }
+async function runBoundedQuery(query,bounded_variable) {
+  try {
+    const result = await connection.execute(query, [bounded_variable]);
+    console.log("Query ran");
+    return result.rows; // Assuming you want to return the rows
+  } catch (err) {
+    console.error("Error running the query:", err);
+    throw err;
+  }
+}
 async function runTransaction(queries) {
   try {
     // here excute a transaction
@@ -58,4 +68,5 @@ module.exports = {
   connectToDatabase,
   closeDatabaseConnection,
   runQuery,
+  runBoundedQuery
 };
