@@ -41,11 +41,23 @@ async function runQuery(query) {
     throw err;
   }
 }
-async function runTransaction(queries) {
+async function runUpdateQuery(query) {
   try {
-    // here excute a transaction
-    // search for commit, batch and transaction and run the queries array returning results as array
-    const result = await connection.execute(queries);
+    const result = await connection.execute(query);
+    await connection.commit();
+    console.log("Query ran");
+    return result.rows; // Assuming you want to return the rows
+  } catch (err) {
+    await connection.rollback();
+    console.log("Transaction rolled back due to error:", err);
+
+    console.error("Error running the query:", err);
+    throw err;
+  }
+}
+async function runBoundedQuery(query, bounded_variable) {
+  try {
+    const result = await connection.execute(query, [bounded_variable]);
     console.log("Query ran");
     return result.rows; // Assuming you want to return the rows
   } catch (err) {
@@ -58,4 +70,6 @@ module.exports = {
   connectToDatabase,
   closeDatabaseConnection,
   runQuery,
+  runBoundedQuery,
+  runUpdateQuery,
 };
