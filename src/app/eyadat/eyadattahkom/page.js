@@ -1,31 +1,59 @@
-"use client"; // this part for handle click and error for client/server issues
+"use client";
+
 import * as React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
-import dynamic from "next/dynamic";
-import MyDocument from "./pdf";
-import { CircularProgress } from "@mui/material";
-import FromToII from "../../../components/FromToII";
-const DynamicPDFViewer = dynamic(
-  () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
-  {
-    ssr: false, // Disable server-side rendering for this component
-  }
-);
+import { CircularProgress, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { DataGrid } from "@mui/x-data-grid";
+
 export default function EyadatTahkom() {
   const [rows, setRows] = useState([]);
+  const [userName, setUserName] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [access, setAccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  // api fetching
+  const columns = [
+    { field: "id", headerName: "م", width: 150 },
+    { field: "clinicName", headerName: "العيادة", width: 500 },
+    { field: "count", headerName: "العدد", width: 130 },
+    {
+      field: "actions",
+      headerName: "الإجراءات",
+      width: 130,
+      renderCell: (params) => (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <IconButton
+            aria-label="add"
+            onClick={() => handleAction("+", params.row.id)}
+            disabled={!access}
+          >
+            <AddIcon />
+          </IconButton>
+          <IconButton
+            aria-label="sub"
+            onClick={() => handleAction("-", params.row.id)}
+            disabled={!access}
+          >
+            <RemoveIcon />
+          </IconButton>
+        </div>
+      ),
+    },
+  ];
   const handleOnLoad = () => {
     setLoading(false);
-    rows.length = 0;
+    setRows([]);
   };
+
   const fetchDataTable = async () => {
     setLoading(true);
     fetch(`/api/aadadmotaha`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
+          console.log(res.data);
         });
       })
       .catch((err) => {
@@ -35,11 +63,13 @@ export default function EyadatTahkom() {
         setLoading(false);
       });
   };
+
   const fetchUser = async () => {
-    fetch(`/api/authentication?user_name=admin`)
+    setLoading(true);
+    fetch(`/api/authentication?user_name=${userName}&pass=${userPassword}`)
       .then((response) => {
         response.json().then((res) => {
-          console.log(res);
+          setAccess(res.data);
         });
       })
       .catch((err) => {
@@ -49,10 +79,15 @@ export default function EyadatTahkom() {
         setLoading(false);
       });
   };
+
+  const AccessChange = () => {
+    // Handle access change here
+  };
   React.useEffect(() => {
-    // fetch data when page loads
+    // Fetch data when page loads
     fetchDataTable();
   }, []);
+
   return (
     <>
       <div
@@ -71,18 +106,29 @@ export default function EyadatTahkom() {
               {`التحكم في العيادات`}
             </h1>
             <br />
-            <div
-              style={{
-                display: "grid",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <div>
+              <h1 style={{ fontSize: 32 }}>Login Credentials</h1>
+              <input
+                type="text"
+                placeholder="Username"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                style={{ marginBottom: 10, borderRadius: 10 }}
+              />
+              <br />
+              <input
+                type="password"
+                placeholder="Password"
+                value={userPassword}
+                onChange={(e) => setUserPassword(e.target.value)}
+                style={{ marginBottom: 10, borderRadius: 10 }}
+              />
+              <br />
               <Button
                 style={{
                   backgroundColor: "#F0ECE5",
                   color: "#161A30",
-                  marginTop: 50,
+                  marginTop: 20,
                   fontWeight: "bold",
                   width: "100%",
                 }}
@@ -90,11 +136,11 @@ export default function EyadatTahkom() {
                 variant="contained"
                 disabled={loading}
               >
-                login{" "}
+                Login
               </Button>
               <br />
-              <br />
             </div>
+            <br />
             {rows.length <= 0 ? (
               <div
                 style={{
@@ -107,17 +153,39 @@ export default function EyadatTahkom() {
                 {loading ? <CircularProgress /> : null}
               </div>
             ) : (
-              <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
-                <MyDocument
-                  data={rows}
-                  onLoad={handleOnLoad}
-                  title={`التحكم في العيادات`}
+              <div
+                style={{
+                  height: "50%",
+                  width: "100%",
+                  backgroundColor: "#f0f0f0",
+                }}
+              >
+                <DataGrid
+                  rows={rows.map((row, index) => {
+                    return { id: index + 1, clinicName: row[1], count: row[2] };
+                  })}
+                  columns={columns.map((col) => ({
+                    ...col,
+                    align: "center", // Aligns content in the center
+                    headerAlign: "center", // Aligns headers in the center
+                  }))}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 25 },
+                    },
+                  }}
                 />
-              </DynamicPDFViewer>
+              </div>
             )}
           </div>
         </div>
       </div>
     </>
   );
+
+  function handleAction(action, index) {
+    // Handle the action (either "+" or "-") based on the index
+    // You can use the index to identify the specific row in your rows state
+    // and update its value accordingly
+  }
 }
