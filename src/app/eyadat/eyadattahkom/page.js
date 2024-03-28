@@ -7,13 +7,18 @@ import { CircularProgress, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { DataGrid } from "@mui/x-data-grid";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 export default function EyadatTahkom() {
   const [rows, setRows] = useState([]);
-  const [userName, setUserName] = useState("");
-  const [userPassword, setUserPassword] = useState("");
+  const [userName, setUserName] = useState(null);
+  const [userPassword, setUserPassword] = useState(null);
   const [access, setAccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
   const columns = [
     { field: "id", headerName: "م", width: 150 },
     { field: "clinicName", headerName: "العيادة", width: 500 },
@@ -42,10 +47,6 @@ export default function EyadatTahkom() {
       ),
     },
   ];
-  const handleOnLoad = () => {
-    setLoading(false);
-    setRows([]);
-  };
 
   const fetchDataTable = async () => {
     setLoading(true);
@@ -70,6 +71,11 @@ export default function EyadatTahkom() {
       .then((response) => {
         response.json().then((res) => {
           setAccess(res.data);
+          if (res.data) {
+            handleSnackbarOpen("Login successful!");
+          } else {
+            handleSnackbarOpen("Login failed!");
+          }
         });
       })
       .catch((err) => {
@@ -83,6 +89,15 @@ export default function EyadatTahkom() {
   const AccessChange = () => {
     // Handle access change here
   };
+  const handleSnackbarOpen = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   React.useEffect(() => {
     // Fetch data when page loads
     fetchDataTable();
@@ -99,6 +114,20 @@ export default function EyadatTahkom() {
           backgroundRepeat: "repeat-x",
         }}
       >
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            onClose={handleSnackbarClose}
+            severity={access ? "success" : "error"}
+          >
+            {snackbarMessage}
+          </MuiAlert>
+        </Snackbar>
         <div style={{ paddingInline: "15%" }}>
           <div id="pdf-container">
             <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
@@ -134,7 +163,13 @@ export default function EyadatTahkom() {
                 }}
                 onClick={fetchUser}
                 variant="contained"
-                disabled={loading}
+                disabled={
+                  loading ||
+                  userPassword == null ||
+                  userName == null ||
+                  userPassword == '' ||
+                  userName == ''
+                }
               >
                 Login
               </Button>
