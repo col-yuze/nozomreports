@@ -54,7 +54,6 @@ export default function EyadatTahkom() {
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          console.log(res.data);
         });
       })
       .catch((err) => {
@@ -222,5 +221,11 @@ export default function EyadatTahkom() {
     // Handle the action (either "+" or "-") based on the index
     // You can use the index to identify the specific row in your rows state
     // and update its value accordingly
+    if (action ==='+') {
+      console.log(rows[index][1],rows[index][2])
+    }else{
+      
+    }
+    // fetchDataTable()
   }
 }
