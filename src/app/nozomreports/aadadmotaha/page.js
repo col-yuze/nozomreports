@@ -74,7 +74,7 @@ export default function AadadMotaha() {
           ) : (
             <DynamicPDFViewer showToolbar={true} width="100%" height="720px">
               <MyDocument
-                data={rows}
+                data={rows.map((el,i)=>[el[0],el[1],el[2]])}
                 title="بيان بالعدد المتاح للحجز بالعيادات الخارجية"
               />
             </DynamicPDFViewer>

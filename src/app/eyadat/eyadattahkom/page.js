@@ -14,7 +14,7 @@ export default function EyadatTahkom() {
   const [rows, setRows] = useState([]);
   const [userName, setUserName] = useState(null);
   const [userPassword, setUserPassword] = useState(null);
-  const [access, setAccess] = useState(false);
+  const [access, setAccess] = useState(true);
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -221,11 +221,16 @@ export default function EyadatTahkom() {
     // Handle the action (either "+" or "-") based on the index
     // You can use the index to identify the specific row in your rows state
     // and update its value accordingly
-    if (action ==='+') {
-      console.log(rows[index][1],rows[index][2])
-    }else{
-      
+    const updatedRows = [...rows]; // Create a copy of the rows state array
+
+    // Update the count value based on the action
+    if (action === "+") {
+      updatedRows[index-1][2] += 1; // Increment count
+    } else {
+      updatedRows[index-1][2] -= 1; // Decrement count
     }
-    // fetchDataTable()
+    console.log(updatedRows[index-1][3])
+    // Set the state with the updated array
+    setRows(updatedRows);
   }
 }
