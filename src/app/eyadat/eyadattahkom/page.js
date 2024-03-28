@@ -14,15 +14,18 @@ export default function EyadatTahkom() {
   const [rows, setRows] = useState([]);
   const [userName, setUserName] = useState(null);
   const [userPassword, setUserPassword] = useState(null);
-  const [access, setAccess] = useState(true);
+  const [access, setAccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorType, setErrorType] = useState("info");
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const columns = [
     { field: "id", headerName: "م", width: 150 },
-    { field: "clinicName", headerName: "العيادة", width: 500 },
-    { field: "count", headerName: "العدد", width: 130 },
+    { field: "specName", headerName: "التخصص", width: 250 },
+    { field: "clinicName", headerName: "العيادة", width: 250 },
+    { field: "count", headerName: "الكشف", width: 130 },
+    { field: "extra", headerName: "الاستشارة", width: 130 },
     {
       field: "actions",
       headerName: "الإجراءات",
@@ -63,6 +66,24 @@ export default function EyadatTahkom() {
         setLoading(false);
       });
   };
+  const UpdateCountData = async (cnt,code,type) => {
+    setLoading(true);
+    setAccess(false)
+    fetch(`/api/eyadattahkom?count=${cnt}&code=${code}&type=${type}`)
+      .then((response) => {
+        response.json().then((res) => {
+          handleSnackbarOpen("Updated successfully", "success");
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        handleSnackbarOpen("Something happend", "error");
+      })
+      .finally(() => {
+        setLoading(false);
+        setAccess(true)
+      });
+  };
 
   const fetchUser = async () => {
     setLoading(true);
@@ -71,26 +92,25 @@ export default function EyadatTahkom() {
         response.json().then((res) => {
           setAccess(res.data);
           if (res.data) {
-            handleSnackbarOpen("Login successful!");
+            handleSnackbarOpen("Login successful!", "success");
           } else {
-            handleSnackbarOpen("Login failed!");
+            handleSnackbarOpen("Login failed!", "error");
           }
         });
       })
       .catch((err) => {
         console.error(err);
+        handleSnackbarOpen("Login Error!", "error");
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-  const AccessChange = () => {
-    // Handle access change here
-  };
-  const handleSnackbarOpen = (message) => {
+  const handleSnackbarOpen = (message, error_type) => {
     setSnackbarMessage(message);
     setSnackbarOpen(true);
+    setErrorType(error_type);
   };
 
   const handleSnackbarClose = () => {
@@ -122,7 +142,7 @@ export default function EyadatTahkom() {
             elevation={6}
             variant="filled"
             onClose={handleSnackbarClose}
-            severity={access ? "success" : "error"}
+            severity={errorType}
           >
             {snackbarMessage}
           </MuiAlert>
@@ -166,13 +186,49 @@ export default function EyadatTahkom() {
                   loading ||
                   userPassword == null ||
                   userName == null ||
-                  userPassword == '' ||
-                  userName == ''
+                  userPassword == "" ||
+                  userName == ""
                 }
               >
                 Login
               </Button>
               <br />
+              <div
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  display: "flex",
+                }}
+              >
+                <Button
+                  style={{
+                    backgroundColor: "#F0ECE5",
+                    color: "#161A30",
+                    marginTop: 20,
+                    fontWeight: "bold",
+                    width: "45%",
+                  }}
+                  onClick={fetchDataTable}
+                  variant="contained"
+                >
+                  Refresh
+                </Button>
+                <br />
+                <Button
+                  style={{
+                    backgroundColor: "#F0ECE5",
+                    color: "#161A30",
+                    marginTop: 20,
+                    fontWeight: "bold",
+                    width: "45%",
+                  }}
+                  onClick={() => UpdateCountData(null, null, 3)}
+                  variant="contained"
+                  disabled={!access}
+                >
+                  Reset
+                </Button>
+              </div>
             </div>
             <br />
             {rows.length <= 0 ? (
@@ -196,7 +252,13 @@ export default function EyadatTahkom() {
               >
                 <DataGrid
                   rows={rows.map((row, index) => {
-                    return { id: index + 1, clinicName: row[1], count: row[2] };
+                    return {
+                      id: index + 1,
+                      specName: row[5],
+                      clinicName: row[1],
+                      count: row[2],
+                      extra: row[4],
+                    };
                   })}
                   columns={columns.map((col) => ({
                     ...col,
@@ -223,13 +285,18 @@ export default function EyadatTahkom() {
     // and update its value accordingly
     const updatedRows = [...rows]; // Create a copy of the rows state array
 
+    const clinic_code = updatedRows[index - 1][3];
+  
+    let type= action==='+'?1:2
+
     // Update the count value based on the action
     if (action === "+") {
-      updatedRows[index-1][2] += 1; // Increment count
+      updatedRows[index - 1][4] += 1; // Increment count
     } else {
-      updatedRows[index-1][2] -= 1; // Decrement count
+      updatedRows[index - 1][4] -= 1; // Decrement count
     }
-    console.log(updatedRows[index-1][3])
+      const extra = updatedRows[index - 1][4];
+    UpdateCountData(extra,clinic_code,type)
     // Set the state with the updated array
     setRows(updatedRows);
   }

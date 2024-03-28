@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     // Your database queries or operations go here
 
     const query = `
-    SELECT  SPECIALISIM.M_SPEC_CODE,CLINIC.SPECIALISIM_CODE,V_CLINIC_NAME.CLINIC_CODE,V_CLINIC_NAME.CLINIC_OUT_NAME,CLINIC.TR_P_NUM
+    SELECT  SPECIALISIM.M_SPEC_CODE,CLINIC.SPECIALISIM_CODE,V_CLINIC_NAME.CLINIC_CODE,V_CLINIC_NAME.CLINIC_OUT_NAME,CLINIC.TR_P_NUM,Clinic.co_p_num,SPECIALISIM.SPECIALISIM_name_a
 FROM    V_CLINIC_NAME,CLINIC,SPECIALISIM
 WHERE   V_CLINIC_NAME.CLINIC_CODE = CLINIC.CLINIC_CODE
 AND      CLINIC.SPECIALISIM_CODE = SPECIALISIM.SPECIALISIM_CODE 
@@ -26,7 +26,7 @@ ORDER BY SPECIALISIM.M_SPEC_CODE,CLINIC.SPECIALISIM_CODE,CLINIC.TR_P_NUM DESC
     `;
     const result = await runQuery(query);
     // filter out 1,2,3 columns and add index
-    const filtered_res = result.map((el, i) => [i + 1, el[3], el[4],el[2]]);
+    const filtered_res = result.map((el, i) => [i + 1, el[3], el[4],el[2],el[5],el[6]]);
     res.status(200).json({ success: true, data: filtered_res });
   } catch (err) {
     console.error("Error in API endpoint:", err);
