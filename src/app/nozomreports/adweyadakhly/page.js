@@ -23,7 +23,7 @@ export default function AdweyaDakhly() {
   const [loading, setLoading] = useState(false);
   const [startDateStatic, setStartDateStatic] = useState();
   const [selectedOptionStatic, setSelectedOptionStatic] = useState();
-  const [selectedOption, setSelectedOption] = useState("0-القسم");
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOnLoad = () => {
     setLoading(false);
@@ -31,6 +31,9 @@ export default function AdweyaDakhly() {
   };
   // api fetching 200540
   const fetchDataTable = async () => {
+    if (selectedOption === null) {
+      return
+    }
     setLoading(true);
     fetch(
       `/api/adweyadakhly?dept=${

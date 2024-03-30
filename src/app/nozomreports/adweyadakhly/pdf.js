@@ -128,7 +128,6 @@ const MyDocument = ({ data, title }) => {
                     {
                       backgroundColor:
                         index === 0 && pageIndex === 0 ? "#e1e1e1" : "white",
-                      transform: [{ rotate: "-90deg" }],
                     },
                   ]}
                   key={index}
@@ -142,11 +141,11 @@ const MyDocument = ({ data, title }) => {
                           fontSize: 8,
                           flex: cellIndex === 1 ? 4 : cellIndex === 0 ? 2 : 0.5,
                           backgroundColor:
-                            index === pageData.length - 1 &&
-                            pageIndex === pagesData.length - 1
+                            (index === pageData.length - 1 &&
+                              pageIndex === pagesData.length - 1)
+                              || (cellIndex === rowData.length-1)
                               ? "#ffe0e0"
                               : "transparent",
-                          transform: [{ rotate: "-90deg" }], // Rotate the text inside each cell
                         },
                         index === 0 && cellIndex === 0 && pageIndex === 0
                           ? { paddingTop: 17 }
