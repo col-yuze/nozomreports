@@ -28,9 +28,9 @@ export default function Mahgoozfatra() {
   const [startDate, setStartDate] = React.useState(null);
 
   const [loading, setLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("0-الكل");
+  const [selectedOption, setSelectedOption] = useState(null);
   const [aqsamOrMosts, setAqsamOrMosts] = useState("aqsam");
-  const [selectedOptionStatic, setSelectedOptionStatic] = useState("0-الكل");
+  const [selectedOptionStatic, setSelectedOptionStatic] = useState(null);
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
   // var modeOfAqsamOrMosts = "mosts";
@@ -45,7 +45,6 @@ export default function Mahgoozfatra() {
   }
   const handleOnLoad = () => {
     setLoading(false);
-    rows.length = 0;
   };
   const fetchDataTable = async () => {
     setLoading(true);
@@ -64,15 +63,14 @@ export default function Mahgoozfatra() {
           "&EndDate=" +
           formattedEndDate +
           "&Options=" +
-          selectedOption +
+          selectedOption.value +
           "&QueryType=" +
           (aqsamOrMosts === "mosts" ? 1 : 0)
       )
         .then((response) => {
           response.json().then((res) => {
             setRows(res.data);
-            setSelectedOptionStatic(selectedOption);
-            //console.log(res.data);
+            setSelectedOptionStatic(selectedOption.value);
           });
         })
         .catch((err) => {

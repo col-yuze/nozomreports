@@ -17,6 +17,7 @@ export default async function handler(req, res) {
          FROM department
          `;
     const result = await runQuery(query);
+    result.unshift([0, "الكل"]);
     res.status(200).json({ success: true, data: result });
   } catch (err) {
     console.error("Error in API endpoint:", err);
