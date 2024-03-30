@@ -22,6 +22,10 @@ export default function Mahgozeen() {
   const [staticStartDate, setStaticStartDate] = useState();
 
   const [num, setNum] = useState(10);
+  const [rank, setRank] = useState('');
+  const [spec, setSpec] = useState('');
+  const [ranksArray, setRanksArray] = useState([]);
+  const [specArray, setSpecArray] = useState([]);
   const [staticNum, setStaticNum] = useState(10);
   const handleOnLoad = () => {
     setLoading(false);
@@ -31,7 +35,9 @@ export default function Mahgozeen() {
   const fetchDataTable = async () => {
     setLoading(true);
     //taree5 3adad rotba ta5asos
-    fetch(`/api/sarfmoratabatten?datein=${startDate}&count=${num}`)
+    fetch(
+      `/api/sarfmoratabatten?datein=${startDate}&count=${num}&spec=${spec.value.split('-')[0]}&rank=${rank.value.split('-')[0]}`
+    )
       .then((response) => {
         response.json().then((res) => {
           setStaticStartDate(startDate);
@@ -46,7 +52,27 @@ export default function Mahgozeen() {
         setLoading(false);
       });
   };
-
+  const fetchSpecRanks = () => {
+    fetch(`/api/specializations`).then((response) => {
+      response
+        .json()
+        .then((res) => {
+          setSpecArray(res.data)
+        })
+        .catch((err) => console.error(err));
+    });
+    fetch(`/api/ranks`).then((response) => {
+      response
+        .json()
+        .then((res) => {
+          setRanksArray(res.data)
+        })
+        .catch((err) => console.error(err));
+    });
+  };
+  React.useEffect(() => {
+    fetchSpecRanks();
+  }, []);
   return (
     <div
       style={{
@@ -71,8 +97,12 @@ export default function Mahgozeen() {
           >
             <FromToII
               setStartDateTwo={setStartDate}
-              two="number"
+              two="ranks"
               setNumTwo={setNum}
+              setSelectedOption={setRank}
+              setSelectedOptionII={setSpec}
+              rank_arr={ranksArray}
+              spec_arr={specArray}
             />
             <br />
             <Button

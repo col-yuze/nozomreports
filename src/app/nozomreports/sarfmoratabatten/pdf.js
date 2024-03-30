@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/ReadexPro-VariableFont_HEXP,wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 

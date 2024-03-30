@@ -6,8 +6,22 @@ import { format } from "date-fns";
 import ReactTooltip from "react-tooltip";
 import { Unstable_NumberInput as NumberInput } from "@mui/base/Unstable_NumberInput";
 import { TextField } from "@mui/material";
+import DropDown from "./DropDown";
 
-export default function FromToII({ setStartDateTwo, setEndDateTwo, two,setNumTwo,isText,setText }) {
+export default function FromToII({
+  setStartDateTwo,
+  setEndDateTwo,
+  selectedOptionII,
+  setSelectedOptionII,
+  selectedOption,
+  setSelectedOption,
+  two,
+  setNumTwo,
+  isText,
+  setText,
+  rank_arr,
+  spec_arr
+}) {
   const [startDate, setStartDate] = React.useState(null);
   const [endDate, setEndDate] = React.useState(null);
   const [num, setNum] = React.useState(null);
@@ -30,17 +44,34 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two,setNumTwo
         style={{ justifyContent: "end", justifyContent: "space-evenly" }}
       >
         <div className="flex items-center" style={{ justifyContent: "end" }}>
+          {two === "ranks" ? (
+            <div style={{flexDirection:'row', display:'flex'}}>
+              <DropDown
+                selectedOption={selectedOptionII}
+                setSelectedOption={setSelectedOptionII}
+                mode="hosps"
+                dynamicOptions={spec_arr}
+                placeholderText="اختر الــقــسم"
+              />
+              <DropDown
+                selectedOption={selectedOption}
+                setSelectedOption={setSelectedOption}
+                placeholderText="اختر الرتبة"
+                mode="hosps"
+                dynamicOptions={rank_arr}
+              />
+            </div>
+          ) : null}
           {isText ? (
             <div>
-              
               <TextField
-                helperText='ادخل رقم الحاسب'
+                helperText="ادخل رقم الحاسب"
                 size="small"
                 style={{
                   width: "100%",
                   borderRadius: "5px",
                   paddingRight: 15,
-                  marginTop:'24px'
+                  marginTop: "24px",
                 }}
                 type="number"
                 placeholder="رقم الحاسب"
@@ -87,7 +118,7 @@ export default function FromToII({ setStartDateTwo, setEndDateTwo, two,setNumTwo
               </div>
               <span className="mx-4 text-white text-2xl">إلى</span>
             </>
-          ) : two === "number" ? (
+          ) : two === "number" || two === "ranks" ? (
             <NumberInput
               aria-label="Demo number input"
               placeholder="...عدد ادوية اكثر من"
