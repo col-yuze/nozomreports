@@ -142,8 +142,8 @@ const MyDocument = ({ data, title }) => {
                           flex: cellIndex === 1 ? 4 : cellIndex === 0 ? 2 : 0.5,
                           backgroundColor:
                             (index === pageData.length - 1 &&
-                              pageIndex === pagesData.length - 1)
-                              || (cellIndex === rowData.length-1)
+                              pageIndex === pagesData.length - 1) ||
+                            cellIndex === rowData.length - 1
                               ? "#ffe0e0"
                               : "transparent",
                         },
@@ -154,7 +154,26 @@ const MyDocument = ({ data, title }) => {
                           : {},
                       ]}
                     >
-                      <Text>{cellData.toString()}</Text>
+                      <Text
+                        style={
+                          pageIndex === 0 &&
+                          index === 0 &&
+                          cellIndex !== 0 &&
+                          cellIndex !== 1
+                            ? {
+                                transform: "rotate(-90deg)",
+
+                                whiteSpace: "nowrap",
+                                width: 1000, // Set the width to fill the page height
+                                justifyContent: "flex-end", // Align text to the bottom of the container
+                                alignItems: "right",
+                                paddingVertical: 69,
+                              }
+                            : {}
+                        }
+                      >
+                        {cellData.toString()}
+                      </Text>
                     </View>
                   ))}
                 </View>
