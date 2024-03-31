@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
 import MyDocument from "./pdf";
+import MyDocument2 from "./pdfAqsam";
 import { CircularProgress } from "@mui/material";
 
 import ReactTooltip from "react-tooltip";
@@ -28,12 +29,11 @@ export default function Mahgoozfatra() {
   const [startDate, setStartDate] = React.useState(null);
 
   const [loading, setLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("0-الكل");
+  const [selectedOption, setSelectedOption] = useState(null);
   const [aqsamOrMosts, setAqsamOrMosts] = useState("aqsam");
-  const [selectedOptionStatic, setSelectedOptionStatic] = useState("0-الكل");
+  const [selectedOptionStatic, setSelectedOptionStatic] = useState(null);
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
-  // var modeOfAqsamOrMosts = "mosts";
   var dept = "بكل الأقسام";
   function formatDate(date) {
     const day = date.getDate();
@@ -45,7 +45,6 @@ export default function Mahgoozfatra() {
   }
   const handleOnLoad = () => {
     setLoading(false);
-    rows.length = 0;
   };
   const fetchDataTable = async () => {
     setLoading(true);
@@ -64,46 +63,26 @@ export default function Mahgoozfatra() {
           "&EndDate=" +
           formattedEndDate +
           "&Options=" +
-          selectedOption +
+          selectedOption.value +
           "&QueryType=" +
           (aqsamOrMosts === "mosts" ? 1 : 0)
       )
         .then((response) => {
           response.json().then((res) => {
             setRows(res.data);
-            setSelectedOptionStatic(selectedOption);
-            //console.log(res.data);
+            setSelectedOptionStatic(selectedOption.value);
           });
         })
         .catch((err) => {
           console.error(err);
         });
-    } else {
-      // console.log(selectedOption.split("-")[0]);
-    }
+    } 
   };
 
-  // const toggleVisibility = () => {
-  //   setShow(!show);
-  //   fetchDataTable();
-  // };
-
-  // React.useEffect(() => {
-  //   let isMounted = true; // Variable to check if the component is still mounted
-  //   if (isMounted) {
-  //     fetchDataTable();
-  //   }
-
-  //   return () => {
-  //     // Cleanup function to set isMounted to false when the component is unmounted
-  //     isMounted = false;
-  //   };
-  // }, []);
-
-  // React.useEffect(() => {
-  //   console.log(selectedOption, "nader");
-  // }, [selectedOption]);
-
+  const setReportType = (type) => {
+    setAqsamOrMosts(type);
+    setRows([]);
+  };
   return (
     <div
       style={{
@@ -150,13 +129,13 @@ export default function Mahgoozfatra() {
                   value="mosts"
                   control={<Radio />}
                   label="مستشفــيــات"
-                  onClick={() => setAqsamOrMosts("mosts")}
+                  onClick={() => setReportType("mosts")}
                 />
                 <FormControlLabel
                   value="aqsam"
                   control={<Radio />}
                   label="أقــــــســــــام"
-                  onClick={() => setAqsamOrMosts("aqsam")}
+                  onClick={() => setReportType("aqsam")}
                 />
               </RadioGroup>
             </FormControl>
@@ -200,10 +179,17 @@ export default function Mahgoozfatra() {
                 {selectedOptionStatic === "0-الكل"
                   ? (dept = "كل الأقسام")
                   : (dept = selectedOptionStatic.split("-")[1])}
-                <MyDocument
-                  data={rows}
-                  title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}
-                />
+                {aqsamOrMosts === "aqsam" ? (
+                  <MyDocument2
+                    data={rows}
+                    title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}
+                  />
+                ) : (
+                  <MyDocument
+                    data={rows}
+                    title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}
+                  />
+                )}
               </DynamicPDFViewer>
             </div>
           ) : (

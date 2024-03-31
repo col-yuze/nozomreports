@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     fontFamily: "NotoNaskh",
     padding: "20px 10px",
-    orientation: "landscape",
   },
   section: {
     margin: 5,
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
 });
 
 const rowsPerPageTitled = 28; // Adjusted for the first page which includes the title
-const rowsPerPage = 33; // For subsequent pages
+const rowsPerPage = 31; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
@@ -108,12 +107,7 @@ const MyDocument = ({ data, title }) => {
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
-        <Page
-          size="A4"
-          style={styles.page}
-          key={pageIndex}
-          orientation="landscape"
-        >
+        <Page size="A4" style={styles.page} key={pageIndex}>
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
@@ -133,48 +127,37 @@ const MyDocument = ({ data, title }) => {
                   key={index}
                 >
                   {rowData.map((cellData, cellIndex) => (
-                    <View
-                      key={cellIndex}
+                    <Text
                       style={[
                         styles.cell,
                         {
-                          fontSize: 8,
-                          flex: cellIndex === 1 ? 4 : cellIndex === 0 ? 2 : 0.5,
+                          fontSize:
+                            index === 0 && pageIndex === 0 ? "10px" : "8px",
+                          flex:
+                            cellIndex === 0 &&
+                            index === pageData.length - 1 &&
+                            pageIndex === pagesData.length - 1
+                              ? "4.28"
+                              : cellIndex === 1 &&
+                                !(
+                                  index === pageData.length - 1 &&
+                                  pageIndex === pagesData.length - 1
+                                )
+                              ? "3"
+                              : "1",
+
                           backgroundColor:
                             (index === pageData.length - 1 &&
                               pageIndex === pagesData.length - 1) ||
-                            cellIndex === rowData.length - 1
+                            cellIndex === 7
                               ? "#ffe0e0"
                               : "transparent",
                         },
-                        index === 0 && cellIndex === 0 && pageIndex === 0
-                          ? { paddingTop: 17 }
-                          : index === 0 && cellIndex === 1 && pageIndex === 0
-                          ? { paddingTop: 17 }
-                          : {},
                       ]}
+                      key={cellIndex}
                     >
-                      <Text
-                        style={
-                          pageIndex === 0 &&
-                          index === 0 &&
-                          cellIndex !== 0 &&
-                          cellIndex !== 1
-                            ? {
-                                transform: "rotate(-90deg)",
-
-                                whiteSpace: "nowrap",
-                                width: 1000, // Set the width to fill the page height
-                                justifyContent: "flex-end", // Align text to the bottom of the container
-                                alignItems: "right",
-                                paddingVertical: 69,
-                              }
-                            : {}
-                        }
-                      >
-                        {cellData.toString()}
-                      </Text>
-                    </View>
+                      {cellData}
+                    </Text>
                   ))}
                 </View>
               ))}

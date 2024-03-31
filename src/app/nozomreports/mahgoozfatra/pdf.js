@@ -119,6 +119,8 @@ const MyDocument = ({ data, title }) => {
   let index = 0;
   let isFirstPage = true;
   const titlePages = [];
+  let currentRowsInPage = 0;
+  let currentPageTables = [];
   for (let j = 0; j < data.length; j++) {
     isFirstPage = true;
     if (data[j][1].length > 0) {
@@ -128,10 +130,11 @@ const MyDocument = ({ data, title }) => {
         const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
         var arr = [];
         arr = arrayTop.concat(data[j][1].slice(index, index + limit));
-        pagesData.push(arr);
-
+        currentPageTables.push(arr);
+        currentRowsInPage += arr.length + 2;
         index += limit;
         isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
+
         if (index >= data[j][1].length) {
           totalOfficers += data[j][1][data[j][1].length - 1][1];
           totalRanker += data[j][1][data[j][1].length - 1][2];
@@ -140,13 +143,18 @@ const MyDocument = ({ data, title }) => {
           totalRankFamilies += data[j][1][data[j][1].length - 1][5];
           totalTotals += data[j][1][data[j][1].length - 1][6];
         }
+        if (currentRowsInPage >= limit) {
+          pagesData.push(currentPageTables);
+          currentPageTables = [];
+          currentRowsInPage = 0;
+        }
       }
       index = 0;
     }
   }
   arr = [
     [
-      "الاجمالي",
+      "الاجمالي الكلي",
       totalOfficers,
       totalRanker,
       totalCivilians,
@@ -155,7 +163,11 @@ const MyDocument = ({ data, title }) => {
       totalTotals,
     ],
   ];
-  pagesData.push(arr);
+  if (currentPageTables.length >= 0) {
+    currentPageTables.push(arr);
+    pagesData.push(currentPageTables);
+  }
+  // pagesData.push(arr);
   totalOfficers = 0;
   totalRanker = 0;
   totalOfficerFamilies = 0;
@@ -177,59 +189,70 @@ const MyDocument = ({ data, title }) => {
                 <Text style={styles.title}>KOKI</Text>
               </View>
             )} */}
+            <br />
             <View style={styles.table}>
-              {pageData.map((rowData, index) => (
-                <View
-                  style={[
-                    styles.row,
-                    {
-                      backgroundColor:
-                        index === 1 && titlePages.includes(pageIndex)
-                          ? "#d4d8dd"
-                          : index === 0
-                          ? "#e1e1e1"
-                          : "white",
-                    },
-                  ]}
-                  key={index}
-                >
-                  {rowData.map((cellData, cellIndex) => (
-                    <Text
+              {pageData.map((tableData, tableIndex) => (
+                <View key={tableIndex} style={{ marginBottom: 10 }}>
+                  {tableData.map((rowData, index) => (
+                    <View
                       style={[
-                        styles.cell,
+                        styles.row,
                         {
-                          fontSize: "7px",
-                          flex:
-                            cellIndex === 0
-                              ? "1"
-                              : cellIndex === 1
-                              ? "3.5"
-                              : "0.8",
+                          backgroundColor:
+                            index === 1 && titlePages.includes(pageIndex)
+                              ? "#d4d8dd"
+                              : index === 0
+                              ? "#e1e1e1"
+                              : "white",
                         },
-                        index === 0 //&& titlePages.includes(pageIndex)
-                          ? {
-                              paddingTop: "15px",
-                              paddingBottom: "15px",
-                              fontSize: "12px",
+                      ]}
+                      key={index}
+                    >
+                      {rowData.map((cellData, cellIndex) => (
+                        <Text
+                          style={[
+                            styles.cell,
+                            {
+                              fontSize: "7px",
                               flex:
                                 cellIndex === 0
-                                  ? "3.425"
+                                  ? "1"
                                   : cellIndex === 1
-                                  ? "1.875"
-                                  : "0.875",
-                            }
-                          : {},
-                        index === pageData.length - 1 //&& titlePages.includes(pageIndex)
-                          ? {
-                              flex: cellIndex === 0 ? "5.25" : "0.88",
-                              backgroundColor: "#e1e1e1",
-                            }
-                          : {},
-                      ]}
-                      key={cellIndex}
-                    >
-                      {cellData}
-                    </Text>
+                                  ? "3.5"
+                                  : "0.8",
+                            },
+                            index === 0 //&& titlePages.includes(pageIndex)
+                              ? {
+                                  paddingTop: "15px",
+                                  paddingBottom: "15px",
+                                  fontSize: "12px",
+                                  flex:
+                                    cellIndex === 0
+                                      ? "3.425"
+                                      : cellIndex === 1
+                                      ? "1.875"
+                                      : "0.875",
+                                }
+                              : {},
+                            index === tableData.length - 1 //&& titlePages.includes(pageIndex)
+                              ? {
+                                  flex: cellIndex === 0 ? "5.25" : "0.88",
+                                  backgroundColor: "#e1e1e1",
+                                }
+                              : {},
+                            // index === pageData.length - 1 //&& titlePages.includes(pageIndex)
+                            //   ? {
+                            //       flex: cellIndex === 0 ? "3.25" : "0.88",
+                            //       backgroundColor: "#e1e1e1",
+                            //     }
+                            //   : {},
+                          ]}
+                          key={cellIndex}
+                        >
+                          {cellData}
+                        </Text>
+                      ))}
+                    </View>
                   ))}
                 </View>
               ))}
