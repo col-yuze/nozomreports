@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 29; // Adjusted for the first page which includes the title
-const rowsPerPage = 33; // For subsequent pages
+const rowsPerPageTitled = 25; // Adjusted for the first page which includes the title
+const rowsPerPage = 27; // For subsequent pages
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, "0");
 var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
