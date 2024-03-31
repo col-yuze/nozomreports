@@ -132,32 +132,31 @@ const MyDocument = ({ data, title }) => {
                         styles.cell,
                         {
                           fontSize:
-                            index === 0 && cellIndex === 0 && pageIndex === 0
-                              ? "25px"
-                              : index === 0 && pageIndex === 0
-                              ? "10px"
-                              : "8px",
-                          flex: cellIndex === 0 ? "4" : "0.5",
-
-                          backgroundColor:
+                            index === 0 && pageIndex === 0 ? "10px" : "8px",
+                          flex:
+                            cellIndex === 0 &&
                             index === pageData.length - 1 &&
                             pageIndex === pagesData.length - 1
-                              ? "#ffe0e0"
-                              : cellIndex === 7
+                              ? "4.28"
+                              : cellIndex === 1 &&
+                                !(
+                                  index === pageData.length - 1 &&
+                                  pageIndex === pagesData.length - 1
+                                )
+                              ? "3"
+                              : "1",
+
+                          backgroundColor:
+                            (index === pageData.length - 1 &&
+                              pageIndex === pagesData.length - 1) ||
+                            cellIndex === 7
                               ? "#ffe0e0"
                               : "transparent",
                         },
-                        index === 0 && cellIndex === 0 && pageIndex === 0
-                          ? { paddingTop: "17px" }
-                          : {},
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString().includes("عقيد")
-                        ? "صيدلية عقيد / مقدم / رائد"
-                        : cellData.toString().includes("ملازم")
-                        ? "صيدلية ملازم / ملازم أول / نقيب"
-                        : cellData.toString()}
+                      {cellData}
                     </Text>
                   ))}
                 </View>

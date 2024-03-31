@@ -52,12 +52,10 @@ const PatientsHosps = (result, QueryType) => {
   return grouped_result;
 };
 const PatientsAqsam = (result, QueryType) => {
-  console.log(result);
-  const hosps = new Map();
   result.sort((a, b) => a[0] - b[0]);
 
-  result.map((el, i) => [
-    i + 1,
+  result = result.map((el, i) => [
+    i,
     el[1],
     el[2],
     el[3],
@@ -66,14 +64,13 @@ const PatientsAqsam = (result, QueryType) => {
     el[6],
     el[7],
   ]);
-  const total_sum = result.reduce((acc, row) => {
+  var total_sum = result.reduce((acc, row) => {
     row.forEach((el, i) => {
       acc[i] = (acc[i] || 0) + el;
     });
     return acc;
   });
-  result.push(total_sum);
-  result.unshift([
+  result[0] = [
     "م",
     "القسم",
     "ضباط",
@@ -82,7 +79,12 @@ const PatientsAqsam = (result, QueryType) => {
     "عائلات ضباط",
     "عائلات صف",
     "اجمالي",
-  ]);
+  ];
+    total_sum[0] = "الاجمالي";
+    total_sum[1] = "الاجمالي";
+    total_sum = total_sum.slice(1, total_sum.length);
+
+  result.push(total_sum);
   return result;
 };
 
