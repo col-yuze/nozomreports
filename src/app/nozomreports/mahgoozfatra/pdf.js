@@ -131,7 +131,7 @@ const MyDocument = ({ data, title }) => {
         var arr = [];
         arr = arrayTop.concat(data[j][1].slice(index, index + limit));
         currentPageTables.push(arr);
-        currentRowsInPage += arr.length;
+        currentRowsInPage += arr.length + 2;
         index += limit;
         isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
 
@@ -143,9 +143,10 @@ const MyDocument = ({ data, title }) => {
           totalRankFamilies += data[j][1][data[j][1].length - 1][5];
           totalTotals += data[j][1][data[j][1].length - 1][6];
         }
-        if (currentPageTables.length * limit >= rowsPerPage) {
+        if (currentRowsInPage >= limit) {
           pagesData.push(currentPageTables);
           currentPageTables = [];
+          currentRowsInPage = 0;
         }
       }
       index = 0;
@@ -153,7 +154,7 @@ const MyDocument = ({ data, title }) => {
   }
   arr = [
     [
-      "الاجمالي",
+      "الاجمالي الكلي",
       totalOfficers,
       totalRanker,
       totalCivilians,
@@ -162,9 +163,11 @@ const MyDocument = ({ data, title }) => {
       totalTotals,
     ],
   ];
-  if (currentPageTables.length > 0) {
+  if (currentPageTables.length >= 0) {
+    currentPageTables.push(arr);
     pagesData.push(currentPageTables);
   }
+  // pagesData.push(arr);
   totalOfficers = 0;
   totalRanker = 0;
   totalOfficerFamilies = 0;
@@ -189,7 +192,7 @@ const MyDocument = ({ data, title }) => {
             <br />
             <View style={styles.table}>
               {pageData.map((tableData, tableIndex) => (
-                <View key={tableIndex}>
+                <View key={tableIndex} style={{ marginBottom: 10 }}>
                   {tableData.map((rowData, index) => (
                     <View
                       style={[
@@ -231,12 +234,18 @@ const MyDocument = ({ data, title }) => {
                                       : "0.875",
                                 }
                               : {},
-                            index === pageData.length - 1 //&& titlePages.includes(pageIndex)
+                            index === tableData.length - 1 //&& titlePages.includes(pageIndex)
                               ? {
                                   flex: cellIndex === 0 ? "5.25" : "0.88",
                                   backgroundColor: "#e1e1e1",
                                 }
                               : {},
+                            // index === pageData.length - 1 //&& titlePages.includes(pageIndex)
+                            //   ? {
+                            //       flex: cellIndex === 0 ? "3.25" : "0.88",
+                            //       backgroundColor: "#e1e1e1",
+                            //     }
+                            //   : {},
                           ]}
                           key={cellIndex}
                         >
@@ -245,7 +254,6 @@ const MyDocument = ({ data, title }) => {
                       ))}
                     </View>
                   ))}
-                  <View style={{ height: 10 }} />
                 </View>
               ))}
             </View>
