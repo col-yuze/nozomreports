@@ -34,7 +34,6 @@ export default function Mahgoozfatra() {
   const [selectedOptionStatic, setSelectedOptionStatic] = useState(null);
   // prettier-ignore
   const [endDate, setEndDate] = React.useState(null);
-  // var modeOfAqsamOrMosts = "mosts";
   var dept = "بكل الأقسام";
   function formatDate(date) {
     const day = date.getDate();
@@ -77,31 +76,9 @@ export default function Mahgoozfatra() {
         .catch((err) => {
           console.error(err);
         });
-    } else {
-      // console.log(selectedOption.split("-")[0]);
-    }
+    } 
   };
 
-  // const toggleVisibility = () => {
-  //   setShow(!show);
-  //   fetchDataTable();
-  // };
-
-  // React.useEffect(() => {
-  //   let isMounted = true; // Variable to check if the component is still mounted
-  //   if (isMounted) {
-  //     fetchDataTable();
-  //   }
-
-  //   return () => {
-  //     // Cleanup function to set isMounted to false when the component is unmounted
-  //     isMounted = false;
-  //   };
-  // }, []);
-
-  // React.useEffect(() => {
-  //   console.log(selectedOption, "nader");
-  // }, [selectedOption]);
   const setReportType = (type) => {
     setAqsamOrMosts(type);
     setRows([]);
