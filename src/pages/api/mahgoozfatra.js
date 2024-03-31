@@ -51,6 +51,40 @@ const PatientsHosps = (result, QueryType) => {
   const grouped_result = Array.from(hosps, ([id, data]) => [id, data]);
   return grouped_result;
 };
+const PatientsAqsam = (result, QueryType) => {
+  console.log(result);
+  const hosps = new Map();
+  result.sort((a, b) => a[0] - b[0]);
+
+  result.map((el, i) => [
+    i + 1,
+    el[1],
+    el[2],
+    el[3],
+    el[4],
+    el[5],
+    el[6],
+    el[7],
+  ]);
+  const total_sum = result.reduce((acc, row) => {
+    row.forEach((el, i) => {
+      acc[i] = (acc[i] || 0) + el;
+    });
+    return acc;
+  });
+  result.push(total_sum);
+  result.unshift([
+    "م",
+    "القسم",
+    "ضباط",
+    "صف",
+    "مدنيين",
+    "عائلات ضباط",
+    "عائلات صف",
+    "اجمالي",
+  ]);
+  return result;
+};
 
 export default async function handler(req, res) {
   let connection;
@@ -116,7 +150,10 @@ ORDER BY DEPARTMENT.DEPARTMENT_CODE`;
       query = dept_query;
     }
     const result = await runQuery(query);
-    const filtered_result = PatientsHosps(result, QueryType);
+    const filtered_result =
+      QueryType == 1
+        ? PatientsHosps(result, QueryType)
+        : PatientsAqsam(result, QueryType);
     //remove first useless element
     res.status(200).json({ success: true, data: filtered_result });
   } catch (err) {
