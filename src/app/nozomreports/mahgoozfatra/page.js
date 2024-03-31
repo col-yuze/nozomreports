@@ -5,7 +5,6 @@ import FromTo from "../../../components/FromTo";
 import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
-import MyDocumentAqsamCombined from "./pdfAqsamCombined";
 import MyDocument from "./pdf";
 import MyDocument2 from "./pdfAqsam";
 import { CircularProgress } from "@mui/material";
@@ -103,7 +102,10 @@ export default function Mahgoozfatra() {
   // React.useEffect(() => {
   //   console.log(selectedOption, "nader");
   // }, [selectedOption]);
-
+  const setReportType = (type) => {
+    setAqsamOrMosts(type);
+    setRows([]);
+  };
   return (
     <div
       style={{
@@ -150,13 +152,13 @@ export default function Mahgoozfatra() {
                   value="mosts"
                   control={<Radio />}
                   label="مستشفــيــات"
-                  onClick={() => setAqsamOrMosts("mosts")}
+                  onClick={() => setReportType("mosts")}
                 />
                 <FormControlLabel
                   value="aqsam"
                   control={<Radio />}
                   label="أقــــــســــــام"
-                  onClick={() => setAqsamOrMosts("aqsam")}
+                  onClick={() => setReportType("aqsam")}
                 />
               </RadioGroup>
             </FormControl>
