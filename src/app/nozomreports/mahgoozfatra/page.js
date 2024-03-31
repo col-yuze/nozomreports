@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
 import MyDocumentAqsamCombined from "./pdfAqsamCombined";
 import MyDocument from "./pdf";
-
+import MyDocument2 from "./pdfAqsam";
 import { CircularProgress } from "@mui/material";
 
 import ReactTooltip from "react-tooltip";
@@ -201,7 +201,7 @@ export default function Mahgoozfatra() {
                   ? (dept = "كل الأقسام")
                   : (dept = selectedOptionStatic.split("-")[1])}
                 {aqsamOrMosts === "aqsam" ? (
-                  <MyDocumentAqsamCombined
+                  <MyDocument2
                     data={rows}
                     title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}
                   />
