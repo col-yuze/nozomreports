@@ -16,7 +16,7 @@ export default function AdweyaMoratabat() {
   const [rows, setRows] = React.useState([]);
   const [startDate, setStartDate] = React.useState();
   const [staticStartDate, setStaticStartDate] = React.useState();
-  const [selectedOption, setSelectedOption] = React.useState();
+  const [selectedOption, setSelectedOption] = React.useState(null);
   const [selectedOptionStatic, setSelectedOptionStatic] = React.useState();
   const [loading, setLoading] = React.useState(false);
   var showString = "الأدوية";
@@ -29,14 +29,14 @@ export default function AdweyaMoratabat() {
     setLoading(true);
     fetch(
       `/api/adweyamoratabat?fdate=${startDate}&typein=${
-        selectedOption.split("-")[0]
+        selectedOption.value.split("-")[0]
       }`
     )
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
           setStaticStartDate(startDate);
-          setSelectedOptionStatic(selectedOption);
+          setSelectedOptionStatic(selectedOption.value);
         });
       })
       .catch((err) => {
@@ -86,7 +86,7 @@ export default function AdweyaMoratabat() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate || loading}
+              disabled={!(startDate && selectedOption) || loading}
             >
               اظهر البيانات
             </Button>
