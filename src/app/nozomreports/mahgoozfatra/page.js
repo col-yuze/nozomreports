@@ -5,7 +5,9 @@ import FromTo from "../../../components/FromTo";
 import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import dynamic from "next/dynamic";
+import MyDocumentAqsamCombined from "./pdfAqsamCombined";
 import MyDocument from "./pdf";
+
 import { CircularProgress } from "@mui/material";
 
 import ReactTooltip from "react-tooltip";
@@ -198,10 +200,17 @@ export default function Mahgoozfatra() {
                 {selectedOptionStatic === "0-الكل"
                   ? (dept = "كل الأقسام")
                   : (dept = selectedOptionStatic.split("-")[1])}
-                <MyDocument
-                  data={rows}
-                  title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}
-                />
+                {aqsamOrMosts === "aqsam" ? (
+                  <MyDocumentAqsamCombined
+                    data={rows}
+                    title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}
+                  />
+                ) : (
+                  <MyDocument
+                    data={rows}
+                    title={`بيان بالمحجوزين حاليا بـ${dept} داخل المجمع الطبي ق.م بكوبري القبة`}
+                  />
+                )}
               </DynamicPDFViewer>
             </div>
           ) : (

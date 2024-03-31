@@ -119,8 +119,6 @@ const MyDocument = ({ data, title }) => {
   let index = 0;
   let isFirstPage = true;
   const titlePages = [];
-  let currentRowsInPage = 0;
-  let currentPageTables = [];
   for (let j = 0; j < data.length; j++) {
     isFirstPage = true;
     if (data[j][1].length > 0) {
@@ -130,11 +128,10 @@ const MyDocument = ({ data, title }) => {
         const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
         var arr = [];
         arr = arrayTop.concat(data[j][1].slice(index, index + limit));
-        currentPageTables.push(arr);
-        currentRowsInPage += arr.length;
+        pagesData.push(arr);
+
         index += limit;
         isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
-
         if (index >= data[j][1].length) {
           totalOfficers += data[j][1][data[j][1].length - 1][1];
           totalRanker += data[j][1][data[j][1].length - 1][2];
@@ -142,10 +139,6 @@ const MyDocument = ({ data, title }) => {
           totalOfficerFamilies += data[j][1][data[j][1].length - 1][4];
           totalRankFamilies += data[j][1][data[j][1].length - 1][5];
           totalTotals += data[j][1][data[j][1].length - 1][6];
-        }
-        if (currentPageTables.length * limit >= rowsPerPage) {
-          pagesData.push(currentPageTables);
-          currentPageTables = [];
         }
       }
       index = 0;
@@ -162,9 +155,7 @@ const MyDocument = ({ data, title }) => {
       totalTotals,
     ],
   ];
-  if (currentPageTables.length > 0) {
-    pagesData.push(currentPageTables);
-  }
+  pagesData.push(arr);
   totalOfficers = 0;
   totalRanker = 0;
   totalOfficerFamilies = 0;
@@ -186,66 +177,60 @@ const MyDocument = ({ data, title }) => {
                 <Text style={styles.title}>KOKI</Text>
               </View>
             )} */}
-            <br />
             <View style={styles.table}>
-              {pageData.map((tableData, tableIndex) => (
-                <View key={tableIndex}>
-                  {tableData.map((rowData, index) => (
-                    <View
+              {pageData.map((rowData, index) => (
+                <View
+                  style={[
+                    styles.row,
+                    {
+                      backgroundColor:
+                        index === 1 && titlePages.includes(pageIndex)
+                          ? "#d4d8dd"
+                          : index === 0
+                          ? "#e1e1e1"
+                          : "white",
+                    },
+                  ]}
+                  key={index}
+                >
+                  {rowData.map((cellData, cellIndex) => (
+                    <Text
                       style={[
-                        styles.row,
+                        styles.cell,
                         {
-                          backgroundColor:
-                            index === 1 && titlePages.includes(pageIndex)
-                              ? "#d4d8dd"
-                              : index === 0
-                              ? "#e1e1e1"
-                              : "white",
+                          fontSize: "7px",
+                          flex:
+                            cellIndex === 0
+                              ? "1"
+                              : cellIndex === 1
+                              ? "3.5"
+                              : "0.8",
                         },
-                      ]}
-                      key={index}
-                    >
-                      {rowData.map((cellData, cellIndex) => (
-                        <Text
-                          style={[
-                            styles.cell,
-                            {
-                              fontSize: "7px",
+                        index === 0 //&& titlePages.includes(pageIndex)
+                          ? {
+                              paddingTop: "15px",
+                              paddingBottom: "15px",
+                              fontSize: "12px",
                               flex:
                                 cellIndex === 0
-                                  ? "1"
+                                  ? "3.425"
                                   : cellIndex === 1
-                                  ? "3.5"
-                                  : "0.8",
-                            },
-                            index === 0 //&& titlePages.includes(pageIndex)
-                              ? {
-                                  paddingTop: "15px",
-                                  paddingBottom: "15px",
-                                  fontSize: "12px",
-                                  flex:
-                                    cellIndex === 0
-                                      ? "3.425"
-                                      : cellIndex === 1
-                                      ? "1.875"
-                                      : "0.875",
-                                }
-                              : {},
-                            index === pageData.length - 1 //&& titlePages.includes(pageIndex)
-                              ? {
-                                  flex: cellIndex === 0 ? "5.25" : "0.88",
-                                  backgroundColor: "#e1e1e1",
-                                }
-                              : {},
-                          ]}
-                          key={cellIndex}
-                        >
-                          {cellData}
-                        </Text>
-                      ))}
-                    </View>
+                                  ? "1.875"
+                                  : "0.875",
+                            }
+                          : {},
+                        index === pageData.length - 1 //&& titlePages.includes(pageIndex)
+                          ? {
+                              flex: cellIndex === 0 ? "5.25" : "0.88",
+                              backgroundColor: "#e1e1e1",
+                            }
+                          : {},
+                      ]}
+                      key={cellIndex}
+                    >
+                      {cellData}
+                    </Text>
                   ))}
-                  <View style={{ height: 10 }} />
                 </View>
               ))}
             </View>
