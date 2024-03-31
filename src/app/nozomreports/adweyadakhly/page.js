@@ -94,7 +94,7 @@ export default function AdweyaDakhly() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate || loading}
+              disabled={!(startDate && selectedOption) || loading}
             >
               اظهر البيانات
             </Button>
