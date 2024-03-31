@@ -2,11 +2,10 @@ const oracledb = require("oracledb");
 // enable thick mode for pwd
 oracledb.initOracleClient();
 const dbConfig = {
-  user: "HOSPUSER",
-  password: "hosp",
-  connectString: "128.16.7.5:1521/hosp1121", // Replace with the actual connection details
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  connectString: process.env.DB_HOST,
 };
-
 let connection; // Declare the connection at the module level
 
 async function connectToDatabase() {

@@ -158,7 +158,7 @@ export default function Mahgoozfatra() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!(startDate && endDate) || loading}
+              disabled={!(startDate && endDate && selectedOption) || loading}
             >
               اظهر البيانات
             </Button>
