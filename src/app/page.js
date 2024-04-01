@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Button from "@mui/material/Button";
-import NavBar from "../components/NavBar";
 // import { useState } from "react";
 // const [showMe, setShowMe] = useState(false);
 // function toggle() {
@@ -9,7 +8,6 @@ import NavBar from "../components/NavBar";
 export default function Home() {
   return (
     <>
-      <NavBar></NavBar>
       <main
         className="flex min-h-screen flex-col items-center justify-between p-24"
         style={{
