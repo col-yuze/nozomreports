@@ -76,7 +76,7 @@ export default function Mahgoozfatra() {
         .catch((err) => {
           console.error(err);
         });
-    } 
+    }
   };
 
   const setReportType = (type) => {

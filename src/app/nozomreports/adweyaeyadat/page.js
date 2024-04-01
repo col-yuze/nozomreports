@@ -82,7 +82,7 @@ export default function AdweyaEyadat() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={!startDate || loading}
+              disabled={!(startDate && endDate) || loading}
             >
               اظهر البيانات
             </Button>
