@@ -79,6 +79,8 @@ export default function Mahgozeen() {
             >
               اظهر البيانات
             </Button>
+            <br />
+            <br />
           </div>
           {rows.length <= 0 ? (
             <div

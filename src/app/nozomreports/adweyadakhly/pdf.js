@@ -138,7 +138,7 @@ const MyDocument = ({ data, title }) => {
                       style={[
                         styles.cell,
                         {
-                          fontSize: (rowData.length > 30 && index!==0) ? 7 : 9,
+                          fontSize: rowData.length > 30 && index !== 0 ? 7 : 9,
                           flex:
                             cellIndex === 1
                               ? 4

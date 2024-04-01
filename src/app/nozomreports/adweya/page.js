@@ -32,14 +32,10 @@ export default function Adweya() {
       })
       .catch((err) => {
         console.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
   const handleOnLoad = () => {
     setLoading(false);
-    rows.length = 0;
   };
 
   return (
@@ -86,7 +82,7 @@ export default function Adweya() {
               اظهر البيانات
             </Button>
           </div>
-          {rows.length <= 0 ? (
+          {rows.length <= 0 || !startDate || !endDate ? (
             <div
               style={{
                 display: "flex",
@@ -95,7 +91,7 @@ export default function Adweya() {
                 minHeight: 500,
               }}
             >
-              {loading ? <CircularProgress /> : null}
+              {loading ? <CircularProgress /> : "لا توجد احصائية"}
             </div>
           ) : (
             <DynamicPDFViewer
