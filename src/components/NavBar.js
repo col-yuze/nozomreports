@@ -60,62 +60,6 @@ const NavBar = () => {
                   عيادات
                 </a>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-lavender dark:text-white hover:underline"
-                >
-                  الصيدليات الخارجي
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-lavender dark:text-white hover:underline"
-                >
-                  Features
-                </a>
-              </li>
             </ul>
           </div>
         </div>
