@@ -19,29 +19,23 @@ export default function Mahgozeen() {
   const [loading, setLoading] = useState(false);
 
   var dept = "بكل الأقسام";
-  const [selectedOption, setSelectedOption] = useState("0-الكل");
-  const [selectedOptionStatic, setSelectedOptionStatic] = useState();
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOptionStatic, setSelectedOptionStatic] = useState(null);
   // api fetching
   const handleOnLoad = () => {
     setLoading(false);
-    rows.length = 0;
   };
   const fetchDataTable = async () => {
     setLoading(true);
-    fetch(`/api/mahgozeen?buildnumber=${selectedOption[0]}`)
+    fetch(`/api/mahgozeen?buildnumber=${selectedOption.value.split("-")[0]}`)
       .then((response) => {
         response.json().then((res) => {
           setRows(res.data);
-          setSelectedOptionStatic(selectedOption);
-          // res.data[hospital][hosp_data]
-          // console.log(res.data[0][1]);
+          setSelectedOptionStatic(selectedOption.value);
         });
       })
       .catch((err) => {
         console.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
   return (
@@ -81,12 +75,12 @@ export default function Mahgozeen() {
               }}
               onClick={fetchDataTable}
               variant="contained"
-              disabled={loading}
+              disabled={loading || !selectedOption}
             >
               اظهر البيانات
             </Button>
           </div>
-          {rows?.length <= 0 ? (
+          {rows.length <= 0 ? (
             <div
               style={{
                 display: "flex",
