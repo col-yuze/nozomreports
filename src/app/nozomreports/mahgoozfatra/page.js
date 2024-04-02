@@ -24,7 +24,6 @@ const DynamicPDFViewer = dynamic(
 );
 export default function Mahgoozfatra() {
   const [rows, setRows] = React.useState([]);
-  const [show, setShow] = React.useState(false);
   // prettier-ignore
   const [startDate, setStartDate] = React.useState(null);
 
@@ -81,7 +80,8 @@ export default function Mahgoozfatra() {
 
   const setReportType = (type) => {
     setAqsamOrMosts(type);
-    setRows([]);
+    setRows([])
+    setSelectedOption(null)
   };
   return (
     <div
