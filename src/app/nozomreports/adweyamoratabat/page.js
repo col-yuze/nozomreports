@@ -23,7 +23,6 @@ export default function AdweyaMoratabat() {
   // api fetching
   const handleOnLoad = () => {
     setLoading(false);
-    rows.length = 0;
   };
   const fetchDataTable = async () => {
     setLoading(true);
@@ -42,9 +41,6 @@ export default function AdweyaMoratabat() {
       .catch((err) => {
         console.error(err);
       })
-      .finally(() => {
-        setLoading(false);
-      });
   };
 
   return (

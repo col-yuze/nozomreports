@@ -1,8 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import CustomBox from "../../components/CustomBox.js";
-import NavBar from "../../components/NavBar.js";
-
 const items = [
   { title: "كشوفات العيادات", route: "koshofateyadat", parentRoute: "eyadat" }, //done input skeleton
   { title: "التحكم في العيادات", route: "eyadattahkom", parentRoute: "eyadat" }, //done input skeleton
@@ -47,7 +45,6 @@ export default function eyadat() {
         height: "100%",
       }}
     >
-      <NavBar></NavBar>
       <h1 style={{ position: "relative", top: 50 }}>تقارير العيادات</h1>
       <Box
         display="flex"

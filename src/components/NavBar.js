@@ -14,7 +14,7 @@ const NavBar = () => {
             href="/"
           >
             <img
-              src="logo.png"
+              src="/logo.png"
               className="h-8"
               alt="Kobry El Kobba Military Medical Complex Logo"
               style={{ width: 80, height: "auto" }}

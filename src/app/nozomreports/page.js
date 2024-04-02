@@ -1,7 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import CustomBox from "../../components/CustomBox.js";
-import NavBar from "./../../components/NavBar.js";
 
 const items = [
   { title: "نسبة الاشغال", route: "nesbetashghal" }, //done input skeleton
@@ -23,7 +22,10 @@ const items = [
   { title: "تقرير بالمحجوزين حاليا بالمجمع", route: "mahgozeen" }, //done input skeleton
   { title: "احصائية الادوية المنصرفة بالصيدليات خلال فترة", route: "adweya" }, //done input skeleton
   { title: "احصائية الادوية المنصرفة مرتبات علاجية", route: "adweyamoratabat" }, // no need for input skeleton
-  { title: "احصائية الادوية المنصرفة مرتبات علاجية_تخصصات", route: "takhasosat" }, //done input skeleton
+  {
+    title: "احصائية الادوية المنصرفة مرتبات علاجية_تخصصات",
+    route: "takhasosat",
+  }, //done input skeleton
   { title: "تقرير الادوية المنصرفة لصالح قسم دخلي", route: "taqreeradweya" }, //done input skeleton
   {
     title: "احصائية الادوية المنصرفة بالقسم الداخلي عن يوم",
@@ -44,7 +46,6 @@ export default function nozomreports() {
         height: "100%",
       }}
     >
-      <NavBar></NavBar>
       <h1 style={{ position: "relative", top: 50 }}>تقارير فرع النظمـ</h1>
       <Box
         display="flex"
@@ -60,7 +61,7 @@ export default function nozomreports() {
         }}
       >
         {items.map((el) => (
-          <CustomBox key={el.title} el={el} routePage={'nozomreports'}/>
+          <CustomBox key={el.title} el={el} routePage={"nozomreports"} />
         ))}
       </Box>
     </div>

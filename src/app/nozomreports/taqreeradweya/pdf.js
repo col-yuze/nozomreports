@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 30; // Adjusted for the first page which includes the title
-const rowsPerPage = 33; // For subsequent pages
+const rowsPerPageTitled = 23; // Adjusted for the first page which includes the title
+const rowsPerPage = 30; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Dynamically split data into pages considering different row limits
@@ -96,6 +96,8 @@ const MyDocument = ({ data, title }) => {
   let index = 0;
   let isFirstPage = true;
   const titlePages = [];
+  let currentRowsInPage = 0;
+  let currentPageTables = [];
   for (let j = 0; j < data.length; j++) {
     isFirstPage = true;
     if (data[j][1].length > 0) {
@@ -105,66 +107,90 @@ const MyDocument = ({ data, title }) => {
         const limit = isFirstPage ? rowsPerPageTitled : rowsPerPage;
         var arr = [];
         arr = arrayTop.concat(data[j][1].slice(index, index + limit));
-        pagesData.push(arr);
+        currentPageTables.push(arr);
+        currentRowsInPage += arr.length + 2;
+        //pagesData.push(arr);
         index += limit;
         isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
+        if (currentRowsInPage >= limit) {
+          pagesData.push(currentPageTables);
+          currentPageTables = [];
+          currentRowsInPage = 0;
+        }
       }
       index = 0;
     }
   }
 
+  if (currentPageTables.length >= 0) {
+    currentPageTables.push(arr);
+    pagesData.push(currentPageTables);
+  }
+
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{title}</Text>
-          </View>
-          {pagesData.map((pageData, pageIndex) => (
-            <View style={styles.table} key={pageIndex}>
-              {pageData.map((rowData, index) => (
-                <View
-                  style={[
-                    styles.row,
-                    {
-                      backgroundColor:
-                        index === 1 && titlePages.includes(pageIndex)
-                          ? "#e1e1e1"
-                          : index === 2
-                          ? "#ffe0e0"
-                          : "white",
-                    },
-                  ]}
-                  key={index}
-                >
-                  {rowData.map((cellData, cellIndex) => (
-                    <Text
+      {pagesData.map((pageData, pageIndex) => (
+        <Page size="A4" style={styles.page} key={pageIndex}>
+          <View style={styles.section}>
+            {pageIndex === 0 && (
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>{title}</Text>
+              </View>
+            )}
+            {/* {titlePages.includes(pageIndex) && (
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>KOKI</Text>
+              </View>
+            )} */}
+            <br />
+            <View style={styles.table}>
+              {pageData.map((tableData, tableIndex) => (
+                <View key={tableIndex} style={{ marginBottom: 10 }}>
+                  {tableData.map((rowData, index) => (
+                    <View
                       style={[
-                        styles.cell,
+                        styles.row,
                         {
-                          fontSize: "7px",
-                          alignSelf: "center",
+                          backgroundColor:
+                            index === 1 && titlePages.includes(pageIndex)
+                              ? "#e1e1e1"
+                              : index === 2
+                              ? "#ffe0e0"
+                              : "white",
                         },
-                        index === 0
-                          ? {
-                              paddingTop: "15px",
-                              paddingBottom: "15px",
-                              fontSize: "12px",
-                              alignSelf: "center",
-                            }
-                          : null,
                       ]}
-                      key={cellIndex}
+                      key={index}
                     >
-                      {cellData.toString()}
-                    </Text>
+                      {rowData.map((cellData, cellIndex) => (
+                        <Text
+                          style={[
+                            styles.cell,
+                            {
+                              fontSize: "7px",
+                              alignSelf: "center",
+                            },
+                            index === 0
+                              ? {
+                                  paddingTop: "15px",
+                                  paddingBottom: "15px",
+                                  fontSize: "12px",
+                                  alignSelf: "center",
+                                }
+                              : null,
+                          ]}
+                          key={cellIndex}
+                        >
+                          {cellData.toString()}
+                        </Text>
+                      ))}
+                    </View>
                   ))}
                 </View>
               ))}
             </View>
-          ))}
-        </View>
-      </Page>
+          </View>
+        </Page>
+      ))}
     </Document>
   );
 };

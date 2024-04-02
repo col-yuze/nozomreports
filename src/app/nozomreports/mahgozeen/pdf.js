@@ -107,7 +107,7 @@ var dd = String(today.getDate()).padStart(2, "0");
 var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
 var yyyy = today.getFullYear();
 
-today = dd + "-" + mm + "-" + yyyy;
+today = yyyy + "-" + mm + "-" + dd;
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
   const [isToday, setIsToday] = React.useState(false);
@@ -139,8 +139,7 @@ const MyDocument = ({ data, title }) => {
       index = 0;
     }
   }
-  console.log(today);
-  console.log(typeof today);
+
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (

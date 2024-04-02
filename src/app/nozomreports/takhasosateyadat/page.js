@@ -16,8 +16,8 @@ export default function TakhasosatEyadat() {
   const [rows, setRows] = React.useState([]);
 
   const [loading, setLoading] = React.useState(false);
-  const [startDate, setStartDate] = React.useState("18-3-2024");
-  const [endDate, setEndDate] = React.useState("20-3-2024");
+  const [startDate, setStartDate] = React.useState(null);
+  const [endDate, setEndDate] = React.useState(null);
   const [staticStartDate, setStaticStartDate] = React.useState(null);
   const [staticEndDate, setStaticEndDate] = React.useState(null);
 

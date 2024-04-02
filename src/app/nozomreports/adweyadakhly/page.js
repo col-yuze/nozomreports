@@ -27,12 +27,11 @@ export default function AdweyaDakhly() {
 
   const handleOnLoad = () => {
     setLoading(false);
-    rows.length = 0;
   };
   // api fetching 200540
   const fetchDataTable = async () => {
     if (selectedOption === null) {
-      return
+      return;
     }
     setLoading(true);
     fetch(
@@ -49,9 +48,6 @@ export default function AdweyaDakhly() {
       })
       .catch((err) => {
         console.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
@@ -98,8 +94,10 @@ export default function AdweyaDakhly() {
             >
               اظهر البيانات
             </Button>
+            <br />
+            <br />
           </div>
-          {rows.length <= 0 ? (
+          {rows.length <= 0 || !startDate || !selectedOption ? (
             <div
               style={{
                 display: "flex",
