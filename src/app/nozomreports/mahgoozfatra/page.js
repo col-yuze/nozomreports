@@ -112,7 +112,7 @@ export default function Mahgoozfatra() {
               zIndex: 1,
               position: "absolute",
               top: 0,
-              marginTop: "11%",
+              marginTop: "17%",
               marginLeft: "20%",
             }}
           >
