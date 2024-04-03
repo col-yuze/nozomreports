@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 5; // Adjusted for the first page which includes the title
+const rowsPerPageTitled = 10; // Adjusted for the first page which includes the title
 const rowsPerPage = 20; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
