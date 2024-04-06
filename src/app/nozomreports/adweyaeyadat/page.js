@@ -109,7 +109,7 @@ export default function AdweyaEyadat() {
             >
               <MyDocument
                 data={rows}
-                title={`إحصائية الادوية المنصرفة بالعيادات من ${staticStartDate} الي ${staticEndDate}`}
+                title={`إحصائية العيادات من ${staticStartDate} الي ${staticEndDate}`}
               />
             </DynamicPDFViewer>
           )}
