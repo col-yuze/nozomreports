@@ -155,11 +155,7 @@ const MyDocument = ({ data, title }) => {
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString().includes("عقيد")
-                        ? "صيدلية عقيد / مقدم / رائد"
-                        : cellData.toString().includes("ملازم")
-                        ? "صيدلية ملازم / ملازم أول / نقيب"
-                        : cellData.toString()}
+                      {cellData}
                     </Text>
                   ))}
                 </View>
