@@ -57,7 +57,7 @@ export default function AdweyaEyadat() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
-            احصائية العيادات اليومية
+            العيادات 
           </h1>
           <div
             style={{
@@ -109,7 +109,7 @@ export default function AdweyaEyadat() {
             >
               <MyDocument
                 data={rows}
-                title={`إحصائية العيادات من ${staticStartDate} الي ${staticEndDate}`}
+                title={`إحصائية عددية للفترة من ${staticStartDate} الي ${staticEndDate}`}
               />
             </DynamicPDFViewer>
           )}

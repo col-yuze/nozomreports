@@ -99,7 +99,7 @@ export default function EhsaeyaEyadat() {
                 <MyDocument
                   data={rows}
                   onLoad={handleOnLoad}
-                  title={`احصائية عددية للعيادات عن ${staticStartDate} `}
+                  title={`احصائية عددية للعيادات عن يوم ${staticStartDate} `}
                 />
               </DynamicPDFViewer>
             )}
