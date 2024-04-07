@@ -51,7 +51,7 @@ export default function Adweya() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
-            الادوية االمطلوب صرفها خلال فترة
+            الأدوية المطلوب صرفها خلال فترة
           </h1>
           <div
             style={{
@@ -103,7 +103,7 @@ export default function Adweya() {
               <MyDocument
                 data={rows}
                 title={`
-                احصائية بأدوية المرتبات العلالاجية المطلوب صرفها خلال الفترة من ${startDateStatic} الي ${endDateStatic}`}
+                احصائية بأدوية المرتبات العلاجية المطلوب صرفها خلال الفترة من ${startDateStatic} الي ${endDateStatic}`}
               />
             </DynamicPDFViewer>
           )}

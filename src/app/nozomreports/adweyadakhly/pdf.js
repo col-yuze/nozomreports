@@ -8,7 +8,7 @@ import {
   Font,
   Image,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/NotoNaskhArabic-VariableFont_wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 5; // Adjusted for the first page which includes the title
-const rowsPerPage = 20; // For subsequent pages
+const rowsPerPageTitled = 4; // Adjusted for the first page which includes the title
+const rowsPerPage = 7; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
@@ -143,14 +143,23 @@ const MyDocument = ({ data, title }) => {
                       style={[
                         styles.cell,
                         {
-                          fontSize: rowData.length > 30 && index !== 0 ? 7 : 9,
+                          fontSize:
+                            rowData.length > 30 && index !== 0
+                              ? cellIndex === 0 ||
+                                cellIndex === 1 ||
+                                (index === pageData.length - 1 &&
+                                  pageIndex === pagesData.length - 1)
+                                ? 7
+                                : 12
+                              : 9,
                           flex:
                             cellIndex === 1
                               ? 4
                               : cellIndex === 0
-                              ? cellIndex === rowData.length - 1
-                                ? 1.5
-                                : 3
+                              ? 3
+                              : cellIndex === rowData.length - 1 ||
+                                cellIndex === 0
+                              ? 2
                               : 1,
                           backgroundColor:
                             (index === pageData.length - 1 &&

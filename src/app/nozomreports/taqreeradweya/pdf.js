@@ -126,7 +126,12 @@ const MyDocument = ({ data, title }) => {
     currentPageTables.push(arr);
     pagesData.push(currentPageTables);
   }
-
+  String.prototype.toIndiaDigits = function () {
+    var id = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "۷", "۸", "۹"];
+    return this.replace(/[0-9]/g, function (w) {
+      return id[+w];
+    });
+  };
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
@@ -134,7 +139,7 @@ const MyDocument = ({ data, title }) => {
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{title.toIndiaDigits()}</Text>
               </View>
             )}
             {/* {titlePages.includes(pageIndex) && (
@@ -166,21 +171,22 @@ const MyDocument = ({ data, title }) => {
                           style={[
                             styles.cell,
                             {
-                              fontSize: "7px",
+                              fontSize: "8px",
                               alignSelf: "center",
+                              justifyContent: "space-between",
                             },
                             index === 0
                               ? {
                                   paddingTop: "15px",
                                   paddingBottom: "15px",
-                                  fontSize: "12px",
+                                  fontSize: "13px",
                                   alignSelf: "center",
                                 }
                               : null,
                           ]}
                           key={cellIndex}
                         >
-                          {cellData.toString()}
+                          {cellData.toString().toIndiaDigits()}
                         </Text>
                       ))}
                     </View>
