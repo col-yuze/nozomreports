@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 26; // Adjusted for the first page which includes the title
-const rowsPerPage = 30; // For subsequent pages
+const rowsPerPageTitled = 24; // Adjusted for the first page which includes the title
+const rowsPerPage = 28; // For subsequent pages
 //egmali lines√
 // egmali 3am√
 // query 1 or 2
