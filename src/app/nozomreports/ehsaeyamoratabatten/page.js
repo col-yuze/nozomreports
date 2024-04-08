@@ -107,8 +107,8 @@ export default function EhsaeyaMoratabatten() {
                 <MyDocument
                   data={rows}
                   onLoad={handleOnLoad}
-                  title={`احصائية المرتبات العلاجية لاكثر من ${startDate} 
-                   ${staticNum} أدوية`}
+                  title={`احصائية بالمرضى صارفى المرتبات العلاجية أكثر من ${staticNum}
+                دواء منذ ${startDate} `}
                 />
               </DynamicPDFViewer>
             )}

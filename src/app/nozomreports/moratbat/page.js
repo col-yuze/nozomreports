@@ -58,7 +58,7 @@ export default function Moratbat() {
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
             {" "}
-            احصائية المرتابات العلاجية
+            احصائية المرتبات العلاجية
           </h1>
           <div
             style={{
