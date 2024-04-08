@@ -60,7 +60,7 @@ export default function Mahgozeen() {
       <div style={{ paddingInline: "15%" }}>
         <div id="pdf-container">
           <h1 style={{ marginBottom: 20, color: "#F0ECE5" }}>
-            {`تقرير بصارفي مرتبات اكثر من ${staticNum}`}
+            {`تقرير بصارفي مرتبات اكثر من  ${staticNum}`}
           </h1>
           <div
             style={{
