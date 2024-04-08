@@ -13,10 +13,12 @@ const DynamicPDFViewer = dynamic(
     ssr: false, // Disable server-side rendering for this component
   }
 );
+
 const handleOnLoad = () => {
   setLoading(false);
   rows.length = 0;
 };
+
 export default function WafedeenDakhly() {
   const [rows, setRows] = useState([]);
   const [startDate, setStartDate] = useState();
@@ -100,7 +102,7 @@ export default function WafedeenDakhly() {
               showToolbar={true}
               width="100%"
               height="720px"
-              onLoad={handleOnLoad}
+              //onLoad={handleOnLoad}
             >
               <MyDocument
                 data={rows}

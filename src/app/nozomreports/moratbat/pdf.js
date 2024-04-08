@@ -104,6 +104,19 @@ const MyDocument = ({ data, title }) => {
     isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
   }
 
+
+  const signatures = [
+    {
+      name: "رئيس فرع نظم المعلومات      ",
+      signature: "عقيد/    احمد حسن عوض",
+    },
+    {
+      name: "رئيس قسم الامداد الطبي      ",
+      signature: "عقيد/    تامر عبدالعظيم حلمى",
+    },
+  ];
+
+
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
@@ -153,6 +166,16 @@ const MyDocument = ({ data, title }) => {
                 </View>
               ))}
             </View>
+            <View style={styles.signatureContainer}>
+            {signatures.map(({ name, signature }, index) => (
+              <View key={index} style={styles.signature}>
+                <Text style={{ textAlign: "right" }}>{name}</Text>
+                <Text style={{ textAlign: "right" }}>{signature}</Text>
+                {/* prettier-ignore */}
+                <Text style={{ textAlign: "right" }}>(                                             )التوقيع</Text>
+              </View>
+            ))}
+          </View>
           </View>
         </Page>
       ))}
