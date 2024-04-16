@@ -8,7 +8,7 @@ import {
   Font,
   Image,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/NotoNaskhArabic-VariableFont_wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
@@ -104,7 +104,12 @@ const MyDocument = ({ data, title }) => {
     index += limit;
     isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
   }
-
+  String.prototype.toIndiaDigits = function () {
+    var id = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "۷", "۸", "۹"];
+    return this.replace(/[0-9]/g, function (w) {
+      return id[+w];
+    });
+  };
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
@@ -112,7 +117,7 @@ const MyDocument = ({ data, title }) => {
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{title.toIndiaDigits()}</Text>
               </View>
             )}
             <View style={styles.table}>
@@ -147,7 +152,7 @@ const MyDocument = ({ data, title }) => {
                       ]}
                       key={cellIndex}
                     >
-                      {cellData}
+                      {cellData.toString().toIndiaDigits()}
                     </Text>
                   ))}
                 </View>

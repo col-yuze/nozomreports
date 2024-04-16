@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/ReadexPro-VariableFont_HEXP,wght.otf";
+import NotoNaskh from "../../../styles/NotoNaskhArabic-VariableFont_wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 17,
     textDecoration: "underline",
   },
   esmElmogm3: {
@@ -101,7 +101,12 @@ const styles = StyleSheet.create({
 const rowsPerPageTitled = 25; // Adjusted for the first page which includes the title
 const rowsPerPage = 30; // For subsequent pages
 //egmali lines√
-
+String.prototype.toIndiaDigits = function () {
+  var id = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "۷", "۸", "۹"];
+  return this.replace(/[0-9]/g, function (w) {
+    return id[+w];
+  });
+};
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
   const [isToday, setIsToday] = React.useState(false);
@@ -134,7 +139,7 @@ const MyDocument = ({ data, title }) => {
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{title.toIndiaDigits()}</Text>
               </View>
             )}
             {/* {titlePages.includes(pageIndex) && (
@@ -163,7 +168,7 @@ const MyDocument = ({ data, title }) => {
                       style={[
                         styles.cell,
                         {
-                          fontSize: "7px",
+                          fontSize: "8px",
                           flex:
                             cellIndex === 0
                               ? "0.5"
@@ -175,7 +180,7 @@ const MyDocument = ({ data, title }) => {
                           ? {
                               paddingTop: "15px",
                               paddingBottom: "15px",
-                              fontSize: "12px",
+                              fontSize: "13px",
                               flex:
                                 cellIndex === 0
                                   ? "3.425"
@@ -184,11 +189,10 @@ const MyDocument = ({ data, title }) => {
                                   : "0.875",
                             }
                           : {},
-                        
                       ]}
                       key={cellIndex}
                     >
-                      {cellData}
+                      {cellData.toString().toIndiaDigits()}
                     </Text>
                   ))}
                 </View>

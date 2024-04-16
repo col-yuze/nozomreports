@@ -8,7 +8,7 @@ import {
   Font,
   Image,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/NotoNaskhArabic-VariableFont_wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
@@ -88,7 +88,12 @@ const styles = StyleSheet.create({
 
 const rowsPerPageTitled = 28; // Adjusted for the first page which includes the title
 const rowsPerPage = 31; // For subsequent pages
-
+String.prototype.toIndiaDigits = function () {
+  var id = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "۷", "۸", "۹"];
+  return this.replace(/[0-9]/g, function (w) {
+    return id[+w];
+  });
+};
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
 
@@ -104,7 +109,6 @@ const MyDocument = ({ data, title }) => {
     isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
   }
 
-
   const signatures = [
     {
       name: "رئيس فرع نظم المعلومات      ",
@@ -116,7 +120,6 @@ const MyDocument = ({ data, title }) => {
     },
   ];
 
-
   return (
     <Document>
       {pagesData.map((pageData, pageIndex) => (
@@ -124,7 +127,7 @@ const MyDocument = ({ data, title }) => {
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{title.toIndiaDigits()}</Text>
               </View>
             )}
             <View style={styles.table}>
@@ -152,30 +155,29 @@ const MyDocument = ({ data, title }) => {
                               ? "#ffe0e0"
                               : (cellIndex === 0 && index !== 0) ||
                                 (index === 0 &&
-                                  (cellIndex === 1 || cellIndex === 2)
-                                )
+                                  (cellIndex === 1 || cellIndex === 2))
                               ? "#ACE2E1AB"
                               : "transparent",
                         },
                       ]}
                       key={cellIndex}
                     >
-                      {cellData}
+                      {cellData.toString().toIndiaDigits()}
                     </Text>
                   ))}
                 </View>
               ))}
             </View>
             <View style={styles.signatureContainer}>
-            {signatures.map(({ name, signature }, index) => (
-              <View key={index} style={styles.signature}>
-                <Text style={{ textAlign: "right" }}>{name}</Text>
-                <Text style={{ textAlign: "right" }}>{signature}</Text>
-                {/* prettier-ignore */}
-                <Text style={{ textAlign: "right" }}>(                                             )التوقيع</Text>
-              </View>
-            ))}
-          </View>
+              {signatures.map(({ name, signature }, index) => (
+                <View key={index} style={styles.signature}>
+                  <Text style={{ textAlign: "right" }}>{name}</Text>
+                  <Text style={{ textAlign: "right" }}>{signature}</Text>
+                  {/* prettier-ignore */}
+                  <Text style={{ textAlign: "right" }}>(                                             )التوقيع</Text>
+                </View>
+              ))}
+            </View>
           </View>
         </Page>
       ))}
