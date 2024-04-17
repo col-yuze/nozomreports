@@ -8,9 +8,15 @@ import {
   Font,
   Image,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/NotoNaskhArabic-VariableFont_wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
+String.prototype.toIndiaDigits = function () {
+  var id = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "۷", "۸", "۹"];
+  return this.replace(/[0-9]/g, function (w) {
+    return id[+w];
+  });
+};
 
 // Define styles
 const styles = StyleSheet.create({
@@ -111,7 +117,7 @@ const MyDocument = ({ data, title }) => {
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{title.toIndiaDigits()}</Text>
               </View>
             )}
             <View style={styles.table}>
@@ -136,14 +142,14 @@ const MyDocument = ({ data, title }) => {
                               ? "25px"
                               : index === 0 && pageIndex === 0
                               ? "10px"
-                              : "8px",
+                              : "10px",
                           flex: cellIndex === 0 ? "4" : "0.5",
 
                           backgroundColor:
                             index === pageData.length - 1 &&
                             pageIndex === pagesData.length - 1
                               ? "#ffe0e0"
-                              : cellIndex === rowData.length-1
+                              : cellIndex === rowData.length - 1
                               ? "#ffe0e0"
                               : "transparent",
                         },
@@ -153,7 +159,7 @@ const MyDocument = ({ data, title }) => {
                       ]}
                       key={cellIndex}
                     >
-                      {cellData}
+                      {cellData.toString().toIndiaDigits()}
                     </Text>
                   ))}
                 </View>

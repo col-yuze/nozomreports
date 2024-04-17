@@ -7,10 +7,15 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/NotoNaskhArabic-VariableFont_wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
-
+String.prototype.toIndiaDigits = function () {
+  var id = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "۷", "۸", "۹"];
+  return this.replace(/[0-9]/g, function (w) {
+    return id[+w];
+  });
+};
 // Define styles
 const styles = StyleSheet.create({
   page: {
@@ -86,8 +91,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 30; // Adjusted for the first page which includes the title
-const rowsPerPage = 35; // For subsequent pages
+const rowsPerPageTitled = 21; // Adjusted for the first page which includes the title
+const rowsPerPage = 25; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
@@ -111,7 +116,7 @@ const MyDocument = ({ data, title }) => {
           <View style={styles.section}>
             {pageIndex === 0 && (
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{title.toIndiaDigits()}</Text>
               </View>
             )}
             <View style={styles.table}>
@@ -136,7 +141,7 @@ const MyDocument = ({ data, title }) => {
                               ? "25px"
                               : index === 0 && pageIndex === 0
                               ? "10px"
-                              : "8px",
+                              : "10px",
                           flex: cellIndex === 0 ? "4" : "0.5",
                           paddingTop:
                             index === 0 && cellIndex === 0 && pageIndex === 0
@@ -153,7 +158,7 @@ const MyDocument = ({ data, title }) => {
                       ]}
                       key={cellIndex}
                     >
-                      {cellData}
+                      {cellData.toString().toIndiaDigits()}
                     </Text>
                   ))}
                 </View>

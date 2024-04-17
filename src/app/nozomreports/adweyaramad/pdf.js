@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
-import NotoNaskh from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
+import NotoNaskh from "../../../styles/NotoNaskhArabic-VariableFont_wght.otf";
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   signatureContainer: {
     position: "absolute",
     bottom: 0,
-    right:200,
+    right: 200,
     flexDirection: "row-reverse",
     justifyContent: "space-around",
     width: "100%",
@@ -100,9 +100,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 28; // Adjusted for the first page which includes the title
-const rowsPerPage = 33; // For subsequent pages
-
+const rowsPerPageTitled = 10; // Adjusted for the first page which includes the title
+const rowsPerPage = 15; // For subsequent pages
+String.prototype.toIndiaDigits = function () {
+  var id = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "۷", "۸", "۹"];
+  return this.replace(/[0-9]/g, function (w) {
+    return id[+w];
+  });
+};
 const MyDocument = ({ data, title }) => {
   // Your helper functions and logic remain unchanged
   // Dynamically split data into pages considering different row limits
@@ -143,7 +148,7 @@ const MyDocument = ({ data, title }) => {
           <View style={styles.section}>
             {
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{title.toIndiaDigits()}</Text>
               </View>
             }
             <View style={styles.subTitleContainer}>
@@ -161,7 +166,8 @@ const MyDocument = ({ data, title }) => {
                   style={[
                     styles.row,
                     {
-                      backgroundColor: index === 0 ? "#e1e1e1" : "white",
+                      backgroundColor:
+                        index === 0 && pageIndex < 2 ? "#e1e1e1" : "white",
                     },
                   ]}
                   key={index}
@@ -172,14 +178,14 @@ const MyDocument = ({ data, title }) => {
                         styles.cell,
                         {
                           fontSize:
-                            index === 0 && cellIndex === 0
-                              ? "25px"
+                            index === 0 && cellIndex === 0 && pageIndex < 2
+                              ? "20px"
                               : index === 0
                               ? "10px"
-                              : "8px",
-                          flex: cellIndex === 0 ? "4" : "0.5",
+                              : "9px",
+                          flex: cellIndex === 0 ? "3.5" : "1.3",
                           paddingTop:
-                            index === 0 && cellIndex === 0 ? "17px" : "auto",
+                            index === 0 && cellIndex === 0 ? "10 px" : "auto",
                           backgroundColor:
                             (index === pageData.length - 1 &&
                               pageIndex === pagesData.length - 1) ||
@@ -192,7 +198,7 @@ const MyDocument = ({ data, title }) => {
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString()}
+                      {cellData.toString().toIndiaDigits()}
                     </Text>
                   ))}
                 </View>
@@ -201,7 +207,7 @@ const MyDocument = ({ data, title }) => {
             <View style={styles.signatureContainer}>
               {signatures.map(({ name, signature }, index) => (
                 <View key={index} style={styles.signature}>
-                  <Text style={{ textAlign: "right" }}>(                                               )التوقيع</Text>
+                  <Text style={{ textAlign: "right" }}>( )التوقيع</Text>
                   <Text style={{ textAlign: "right" }}>{name}</Text>
                   <Text style={{ textAlign: "right" }}>{signature}</Text>
                   {/* prettier-ignore */}
