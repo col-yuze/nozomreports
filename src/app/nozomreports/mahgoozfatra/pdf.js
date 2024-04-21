@@ -131,7 +131,7 @@ const MyDocument = ({ data, title }) => {
         var arr = [];
         arr = arrayTop.concat(data[j][1].slice(index, index + limit));
         currentPageTables.push(arr);
-        currentRowsInPage += arr.length + 2;
+        currentRowsInPage += arr.length + 4;
         index += limit;
         isFirstPage = false; // Only the first chunk uses rowsPerPageTitled
 

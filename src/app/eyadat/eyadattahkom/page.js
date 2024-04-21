@@ -66,9 +66,9 @@ export default function EyadatTahkom() {
         setLoading(false);
       });
   };
-  const UpdateCountData = async (cnt,code,type) => {
+  const UpdateCountData = async (cnt, code, type) => {
     setLoading(true);
-    setAccess(false)
+    setAccess(false);
     fetch(`/api/eyadattahkom?count=${cnt}&code=${code}&type=${type}`)
       .then((response) => {
         response.json().then((res) => {
@@ -81,7 +81,7 @@ export default function EyadatTahkom() {
       })
       .finally(() => {
         setLoading(false);
-        setAccess(true)
+        setAccess(true);
       });
   };
 
@@ -286,8 +286,8 @@ export default function EyadatTahkom() {
     const updatedRows = [...rows]; // Create a copy of the rows state array
 
     const clinic_code = updatedRows[index - 1][3];
-  
-    let type= action==='+'?1:2
+
+    let type = action === "+" ? 1 : 2;
 
     // Update the count value based on the action
     if (action === "+") {
@@ -295,8 +295,8 @@ export default function EyadatTahkom() {
     } else {
       updatedRows[index - 1][4] -= 1; // Decrement count
     }
-      const extra = updatedRows[index - 1][4];
-    UpdateCountData(extra,clinic_code,type)
+    const extra = updatedRows[index - 1][4];
+    UpdateCountData(extra, clinic_code, type);
     // Set the state with the updated array
     setRows(updatedRows);
   }

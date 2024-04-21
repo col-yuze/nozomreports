@@ -37,19 +37,19 @@ function formatDate(date) {
   const year = date.getFullYear();
   const formattedDay = day < 10 ? "0" + day : day;
   const formattedMonth = month < 10 ? "0" + month : month;
-  return year + '-' + formattedMonth + '-'+formattedDay
+  return year + "-" + formattedMonth + "-" + formattedDay;
 }
 
 function findMaxMinTimes(times) {
   // Convert time strings to minutes since midnight
   const minutesSinceMidnight = times.map((time) => {
-    const allowedTime= [1,2,3,4,5,6,7]
-    const afterTwelve = parseInt(time.split(':')[0])
+    const allowedTime = [1, 2, 3, 4, 5, 6, 7];
+    const afterTwelve = parseInt(time.split(":")[0]);
     const isPM = allowedTime.includes(afterTwelve);
 
     let [hours, minutes] = time.split(":").map(Number);
     if (isPM) {
-      hours+=12
+      hours += 12;
     }
     // Adjust for 12-hour format
     const totalMinutes = (hours % 12) * 60 + minutes + (hours >= 12 ? 720 : 0);
@@ -67,7 +67,7 @@ function findMaxMinTimes(times) {
     const mins = minutes % 60;
     let period = "AM"; // Default to AM
     // Determine if time is between 01:00 and 08:00
-    if ((hours >= 1 && hours <= 7) || (hours === 12)) {
+    if ((hours >= 1 && hours <= 7) || hours === 12) {
       period = "PM";
     }
     return `${hours.toString().padStart(2, "0")}:${mins

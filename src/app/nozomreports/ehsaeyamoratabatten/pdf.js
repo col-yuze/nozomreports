@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const rowsPerPageTitled = 28; // Adjusted for the first page which includes the title
+const rowsPerPageTitled = 20; // Adjusted for the first page which includes the title
 const rowsPerPage = 33; // For subsequent pages
 
 const MyDocument = ({ data, title }) => {
@@ -152,7 +152,9 @@ const MyDocument = ({ data, title }) => {
                       ]}
                       key={cellIndex}
                     >
-                      {cellData.toString().toIndiaDigits()}
+                      {cellData.toString().includes("AM")
+                        ? cellData.toString().replace("AM", "PM")
+                        : cellData.toString().toIndiaDigits()}
                     </Text>
                   ))}
                 </View>

@@ -11,7 +11,6 @@ import {
 import NotoNaskh from "../../../styles/ReadexPro-VariableFont_HEXP,wght.otf";
 import CamelFont from "../../../styles/TheYearofTheCamel-ExtraBold.otf";
 
-
 // Register the custom font
 Font.register({ family: "NotoNaskh", src: NotoNaskh });
 Font.register({ family: "CamelFont", src: CamelFont });
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 5,
     fontFamily: "CamelFont",
-    paddingBottom:5
+    paddingBottom: 5,
   },
   title: {
     textAlign: "center",
@@ -98,13 +97,13 @@ const styles = StyleSheet.create({
 });
 
 const currentDate = new Date();
-  let hours = currentDate.getHours();
-  let minutes = currentDate.getMinutes();
-  const ampm = hours >= 12 ? "مساءً" : "صباحًا";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // Handle midnight (12 AM)
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  const formattedTime = `${hours}:${minutes} ${ampm}`; // hh:mm AM/PM format
+let hours = currentDate.getHours();
+let minutes = currentDate.getMinutes();
+const ampm = hours >= 12 ? "مساءً" : "صباحًا";
+hours = hours % 12;
+hours = hours ? hours : 12; // Handle midnight (12 AM)
+minutes = minutes < 10 ? "0" + minutes : minutes;
+const formattedTime = `${hours}:${minutes} ${ampm}`; // hh:mm AM/PM format
 const rowsPerPageTitled = 20; // Adjusted for the first page which includes the title
 const rowsPerPage = 22; // For subsequent pages
 
@@ -141,17 +140,13 @@ const MyDocument = ({ data, title }) => {
       {pagesData.map((pageData, pageIndex) => (
         <Page size="A4" style={styles.page} key={pageIndex}>
           <View style={styles.section}>
-            <div style={{flexDirection:'row',justifyContent:'space-between'}}>
+            <div
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
               <Text style={styles.timestamp}>
                 توقيت الطباعة : {formattedTime.toIndiaDigits()}
               </Text>
-              <Text
-                style={
-                  styles.timestamp
-                }
-              >
-                فرع نظم المعلومات
-              </Text>
+              <Text style={styles.timestamp}>فرع نظم المعلومات</Text>
             </div>
 
             {pageIndex === 0 && (
