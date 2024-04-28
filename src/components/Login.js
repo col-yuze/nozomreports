@@ -1,13 +1,30 @@
 "use client"; // this part for handle click and error for client/server issues
-import { Box, InputLabel, TextField } from "@mui/material";
+import {
+  Box,
+  InputLabel,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  IconButton,
+} from "@mui/material";
 import * as React from "react";
-import Icon from "@mui/material/Icon";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import {
+  AccountCircle,
+  Lock,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
+import Image from "next/image";
 
 export default function Login() {
-  const DARK_BLUE = "#153448";
-  const [userName, setUserName] = React.useState();
-  const [password, setPassword] = React.useState();
+  const DARK_BLUE = "#153448bb";
+  const [userName, setUserName] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [rememberMe, setRememberMe] = React.useState(false);
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <Box
       height="70vh" // Set the height to 50% of the viewport height
@@ -28,7 +45,19 @@ export default function Login() {
         alignItems: "self-end",
       }}
     >
-      <Box width="35%" m={12}>
+      <Box
+        width="40%"
+        sx={{
+          backgroundColor: "white",
+          justifyContent: "center",
+          borderRadius: 5,
+          height: "80%",
+            marginTop: "8%",
+            marginRight: '7%',
+                  boxShadow: "1px 2px 3px 1px rgba(0, 0, 0,0.5)",
+
+        }}
+      >
         <InputLabel
           style={{
             justifyContent: "center",
@@ -36,18 +65,22 @@ export default function Login() {
             color: DARK_BLUE,
             fontWeight: "bold",
             textTransform: "uppercase",
-            paddingBottom: "10%",
+            flexDirection: "row",
+            display: "flex",
+            height: "40%",
+            width: "100%",
           }}
         >
-          Login
+          <Image src={"/logo.png"} width="45" height="50" />
+          <span style={{ textAlign: "end", fontSize: 26 }}>nozom reports</span>
         </InputLabel>
         <Box
           sx={{
-            flex: "1",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
             gap: 2,
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <div
@@ -62,28 +95,43 @@ export default function Login() {
               sx={{ marginRight: 1, color: DARK_BLUE }}
             />
             <TextField
-              variant="outlined"
+              variant="standard"
               value={userName}
               onChange={(event) => {
                 setUserName(event.target.value);
               }}
-              style={{
-                borderRadius: 20,
+              inputProps={{
+                style: { backgroundColor: "lightblue", borderRadius: 20 },
               }}
-              inputProps={{ style: { backgroundColor: "transparent" } }} // Apply the inputStyles to the input area
             />
           </div>
-
-          <TextField
-            label="Password"
-            variant="outlined"
-            type="password"
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginLeft: "8.5%",
             }}
-            InputProps={{ style: { backgroundColor: "transparent" } }} // Apply the inputStyles to the input area
-          />
+          >
+            <Lock
+              fontSize={"medium"}
+              sx={{ marginRight: 1, color: DARK_BLUE }}
+            />
+            <TextField
+              variant="standard"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
+              inputProps={{
+                style: { backgroundColor: "lightblue", borderRadius: 20 },
+              }}
+            />
+            <IconButton onClick={handleTogglePasswordVisibility}>
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </div>
         </Box>
       </Box>
     </Box>
