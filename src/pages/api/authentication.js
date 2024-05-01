@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       and user_name = 'admin'
     `;
     // using a parameterized query to prevent sql injections
-    const result = await runBoundedQuery(query, user_name);
+    const result = await runBoundedQuery(query, [user_name]);
     if (result[0][0] === pass) {
       access = true
       console.log(result)

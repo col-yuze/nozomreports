@@ -56,7 +56,7 @@ async function runUpdateQuery(query) {
 }
 async function runBoundedQuery(query, bounded_variable) {
   try {
-    const result = await connection.execute(query, [bounded_variable]);
+    const result = await connection.execute(query, bounded_variable);
     console.log("Query ran");
     return result.rows; // Assuming you want to return the rows
   } catch (err) {

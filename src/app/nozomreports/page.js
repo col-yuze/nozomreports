@@ -1,6 +1,9 @@
+"use client";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import CustomBox from "../../components/CustomBox.js";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/contexts/UserContext.js";
 
 const items = [
   { title: "نسبة الاشغال", route: "nesbetashghal" }, //done input skeleton
@@ -35,7 +38,30 @@ const items = [
   { title: "احصائية بالاعداد المتاحة في العيادات", route: "aadadmotaha" }, // no need for input skeleton
 ];
 
-export default function nozomreports() {
+export default function NozomReports() {
+  const router = useRouter();
+  const { groupDetails } = useUser();
+  const finalItemsList = {
+    admin: items,
+    patient_affairs: [items[0], items[12], items[13]],
+  };
+
+  const [finalItems, setFinalItems] = React.useState([]);
+  React.useEffect(() => {
+    console.log(groupDetails);
+    // Redirect if groupDetails is false
+    if (!groupDetails) {
+      router.push("/"); // Redirect to login page
+    }
+    if (groupDetails.code === "1001" || groupDetails.code === "1005") {
+      // مدير النظام او جنود فرع النظم
+      setFinalItems(finalItemsList.admin);
+    } else if (groupDetails.code === "1011") {
+      // شئون المرضي
+      setFinalItems(finalItemsList.patient_affairs);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupDetails, router]);
   return (
     <div
       style={{
@@ -60,9 +86,11 @@ export default function nozomreports() {
           margin: "10 auto",
         }}
       >
-        {items.map((el) => (
-          <CustomBox key={el.title} el={el} routePage={"nozomreports"} />
-        ))}
+        {groupDetails
+          ? finalItems.map((el) => (
+              <CustomBox key={el.title} el={el} routePage={"nozomreports"} />
+            ))
+          : null}
       </Box>
     </div>
   );

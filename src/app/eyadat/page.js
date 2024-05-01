@@ -1,6 +1,9 @@
+"use client";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import CustomBox from "../../components/CustomBox.js";
+import { useRouter } from "next/navigation.js";
+import { useUser } from "@/contexts/UserContext.js";
 const items = [
   { title: "كشوفات العيادات", route: "koshofateyadat", parentRoute: "eyadat" }, //done input skeleton
   { title: "التحكم في العيادات", route: "eyadattahkom", parentRoute: "eyadat" }, //done input skeleton
@@ -34,7 +37,17 @@ const items = [
   }, //done input skeleton
 ];
 
-export default function eyadat() {
+export default function Eyadat() {
+  const router = useRouter();
+  const { groupDetails } = useUser();
+
+  React.useEffect(() => {
+    console.log(groupDetails);
+    // Redirect if groupDetails is false
+    if (!groupDetails) {
+      router.push("/"); // Redirect to login page
+    }
+  }, [groupDetails, router]);
   return (
     <div
       style={{
@@ -59,9 +72,11 @@ export default function eyadat() {
           margin: "10 auto",
         }}
       >
-        {items.map((el) => (
-          <CustomBox key={el.title} el={el} routePage={el.parentRoute} />
-        ))}
+        {groupDetails
+          ? items.map((el) => (
+              <CustomBox key={el.title} el={el} routePage={el.parentRoute} />
+            ))
+          : null}
       </Box>
     </div>
   );
