@@ -52,15 +52,16 @@ export default function NozomReports() {
     // Redirect if groupDetails is false
     if (!groupDetails) {
       router.push("/"); // Redirect to login page
+    } else {
+      if (groupDetails.code === "1001" || groupDetails.code === "1005") {
+        // مدير النظام او جنود فرع النظم
+        setFinalItems(finalItemsList.admin);
+      } else if (groupDetails.code === "1011") {
+        // شئون المرضي
+        setFinalItems(finalItemsList.patient_affairs);
+      }
     }
-    if (groupDetails.code === "1001" || groupDetails.code === "1005") {
-      // مدير النظام او جنود فرع النظم
-      setFinalItems(finalItemsList.admin);
-    } else if (groupDetails.code === "1011") {
-      // شئون المرضي
-      setFinalItems(finalItemsList.patient_affairs);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupDetails, router]);
   return (
     <div

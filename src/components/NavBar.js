@@ -8,12 +8,13 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useRouter } from "next/navigation";
 
 const NavBar = () => {
-  const { name, userDescription, groupDetails } = useUser();
+  const { name, userDescription, groupDetails,setGroupDetails } = useUser();
   const router = useRouter()
 
   const handleLogout = () => {
-   // Implement your logout logic here
-   
+    // Implement your logout logic here
+    setGroupDetails(null)
+    router.push('/')
  };
   return groupDetails ? (
     <div>
