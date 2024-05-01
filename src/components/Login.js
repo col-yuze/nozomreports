@@ -19,7 +19,6 @@ import {
 import Image from "next/image";
 import Button from "@mui/material/Button";
 import Cookies from "js-cookie"; // Import js-cookie library
-import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation.js";
 
 export default function Login() {
@@ -29,7 +28,6 @@ export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   // const [rememberMe, setRememberMe] = React.useState(false);
   const [disableBtn, setDisableBtn] = React.useState(false);
-  const { setName, setUserDescription, setGroupDetails } = useUser();
   // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
@@ -49,7 +47,7 @@ export default function Login() {
   //   Cookies.remove("username");
   //   Cookies.remove("password");
   // };
-  
+
   const signIn = async () => {
     console.log("sign in");
     setDisableBtn(true);
@@ -59,10 +57,11 @@ export default function Login() {
           console.log(res.data);
 
           if (res.data) {
-            setName(res.data[0]);
-            setUserDescription(res.data[1]);
-            setGroupDetails({ name: res.data[2], code: res.data[3] });
-            router.push("/nozomreports")
+            Cookies.set("user_name", res.data[0], { expires: 1 });
+            Cookies.set("user_description", res.data[1], { expires: 1 });
+            Cookies.set("group_name", res.data[2], { expires: 1 });
+            Cookies.set("group_code", res.data[3],{ expires: 1 });
+            router.push("/nozomreports");
           } else {
             // Display error message in Snackbar
             setSnackbarMessage("Wrong user name or password");
@@ -126,7 +125,7 @@ export default function Login() {
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
-        anchorOrigin={{vertical:'top',horizontal:'center'}}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
         onClose={handleSnackbarClose}
       >
         <Alert onClose={handleSnackbarClose} severity="error">

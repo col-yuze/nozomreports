@@ -3,7 +3,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import CustomBox from "../../components/CustomBox.js";
 import { useRouter } from "next/navigation.js";
-import { useUser } from "@/contexts/UserContext.js";
+import Cookies from "js-cookie";
 const items = [
   { title: "كشوفات العيادات", route: "koshofateyadat", parentRoute: "eyadat" }, //done input skeleton
   { title: "التحكم في العيادات", route: "eyadattahkom", parentRoute: "eyadat" }, //done input skeleton
@@ -39,15 +39,15 @@ const items = [
 
 export default function Eyadat() {
   const router = useRouter();
-  const { groupDetails } = useUser();
-
+  let groupCode = Cookies.get("group_name");
   React.useEffect(() => {
-    console.log(groupDetails);
+    console.log(groupCode);
+
     // Redirect if groupDetails is false
-    if (!groupDetails) {
+    if (!groupCode) {
       router.push("/"); // Redirect to login page
     }
-  }, [groupDetails, router]);
+  }, [groupCode, router]);
   return (
     <div
       style={{
@@ -72,7 +72,7 @@ export default function Eyadat() {
           margin: "10 auto",
         }}
       >
-        {groupDetails
+        {groupCode
           ? items.map((el) => (
               <CustomBox key={el.title} el={el} routePage={el.parentRoute} />
             ))

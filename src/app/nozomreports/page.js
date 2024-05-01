@@ -3,7 +3,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import CustomBox from "../../components/CustomBox.js";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/contexts/UserContext.js";
+import Cookies from "js-cookie";
 
 const items = [
   { title: "نسبة الاشغال", route: "nesbetashghal" }, //done input skeleton
@@ -40,29 +40,31 @@ const items = [
 
 export default function NozomReports() {
   const router = useRouter();
-  const { groupDetails } = useUser();
   const finalItemsList = {
     admin: items,
     patient_affairs: [items[0], items[12], items[13]],
   };
-
   const [finalItems, setFinalItems] = React.useState([]);
+  let groupCode = Cookies.get("group_code");
   React.useEffect(() => {
-    console.log(groupDetails);
+    console.log(groupCode);
+    if (Cookies.get("group_code")) {
+      console.log("there is", Cookies.get("group_code"));
+    }
     // Redirect if groupDetails is false
-    if (!groupDetails) {
+    if (!groupCode) {
       router.push("/"); // Redirect to login page
     } else {
-      if (groupDetails.code === "1001" || groupDetails.code === "1005") {
+      if (groupCode === "1001" || groupCode === "1005") {
         // مدير النظام او جنود فرع النظم
         setFinalItems(finalItemsList.admin);
-      } else if (groupDetails.code === "1011") {
+      } else if (groupCode === "1011") {
         // شئون المرضي
         setFinalItems(finalItemsList.patient_affairs);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupDetails, router]);
+  }, [groupCode, router]);
   return (
     <div
       style={{
@@ -87,7 +89,7 @@ export default function NozomReports() {
           margin: "10 auto",
         }}
       >
-        {groupDetails
+        {groupCode
           ? finalItems.map((el) => (
               <CustomBox key={el.title} el={el} routePage={"nozomreports"} />
             ))

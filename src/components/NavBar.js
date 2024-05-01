@@ -1,22 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useUser } from "@/contexts/UserContext";
 import { IconButton, Typography } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const NavBar = () => {
-  const { name, userDescription, groupDetails,setGroupDetails } = useUser();
-  const router = useRouter()
+  const router = useRouter();
+  const [groupName, setGroupName] = useState();
+  const [userName, setUserName] = useState();
 
   const handleLogout = () => {
     // Implement your logout logic here
-    setGroupDetails(null)
-    router.push('/')
- };
-  return groupDetails ? (
+    Cookies.remove("user_name");
+    Cookies.remove("user_description");
+    Cookies.remove("group_name");
+    Cookies.remove("group_code");
+    setGroupName(null)
+    setUserName(null);
+    router.push("/");
+  };
+  useEffect(() => {
+    setGroupName(Cookies.get("group_name"));
+    setUserName(Cookies.get("user_name")); // Corrected from Cookies.get("group_name")
+  }, [groupName]);
+
+  return groupName ? (
     <div>
       <nav
         className="bg-lavender border-gray-200 light:b-white"
@@ -66,13 +77,13 @@ const NavBar = () => {
                 variant="body1"
                 style={{ fontSize: 12, paddingRight: 10 }}
               >
-                {groupDetails.name}
+                {groupName}
               </Typography>
               <Typography
                 variant="body1"
                 style={{ fontSize: 20, fontWeight: "bold" }}
               >
-                {name}
+                {userName}
               </Typography>
               <IconButton onClick={handleLogout} color="inherit">
                 <ExitToAppIcon />
@@ -82,7 +93,9 @@ const NavBar = () => {
         </div>
       </nav>
     </div>
-  ) : null;
+  ) : (
+    <nav></nav>
+  );
 };
 
 export default NavBar;
