@@ -20,6 +20,7 @@ import Image from "next/image";
 import Button from "@mui/material/Button";
 import Cookies from "js-cookie"; // Import js-cookie library
 import { useUser } from "@/contexts/UserContext";
+import { useRouter } from "next/navigation.js";
 
 export default function Login() {
   const DARK_BLUE = "#153448bb";
@@ -32,6 +33,7 @@ export default function Login() {
   // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
+  const router = useRouter();
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -60,6 +62,7 @@ export default function Login() {
             setName(res.data[0]);
             setUserDescription(res.data[1]);
             setGroupDetails({ name: res.data[2], code: res.data[3] });
+            router.push("/nozomreports")
           } else {
             // Display error message in Snackbar
             setSnackbarMessage("Wrong user name or password");

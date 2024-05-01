@@ -1,12 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useUser } from "@/contexts/UserContext";
+import { IconButton, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useRouter } from "next/navigation";
 
 const NavBar = () => {
   const { name, userDescription, groupDetails } = useUser();
+  const router = useRouter()
 
+  const handleLogout = () => {
+   // Implement your logout logic here
+   
+ };
   return groupDetails ? (
     <div>
       <nav
@@ -52,11 +60,22 @@ const NavBar = () => {
                 <Link href="/eyadat">عيادات</Link>
               </li>
             </ul>
-            <div>
-              <span style={{ fontSize: 12, paddingRight: 10 }}>
+            <div className="flex items-center space-x-6 rtl:space-x-reverse">
+              <Typography
+                variant="body1"
+                style={{ fontSize: 12, paddingRight: 10 }}
+              >
                 {groupDetails.name}
-              </span>
-              <span style={{ fontSize: 20, fontWeight: "bold" }}>, {name}</span>
+              </Typography>
+              <Typography
+                variant="body1"
+                style={{ fontSize: 20, fontWeight: "bold" }}
+              >
+                {name}
+              </Typography>
+              <IconButton onClick={handleLogout} color="inherit">
+                <ExitToAppIcon />
+              </IconButton>
             </div>
           </div>
         </div>

@@ -12,7 +12,6 @@ export default async function handler(req, res) {
     const user_name = req.query.username;
     const pass = req.query.pass;
     // Your database queries or operations go here
-    console.log(user_name,pass)
     const query = `
       select u.user_name, u.user_desc,g.group_name,g.group_code from users u
       join groups g
